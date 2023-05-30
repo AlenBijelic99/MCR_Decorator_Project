@@ -30,7 +30,7 @@ public class GameScreen extends ScreenAdapter {
   public GameScreen(OrthographicCamera camera) {
     this.camera = camera;
     batch = new SpriteBatch();
-    world = new World(new Vector2(0, Constants.EARTH_GRAVITY), false);
+    world = new World(new Vector2(0,Constants.GRAVITY), false);
     box2DDebugRenderer = new Box2DDebugRenderer();
     tileMapHelper = new TileMapHelper(this);
     orthogonalTiledMapRenderer = tileMapHelper.setupMap();
@@ -55,6 +55,7 @@ public class GameScreen extends ScreenAdapter {
     updateCamera();
     batch.setProjectionMatrix(camera.combined);
     orthogonalTiledMapRenderer.setView(camera);
+    player.update();
     if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
       Gdx.app.exit();
     }
