@@ -18,21 +18,10 @@ public class DecoratorGame extends Game {
 	
 	@Override
 	public void create () {
-		System.out.println("DecoratorGame.create");
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);
 		setScreen(new GameScreen(camera));
-	}
-
-	@Override
-	public void render () {
-
-	}
-	
-	@Override
-	public void dispose () {
-
 	}
 }

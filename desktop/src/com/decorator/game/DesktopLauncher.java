@@ -10,7 +10,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("DecoratorGame");
-		config.setWindowedMode(960, 640);
 		new Lwjgl3Application(new DecoratorGame(), config);
 	}
 }
