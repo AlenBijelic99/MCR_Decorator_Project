@@ -9,11 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.decorator.game.objects.GameEntity;
 import com.decorator.game.utils.Constants;
 
 
-public class Player extends GameEntity {
+public class Player extends MovableGameEntity {
   public enum State {FALLING, JUMPING, IDLE, RUNNING, ATTACKING};
   public State currentState;
   public State previousState;
@@ -64,7 +63,8 @@ public class Player extends GameEntity {
   @Override
   public void render(SpriteBatch batch) {
     batch.begin();
-    batch.draw(getFrame(Gdx.graphics.getDeltaTime()), x - width / 2, y - height / 2);
+    TextureRegion region = getFrame(Gdx.graphics.getDeltaTime());
+    batch.draw(region, x - width / 2, y - height / 2, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
     batch.end();
   }
 
