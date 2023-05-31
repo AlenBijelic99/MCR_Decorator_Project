@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.decorator.game.utils.Constants;
 
 
-public class Player extends GameEntity {
+public class Player extends MovableGameEntity {
   private int jumpCount;
 
   public Player(float width, float height, Body body) {
