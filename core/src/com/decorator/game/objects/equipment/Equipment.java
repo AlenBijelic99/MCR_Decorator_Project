@@ -2,7 +2,7 @@ package com.decorator.game.objects.equipment;
 
 public interface Equipment {
     String getDescription();
-    int addPower();
+    int addStrength();
     float addSpeed();
     float addJump();
 }

@@ -14,7 +14,7 @@ public class StrengthPotion extends Potion {
     }
 
     @Override
-    public int addPower() {
-        return super.addPower() + STRENGTH_INCREASE;
+    public int addStrength() {
+        return super.addStrength() + STRENGTH_INCREASE;
     }
 }
