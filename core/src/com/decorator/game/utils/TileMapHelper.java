@@ -12,7 +12,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.decorator.game.objects.player.JumpPotionEntity;
 import com.decorator.game.objects.player.Player;
+import com.decorator.game.objects.player.SpeedPotionEntity;
+import com.decorator.game.objects.player.StrengthPotionEntity;
 import com.decorator.game.screens.GameScreen;
 
 
@@ -26,6 +29,7 @@ public class TileMapHelper {
     this.gameScreen = gameScreen;
     tiledMap = new TmxMapLoader().load(MAPS[0]);
     parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+    parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
   }
   public OrthogonalTiledMapRenderer setupMap(){
     return new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAPS[0]));
@@ -49,6 +53,48 @@ public class TileMapHelper {
           );
           gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(), body));
         }
+      }
+    }
+  }
+
+  private void parseMapEquipments(MapObjects mapObjects) {
+    for (MapObject mapObject : mapObjects) {
+      if (!(mapObject instanceof RectangleMapObject)) return;
+      Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+      String rectangleName = mapObject.getName();
+      if (rectangleName.contains("speedPotion")) {
+        Body body = BodyHelperService.createBody(
+                (int) (rectangle.getX() + rectangle.getWidth() / 2),
+                (int) (rectangle.getY() + rectangle.getHeight() / 2),
+                rectangle.getWidth(),
+                rectangle.getHeight(),
+                true,
+                gameScreen.getWorld()
+        );
+        gameScreen.setSpeedPotions(new SpeedPotionEntity(rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight(), body));
+      } else if (rectangleName.contains("jumpPotion")) {
+        Body body = BodyHelperService.createBody(
+                (int) (rectangle.getX() + rectangle.getWidth() / 2),
+                (int) (rectangle.getY() + rectangle.getHeight() / 2),
+                rectangle.getWidth(),
+                rectangle.getHeight(),
+                true,
+                gameScreen.getWorld()
+        );
+        gameScreen.setJumpPotions(new JumpPotionEntity(rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight(), body));
+      } else if (rectangleName.contains("strengthPotion")) {
+        Body body = BodyHelperService.createBody(
+                (int) (rectangle.getX() + rectangle.getWidth() / 2),
+                (int) (rectangle.getY() + rectangle.getHeight() / 2),
+                rectangle.getWidth(),
+                rectangle.getHeight(),
+                true,
+                gameScreen.getWorld()
+        );
+        gameScreen.setStrengthPotions(new StrengthPotionEntity(rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight(), body));
       }
     }
   }

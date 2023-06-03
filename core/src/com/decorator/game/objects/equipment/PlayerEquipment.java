@@ -12,7 +12,7 @@ public class PlayerEquipment implements Equipment {
     }
 
     @Override
-    public int addPower() {
+    public int addStrength() {
         return 0;
     }
 

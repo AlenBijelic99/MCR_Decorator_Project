@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.decorator.game.objects.GameEntity;
+import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.utils.Constants;
 
 
@@ -23,10 +24,14 @@ public class Player extends MovableGameEntity {
   private final Animation<TextureRegion> run;
   private final Animation<TextureRegion> jump;
   private boolean isRunningRight;
+  private Equipment equipment;
+  private float jumpSpeed;
+  private int strength;
 
   public Player(float width, float height, Body body) {
     super(width, height, body);
-    this.speed = Constants.PLAYER_SPEED;
+    setEquipment(new PlayerEquipment());
+
     jumpCount = 0;
     currentState = State.IDLE;
     previousState = State.IDLE;
@@ -61,6 +66,17 @@ public class Player extends MovableGameEntity {
     checkUserInput();
   }
 
+  public Equipment getEquipment() {
+    return equipment;
+  }
+
+  public void setEquipment(Equipment equipment) {
+    this.equipment = equipment;
+    speed = equipment.addSpeed();
+    jumpSpeed = equipment.addJump();
+    strength = equipment.addStrength();
+  }
+
   @Override
   public void render(SpriteBatch batch) {
     batch.begin();
@@ -80,7 +96,7 @@ public class Player extends MovableGameEntity {
     if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) && jumpCount < Constants.MAX_JUMPING_COUNT) {
       ++jumpCount;
       body.setLinearVelocity(body.getLinearVelocity().x, 0);
-      body.applyLinearImpulse(new Vector2(0, body.getMass() * Constants.JUMPING_SPEED), body.getPosition(), true);
+      body.applyLinearImpulse(new Vector2(0, body.getMass() * jumpSpeed), body.getPosition(), true);
     }
 
     if (body.getLinearVelocity().y == 0) {
