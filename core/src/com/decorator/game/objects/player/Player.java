@@ -64,7 +64,8 @@ public class Player extends MovableGameEntity {
   @Override
   public void render(SpriteBatch batch) {
     batch.begin();
-    batch.draw(getFrame(Gdx.graphics.getDeltaTime()), x - width / 2, y - height / 2);
+    TextureRegion region = getFrame(Gdx.graphics.getDeltaTime());
+    batch.draw(region, x - width / 2, y - height / 2, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
     batch.end();
   }
 

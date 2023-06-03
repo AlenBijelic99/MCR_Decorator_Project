@@ -12,4 +12,6 @@ public abstract class MovableGameEntity extends GameEntity {
         dy = 0;
         speed = 0;
     }
+
+  public abstract void update();
 }
