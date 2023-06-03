@@ -23,7 +23,7 @@ public class PlayerEquipment implements Equipment {
 
     @Override
     public float addJump() {
-        return Constants.JUMPING_SPEED;
+        return Constants.MAX_JUMPING_HEIGHT;
     }
 
     @Override

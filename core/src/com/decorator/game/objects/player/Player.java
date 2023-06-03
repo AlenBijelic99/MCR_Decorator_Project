@@ -25,7 +25,7 @@ public class Player extends MovableGameEntity {
   private final Animation<TextureRegion> jump;
   private boolean isRunningRight;
   private Equipment equipment;
-  private float jumpSpeed;
+  private float jumpHeight;
   private int strength;
 
   public Player(float width, float height, Body body) {
@@ -73,7 +73,7 @@ public class Player extends MovableGameEntity {
   public void setEquipment(Equipment equipment) {
     this.equipment = equipment;
     speed = equipment.addSpeed();
-    jumpSpeed = equipment.addJump();
+    jumpHeight = equipment.addJump();
     strength = equipment.addStrength();
   }
 
@@ -96,14 +96,14 @@ public class Player extends MovableGameEntity {
     if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) && jumpCount < Constants.MAX_JUMPING_COUNT) {
       ++jumpCount;
       body.setLinearVelocity(body.getLinearVelocity().x, 0);
-      body.applyLinearImpulse(new Vector2(0, body.getMass() * jumpSpeed), body.getPosition(), true);
+      body.applyLinearImpulse(new Vector2(0, body.getMass() * Constants.JUMPING_SPEED), body.getPosition(), true);
     }
 
     if (body.getLinearVelocity().y == 0) {
       jumpCount = 0;
     }
 
-    body.setLinearVelocity(dx * speed, Math.min(body.getLinearVelocity().y, Constants.MAX_JUMPING_HEIGHT));
+    body.setLinearVelocity(dx * speed, Math.min(body.getLinearVelocity().y, jumpHeight));
   }
 
   public State getState(){

@@ -1,7 +1,7 @@
 package com.decorator.game.objects.equipment;
 
 public class JumpPotion extends Potion {
-    private static final float JUMP_MULTIPLIER = 1.5F;
+    private static final float JUMP_MULTIPLIER = 15F;
 
     public JumpPotion(Equipment equipment) {
         super(equipment);
