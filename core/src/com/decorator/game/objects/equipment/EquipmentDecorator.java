@@ -30,4 +30,9 @@ public class EquipmentDecorator implements Equipment {
         return equipment.addJump();
     }
 
+    @Override
+    public int addDefense() {
+        return equipment.addDefense();
+    }
+
 }

@@ -5,4 +5,5 @@ public interface Equipment {
     int addPower();
     float addSpeed();
     float addJump();
+    int addDefense();
 }

@@ -25,4 +25,9 @@ public class PlayerEquipment implements Equipment {
     public float addJump() {
         return Constants.JUMPING_SPEED;
     }
+
+    @Override
+    public int addDefense() {
+        return 0;
+    }
 }
