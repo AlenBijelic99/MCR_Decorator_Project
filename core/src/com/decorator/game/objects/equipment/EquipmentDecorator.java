@@ -1,8 +1,5 @@
 package com.decorator.game.objects.equipment;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Body;
-
 public class EquipmentDecorator implements Equipment {
     private Equipment equipment;
 
@@ -16,8 +13,8 @@ public class EquipmentDecorator implements Equipment {
     }
 
     @Override
-    public int addPower() {
-        return equipment.addPower();
+    public int addStrength() {
+        return equipment.addStrength();
     }
 
     @Override

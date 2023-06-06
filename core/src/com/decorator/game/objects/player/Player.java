@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.decorator.game.objects.GameEntity;
+import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.utils.Constants;
 
 
@@ -23,10 +24,14 @@ public class Player extends MovableGameEntity {
   private final Animation<TextureRegion> run;
   private final Animation<TextureRegion> jump;
   private boolean isRunningRight;
+  private Equipment equipment;
+  private float jumpHeight;
+  private int strength;
 
   public Player(float width, float height, Body body) {
     super(width, height, body);
-    this.speed = Constants.PLAYER_SPEED;
+    setEquipment(new PlayerEquipment());
+
     jumpCount = 0;
     currentState = State.IDLE;
     previousState = State.IDLE;
@@ -61,6 +66,17 @@ public class Player extends MovableGameEntity {
     checkUserInput();
   }
 
+  public Equipment getEquipment() {
+    return equipment;
+  }
+
+  public void setEquipment(Equipment equipment) {
+    this.equipment = equipment;
+    speed = equipment.addSpeed();
+    jumpHeight = equipment.addJump();
+    strength = equipment.addStrength();
+  }
+
   @Override
   public void render(SpriteBatch batch) {
     batch.begin();
@@ -87,7 +103,7 @@ public class Player extends MovableGameEntity {
       jumpCount = 0;
     }
 
-    body.setLinearVelocity(dx * speed, Math.min(body.getLinearVelocity().y, Constants.MAX_JUMPING_HEIGHT));
+    body.setLinearVelocity(dx * speed, Math.min(body.getLinearVelocity().y, jumpHeight));
   }
 
   public State getState(){
