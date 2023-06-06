@@ -11,8 +11,8 @@ public class Punch extends Weapon{
     }
 
     @Override
-    public int addPower() {
-        return super.addPower() + 20;
+    public int addStrength() {
+        return super.addStrength() + 20;
     }
 
 

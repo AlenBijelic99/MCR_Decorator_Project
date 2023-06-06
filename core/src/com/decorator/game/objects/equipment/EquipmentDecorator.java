@@ -1,7 +1,7 @@
 package com.decorator.game.objects.equipment;
 
 public class EquipmentDecorator implements Equipment {
-    private Equipment equipment;
+    private final Equipment equipment;
 
     public EquipmentDecorator(Equipment equipment) {
         this.equipment = equipment;
