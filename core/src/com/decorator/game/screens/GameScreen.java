@@ -10,6 +10,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.decorator.game.objects.door.Door;
+import com.decorator.game.objects.door.DoorUnlocked;
+import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.equipment.JumpPotion;
 import com.decorator.game.objects.equipment.SpeedPotion;
 import com.decorator.game.objects.equipment.StrengthPotion;
@@ -17,6 +20,7 @@ import com.decorator.game.objects.player.*;
 import com.decorator.game.utils.Constants;
 import com.decorator.game.utils.TileMapHelper;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +34,12 @@ public class GameScreen extends ScreenAdapter {
   private final TileMapHelper tileMapHelper;
   private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
+  private Dialog endDialog;
+
   private Player player;
+  private Door door;
+  private Key key;
+  private boolean keyGot;
   private List<SpeedPotionEntity> speedPotions;
   private List<JumpPotionEntity> jumpPotions;
   private List<StrengthPotionEntity> strengthPotions;
@@ -47,6 +56,8 @@ public class GameScreen extends ScreenAdapter {
     box2DDebugRenderer = new Box2DDebugRenderer();
     tileMapHelper = new TileMapHelper(this);
     orthogonalTiledMapRenderer = tileMapHelper.setupMap();
+
+    keyGot = false;
 
     world.setContactListener(new ContactListener() {
       @Override
@@ -76,6 +87,19 @@ public class GameScreen extends ScreenAdapter {
             System.out.println("Strength Potion drank");
           }
         }
+
+        if (contact.getFixtureB().getBody() == key.getBody()) {
+          bodiesToDelete.add(key.getBody());
+          keyGot = true;
+          System.out.println("You got the key!");
+          setDoor(new DoorUnlocked(door.getX(), door.getY(), door.getWidth(), door.getHeight(), door.getBody()));
+        }
+
+        if (contact.getFixtureB().getBody() == door.getBody() && keyGot) {
+
+          System.out.println("Door entered");
+        }
+
       }
 
       @Override
@@ -99,6 +123,10 @@ public class GameScreen extends ScreenAdapter {
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     orthogonalTiledMapRenderer.render();
+
+    if (!keyGot) key.render(batch);
+    door.render(batch);
+
     player.render(batch);
 
     for (PotionEntity potion : speedPotions) {
@@ -116,6 +144,7 @@ public class GameScreen extends ScreenAdapter {
     for (Body body : bodiesToDelete) {
       world.destroyBody(body);
     }
+
     bodiesToDelete.clear();
 
     batch.begin();
@@ -150,6 +179,14 @@ public class GameScreen extends ScreenAdapter {
 
   public void setPlayer(Player player) {
     this.player = player;
+  }
+
+  public void setDoor(Door door) {
+    this.door = door;
+  }
+
+  public void setKey(Key key) {
+    this.key = key;
   }
 
   public void setSpeedPotions(SpeedPotionEntity potion) {

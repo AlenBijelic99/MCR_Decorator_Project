@@ -15,8 +15,6 @@ public abstract class PotionEntity extends GameEntity {
 
     @Override
     public void update() {
-        body.destroyFixture(body.getFixtureList().first());
-        body = null;
     }
 
     @Override
