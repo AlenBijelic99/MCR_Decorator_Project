@@ -27,11 +27,13 @@ public class Player extends MovableGameEntity {
   private Equipment equipment;
   private float jumpHeight;
   private int strength;
+  private boolean paused;
 
   public Player(float width, float height, Body body) {
     super(width, height, body);
     setEquipment(new PlayerEquipment());
 
+    paused = false;
     jumpCount = 0;
     currentState = State.IDLE;
     previousState = State.IDLE;
@@ -63,7 +65,7 @@ public class Player extends MovableGameEntity {
   public void update() {
     x = body.getPosition().x * Constants.PPM;
     y = body.getPosition().y * Constants.PPM;
-    checkUserInput();
+    if (!paused) checkUserInput();
   }
 
   public Equipment getEquipment() {
@@ -156,5 +158,19 @@ public class Player extends MovableGameEntity {
     previousState = currentState;
     //return our final adjusted frame
     return region;
+  }
+
+  public boolean isPaused() {
+    return paused;
+  }
+
+  public void pause() {
+    currentState = State.IDLE;
+    body.setLinearVelocity(0, Math.min(body.getLinearVelocity().y, jumpHeight));
+    paused = true;
+  }
+
+  public void resume() {
+    paused = false;
   }
 }

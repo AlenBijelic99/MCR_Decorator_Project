@@ -9,6 +9,11 @@ public class DoorLocked extends Door {
     }
 
     @Override
+    public boolean isUnlocked() {
+        return false;
+    }
+
+    @Override
     public String getImagePath() {
         return "kenney_tiny-dungeon/Door/tile_0045.png";
     }

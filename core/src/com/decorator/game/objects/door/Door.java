@@ -14,6 +14,8 @@ public abstract class Door extends GameEntity {
         this.y = y;
     }
 
+    public abstract boolean isUnlocked();
+
     @Override
     public void update() {
     }
