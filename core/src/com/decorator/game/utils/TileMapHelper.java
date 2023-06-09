@@ -14,10 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.decorator.game.objects.door.DoorLocked;
 import com.decorator.game.objects.door.Key;
-import com.decorator.game.objects.player.JumpPotionEntity;
-import com.decorator.game.objects.player.Player;
-import com.decorator.game.objects.player.SpeedPotionEntity;
-import com.decorator.game.objects.player.StrengthPotionEntity;
+import com.decorator.game.objects.player.*;
 import com.decorator.game.screens.GameScreen;
 
 
@@ -97,6 +94,39 @@ public class TileMapHelper {
                 gameScreen.getWorld()
         );
         gameScreen.setStrengthPotions(new StrengthPotionEntity(rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight(), body));
+      } else if (rectangleName.contains("shortSword")) {
+        Body body = BodyHelperService.createBody(
+                (int) (rectangle.getX() + rectangle.getWidth() / 2),
+                (int) (rectangle.getY() + rectangle.getHeight() / 2),
+                rectangle.getWidth(),
+                rectangle.getHeight(),
+                true,
+                gameScreen.getWorld()
+        );
+        gameScreen.setShortSwords(new ShortSwordEntity(rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight(), body));
+      } else if ( rectangleName.contains("longSword")){
+        Body body = BodyHelperService.createBody(
+                (int) (rectangle.getX() + rectangle.getWidth() / 2),
+                (int) (rectangle.getY() + rectangle.getHeight() / 2),
+                rectangle.getWidth(),
+                rectangle.getHeight(),
+                true,
+                gameScreen.getWorld()
+        );
+        gameScreen.setLongSwords(new LongSwordEntity(rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight(), body));
+      } else if (rectangleName.contains("punch")) {
+        Body body = BodyHelperService.createBody(
+                (int) (rectangle.getX() + rectangle.getWidth() / 2),
+                (int) (rectangle.getY() + rectangle.getHeight() / 2),
+                rectangle.getWidth(),
+                rectangle.getHeight(),
+                true,
+                gameScreen.getWorld()
+        );
+        gameScreen.setPunches(new PunchEntity(rectangle.getX(), rectangle.getY(),
                 rectangle.getWidth(), rectangle.getHeight(), body));
       }
     }
