@@ -7,5 +7,5 @@ public class Constants {
   public static final int MAX_JUMPING_COUNT = 1;
   public static final float JUMPING_SPEED = 25f;
   public static final float MAX_JUMPING_HEIGHT = 20f;
-  public static final String[] MAPS = {"maps/snow.tmx"};
+  public static final String[] MAPS = {"maps/level1map.tmx"};
 }
