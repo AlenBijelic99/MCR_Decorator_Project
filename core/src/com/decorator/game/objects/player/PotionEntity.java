@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.decorator.game.objects.GameEntity;
 
-public abstract class PotionEntity extends GameEntity {
+public abstract class PotionEntity extends GameEntity implements Image {
     public PotionEntity(float x, float y, float width, float height, Body body) {
         super(width, height, body);
         this.x = x;
@@ -26,5 +26,4 @@ public abstract class PotionEntity extends GameEntity {
         batch.end();
     }
 
-    public abstract String getImagePath();
 }
