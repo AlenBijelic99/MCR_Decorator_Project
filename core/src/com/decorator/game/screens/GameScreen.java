@@ -12,13 +12,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
-import com.decorator.game.objects.equipment.JumpPotion;
-import com.decorator.game.objects.equipment.SpeedPotion;
-import com.decorator.game.objects.equipment.StrengthPotion;
+import com.decorator.game.objects.equipment.*;
 import com.decorator.game.objects.player.*;
+import com.decorator.game.utils.BodyHelperService;
 import com.decorator.game.utils.Constants;
 import com.decorator.game.utils.TileMapHelper;
 
@@ -28,210 +28,295 @@ import java.util.List;
 import static com.decorator.game.utils.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
-  private final OrthographicCamera camera;
-  private final SpriteBatch batch;
-  private final World world;
-  private final Box2DDebugRenderer box2DDebugRenderer;
-  private final TileMapHelper tileMapHelper;
-  private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private final OrthographicCamera camera;
+    private final SpriteBatch batch;
+    private final World world;
+    private final Box2DDebugRenderer box2DDebugRenderer;
+    private final TileMapHelper tileMapHelper;
+    private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
-  private boolean doorEntered;
+    private boolean doorEntered;
 
-  private Player player;
-  private Door door;
-  private Key key;
-  private List<SpeedPotionEntity> speedPotions;
-  private List<JumpPotionEntity> jumpPotions;
-  private List<StrengthPotionEntity> strengthPotions;
-  private List<Body> bodiesToDelete;
+    private Player player;
+    private Door door;
+    private Key key;
+    private List<SpeedPotionEntity> speedPotions;
+    private List<JumpPotionEntity> jumpPotions;
+    private List<StrengthPotionEntity> strengthPotions;
+    private List<ShortSwordEntity> shortSwords;
+    private List<LongSwordEntity> longSwords;
+    private List<PunchEntity> punches;
+    private List<Body> bodiesToDelete;
+    private Texture backgroundTexture;
+    private FitViewport viewport;
 
-  public GameScreen(final OrthographicCamera camera) {
-    this.camera = camera;
-    speedPotions = new LinkedList<>();
-    jumpPotions = new LinkedList<>();
-    strengthPotions = new LinkedList<>();
-    bodiesToDelete = new LinkedList<>();
-    batch = new SpriteBatch();
-    world = new World(new Vector2(0,Constants.GRAVITY), false);
-    box2DDebugRenderer = new Box2DDebugRenderer();
-    tileMapHelper = new TileMapHelper(this);
-    orthogonalTiledMapRenderer = tileMapHelper.setupMap();
+    public GameScreen(final OrthographicCamera camera) {
+        this.camera = camera;
+        speedPotions = new LinkedList<>();
+        jumpPotions = new LinkedList<>();
+        strengthPotions = new LinkedList<>();
+        shortSwords = new LinkedList<>();
+        longSwords = new LinkedList<>();
+        punches = new LinkedList<>();
+        bodiesToDelete = new LinkedList<>();
+        batch = new SpriteBatch();
+        world = new World(new Vector2(0, Constants.GRAVITY), false);
+        box2DDebugRenderer = new Box2DDebugRenderer();
+        tileMapHelper = new TileMapHelper(this);
+        orthogonalTiledMapRenderer = tileMapHelper.setupMap();
+        doorEntered = false;
 
-    doorEntered = false;
+        // TODO test to remove later, without this it doesnt work
+        player = new Player(0, 0, BodyHelperService.createBody(0, 0, 32, 32, false, world));
 
-    world.setContactListener(new ContactListener() {
-      @Override
-      public void beginContact(Contact contact) {
-        // Collision with one of the speed potions
-        for (SpeedPotionEntity potion : speedPotions) {
-          if (contact.getFixtureB().getBody() == potion.getBody()) {
-            player.setEquipment(new SpeedPotion(player.getEquipment()));
-            bodiesToDelete.add(potion.getBody());
-            speedPotions.remove(potion);
-            System.out.println("Speed Potion drank");
-          }
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                // Collision with one of the speed potions
+                for (SpeedPotionEntity potion : speedPotions) {
+                    if (contact.getFixtureB().getBody() == potion.getBody()) {
+                        player.setEquipment(new SpeedPotion(player.getEquipment()));
+                        bodiesToDelete.add(potion.getBody());
+                        speedPotions.remove(potion);
+                        System.out.println("Speed Potion drank");
+                    }
+                }
+                // Collision with one of the jump potions
+                for (JumpPotionEntity potion : jumpPotions) {
+                    if (contact.getFixtureB().getBody() == potion.getBody()) {
+                        player.setEquipment(new JumpPotion(player.getEquipment()));
+                        bodiesToDelete.add(potion.getBody());
+                        jumpPotions.remove(potion);
+                        System.out.println("Jump Potion drank");
+                    }
+                }
+                // Collision with one of the strength potions
+                for (StrengthPotionEntity potion : strengthPotions) {
+                    if (contact.getFixtureB().getBody() == potion.getBody()) {
+                        player.setEquipment(new StrengthPotion(player.getEquipment()));
+                        bodiesToDelete.add(potion.getBody());
+                        strengthPotions.remove(potion);
+                        System.out.println("Strength Potion drank");
+                    }
+                }
+                // Collision with one of the short swords
+                for (ShortSwordEntity sword : shortSwords) {
+                    if (contact.getFixtureB().getBody() == sword.getBody()) {
+                        player.setEquipment(new ShortSword(player.getEquipment()));
+                        bodiesToDelete.add(sword.getBody());
+                        shortSwords.remove(sword);
+                        System.out.println("Short Sword equipped");
+                    }
+                }
+                // Collision with one of the long swords
+                for (LongSwordEntity sword : longSwords) {
+                    if (contact.getFixtureB().getBody() == sword.getBody()) {
+                        player.setEquipment(new LongSword(player.getEquipment()));
+                        bodiesToDelete.add(sword.getBody());
+                        longSwords.remove(sword);
+                        System.out.println("Long Sword equipped");
+                    }
+                }
+                // Collision with one of the punches
+                for (PunchEntity punch : punches) {
+                    if (contact.getFixtureB().getBody() == punch.getBody()) {
+                        player.setEquipment(new Punch(player.getEquipment()));
+                        bodiesToDelete.add(punch.getBody());
+                        punches.remove(punch);
+                        System.out.println("Punch equipped");
+                    }
+                }
+
+                // Collision with the key
+                if (contact.getFixtureB().getBody() == key.getBody()) {
+                    bodiesToDelete.add(key.getBody());
+                    System.out.println("You got the key!");
+                    // We set the Door as unlocked
+                    setDoor(new DoorUnlocked(door.getX(), door.getY(), door.getWidth(), door.getHeight(), door.getBody()));
+                }
+
+                // Collision with the unlocked door
+                if (contact.getFixtureB().getBody() == door.getBody() && door.isUnlocked()) {
+                    doorEntered = true;
+                    System.out.println("Door entered");
+                }
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+            }
+
+            @Override
+            public void postSolve(Contact arg0, ContactImpulse arg1) {
+            }
+
+            @Override
+            public void preSolve(Contact arg0, Manifold arg1) {
+            }
+        });
+    }
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+    }
+
+
+    @Override
+    public void show() {
+        // Load the background image
+
+        backgroundTexture = new Texture("backgroundImage/Desert.jpg");
+        // Create a FitViewport with the desired virtual screen size
+        float virtualWidth = 4920;
+        float virtualHeight = 3200;
+        viewport = new FitViewport(virtualWidth, virtualHeight, camera);
+        viewport.apply(true);
+    }
+
+    @Override
+    public void render(float delta) {
+        //super.render(delta);
+        this.update();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        // Set the viewport's dimensions for rendering
+        viewport.apply();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+
+        // Draw the background image
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
+        orthogonalTiledMapRenderer.render();
+
+        if (!door.isUnlocked()) key.render(batch);
+        door.render(batch);
+
+        player.render(batch);
+
+        for (PotionEntity potion : speedPotions) {
+            potion.render(batch);
         }
-        // Collision with one of the jump potions
-        for (JumpPotionEntity potion : jumpPotions) {
-          if (contact.getFixtureB().getBody() == potion.getBody()) {
-            player.setEquipment(new JumpPotion(player.getEquipment()));
-            bodiesToDelete.add(potion.getBody());
-            jumpPotions.remove(potion);
-            System.out.println("Jump Potion drank");
-          }
-        }
-        // Collision with one of the strength potions
-        for (StrengthPotionEntity potion : strengthPotions) {
-          if (contact.getFixtureB().getBody() == potion.getBody()) {
-            player.setEquipment(new StrengthPotion(player.getEquipment()));
-            bodiesToDelete.add(potion.getBody());
-            strengthPotions.remove(potion);
-            System.out.println("Strength Potion drank");
-          }
+
+        for (PotionEntity potion : jumpPotions) {
+            potion.render(batch);
         }
 
-        // Collision with the key
-        if (contact.getFixtureB().getBody() == key.getBody()) {
-          bodiesToDelete.add(key.getBody());
-          System.out.println("You got the key!");
-          // We set the Door as unlocked
-          setDoor(new DoorUnlocked(door.getX(), door.getY(), door.getWidth(), door.getHeight(), door.getBody()));
+        for (PotionEntity potion : strengthPotions) {
+            potion.render(batch);
         }
 
-        // Collision with the unlocked door
-        if (contact.getFixtureB().getBody() == door.getBody() && door.isUnlocked()) {
-          doorEntered = true;
-          System.out.println("Door entered");
+        for (WeaponEntity sword : shortSwords) {
+            sword.render(batch);
         }
 
-      }
+        for (WeaponEntity sword : longSwords) {
+            sword.render(batch);
+        }
 
-      @Override
-      public void endContact(Contact contact) {
-      }
+        for (WeaponEntity punch : punches) {
+            punch.render(batch);
+        }
 
-      @Override
-      public void postSolve(Contact arg0, ContactImpulse arg1) {
-      }
+        for (Body body : bodiesToDelete) {
+            world.destroyBody(body);
+        }
 
-      @Override
-      public void preSolve(Contact arg0, Manifold arg1) {
-      }
-    });
-  }
+        if (doorEntered) {
+            endScreen();
+            pause();
+        }
 
-  @Override
-  public void show() {
-  }
+        bodiesToDelete.clear();
 
-  @Override
-  public void render(float delta) {
-    //super.render(delta);
-    this.update();
-    Gdx.gl.glClearColor(0, 0, 0, 1);
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    orthogonalTiledMapRenderer.render();
-
-    if (!door.isUnlocked()) key.render(batch);
-    door.render(batch);
-
-    player.render(batch);
-
-    for (PotionEntity potion : speedPotions) {
-      potion.render(batch);
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
-    for (PotionEntity potion : jumpPotions) {
-      potion.render(batch);
+    private void update() {
+        world.step(1 / 60f, 6, 2);
+        updateCamera();
+        batch.setProjectionMatrix(camera.combined);
+        orthogonalTiledMapRenderer.setView(camera);
+        player.update();
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            if (!player.isPaused()) {
+                pause();
+            } else {
+                resume();
+            }
+        }
     }
 
-    for (PotionEntity potion : strengthPotions) {
-      potion.render(batch);
+    @Override
+    public void pause() {
+        player.pause();
+        super.pause();
     }
 
-    for (Body body : bodiesToDelete) {
-      world.destroyBody(body);
+    @Override
+    public void resume() {
+        player.resume();
     }
 
-    if (doorEntered) {
-      endScreen();
-      pause();
+    private void updateCamera() {
+        Vector3 position = camera.position;
+        // Multiply and divide by 10 to round to the nearest 10th for smoother camera movement
+        position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
+        position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
+        camera.position.set(position);
+        camera.update();
     }
 
-    bodiesToDelete.clear();
-
-    box2DDebugRenderer.render(world, camera.combined.scl(PPM));
-  }
-
-  private void update() {
-    world.step(1/60f, 6, 2);
-    updateCamera();
-    batch.setProjectionMatrix(camera.combined);
-    orthogonalTiledMapRenderer.setView(camera);
-    player.update();
-    if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-      Gdx.app.exit();
+    public World getWorld() {
+        return world;
     }
-    if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-      if (!player.isPaused()) {
-        pause();
-      } else {
-        resume();
-      }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
-  }
 
-  @Override
-  public void pause() {
-    player.pause();
-    super.pause();
-  }
+    public void setDoor(Door door) {
+        this.door = door;
+    }
 
-  @Override
-  public void resume() {
-    player.resume();
-  }
+    public void setKey(Key key) {
+        this.key = key;
+    }
 
-  private void updateCamera() {
-    Vector3 position = camera.position;
-    // Multiply and divide by 10 to round to the nearest 10th for smoother camera movement
-    position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
-    position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
-    camera.position.set(position);
-    camera.update();
-  }
+    public void setSpeedPotions(SpeedPotionEntity potion) {
+        speedPotions.add(potion);
+    }
 
-  public World getWorld() {
-    return world;
-  }
+    public void setJumpPotions(JumpPotionEntity potion) {
+        jumpPotions.add(potion);
+    }
 
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
+    public void setStrengthPotions(StrengthPotionEntity potion) {
+        strengthPotions.add(potion);
+    }
 
-  public void setDoor(Door door) {
-    this.door = door;
-  }
+    public void setShortSwords(ShortSwordEntity shortSwords) {
+        this.shortSwords.add(shortSwords);
+    }
 
-  public void setKey(Key key) {
-    this.key = key;
-  }
+    public void setLongSwords(LongSwordEntity longSwords) {
+        this.longSwords.add(longSwords);
+    }
 
-  public void setSpeedPotions(SpeedPotionEntity potion) {
-    speedPotions.add(potion);
-  }
-  public void setJumpPotions(JumpPotionEntity potion) {
-    jumpPotions.add(potion);
-  }
-  public void setStrengthPotions(StrengthPotionEntity potion) {
-    strengthPotions.add(potion);
-  }
+    public void setPunches(PunchEntity punch) {
+        punches.add(punch);
+    }
 
-  private void endScreen() {
-    batch.begin();
-    TextureRegion region = new TextureRegion(new Texture("screens/endscreen.png"));
-    batch.draw(region, camera.position.x / 2, camera.position.y / 2,
-            region.getRegionWidth() * 2, region.getRegionHeight() * 2);
-    batch.end();
-  }
+    private void endScreen() {
+        batch.begin();
+        TextureRegion region = new TextureRegion(new Texture("screens/endscreen.png"));
+        batch.draw(region, camera.position.x / 2, camera.position.y / 2,
+                region.getRegionWidth() * 2, region.getRegionHeight() * 2);
+        batch.end();
+    }
 }
