@@ -28,6 +28,8 @@ public class Player extends MovableGameEntity {
   private float jumpHeight;
   private int strength;
   private boolean paused;
+  private int health;
+  private int defense;
 
   public Player(float width, float height, Body body) {
     super(width, height, body);
@@ -77,6 +79,7 @@ public class Player extends MovableGameEntity {
     speed = equipment.addSpeed();
     jumpHeight = equipment.addJump();
     strength = equipment.addStrength();
+    defense = equipment.addDefense();
   }
 
   @Override
@@ -162,6 +165,18 @@ public class Player extends MovableGameEntity {
 
   public boolean isPaused() {
     return paused;
+  }
+
+  public int getHealth() {
+    return health;
+  }
+
+  public int getStrength() {
+    return strength;
+  }
+
+  public int getDefense() {
+    return defense;
   }
 
   public void pause() {

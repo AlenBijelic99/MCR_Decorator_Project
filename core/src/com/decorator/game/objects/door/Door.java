@@ -30,5 +30,4 @@ public abstract class Door extends GameEntity {
     }
 
     public abstract String getImagePath();
-
 }

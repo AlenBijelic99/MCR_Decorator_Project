@@ -66,7 +66,7 @@ public class GameScreen extends ScreenAdapter {
     box2DDebugRenderer = new Box2DDebugRenderer();
     tileMapHelper = new TileMapHelper(this);
     orthogonalTiledMapRenderer = tileMapHelper.setupMap();
-    hud = new HUD(batch, player.getEquipment());
+    hud = new HUD(batch, player);
 
     doorEntered = false;
 
@@ -80,6 +80,7 @@ public class GameScreen extends ScreenAdapter {
             bodiesToDelete.add(potion.getBody());
             speedPotions.remove(potion);
             System.out.println("Speed Potion drank");
+            hud.updateSpeedPotionCount();
           }
         }
         // Collision with one of the jump potions
@@ -89,6 +90,7 @@ public class GameScreen extends ScreenAdapter {
             bodiesToDelete.add(potion.getBody());
             jumpPotions.remove(potion);
             System.out.println("Jump Potion drank");
+            hud.updateJumpPotionCount();
           }
         }
         // Collision with one of the strength potions
@@ -98,6 +100,7 @@ public class GameScreen extends ScreenAdapter {
             bodiesToDelete.add(potion.getBody());
             strengthPotions.remove(potion);
             System.out.println("Strength Potion drank");
+            hud.updateStrengthPotionCount();
           }
         }
 
@@ -107,6 +110,7 @@ public class GameScreen extends ScreenAdapter {
           System.out.println("You got the key!");
           // We set the Door as unlocked
           setDoor(new DoorUnlocked(door.getX(), door.getY(), door.getWidth(), door.getHeight(), door.getBody()));
+          hud.updateKey();
         }
 
         // Collision with the unlocked door
@@ -164,16 +168,17 @@ public class GameScreen extends ScreenAdapter {
       world.destroyBody(body);
     }
 
+    bodiesToDelete.clear();
+
+    box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
     if (doorEntered) {
       endScreen();
       pause();
     }
 
-    bodiesToDelete.clear();
-
-    box2DDebugRenderer.render(world, camera.combined.scl(PPM));
-
     hud.render();
+
   }
 
   private void update() {
@@ -193,40 +198,6 @@ public class GameScreen extends ScreenAdapter {
       }
     }
   }
-
-  /*public void hud() {
-    Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
-    Stage stage = new Stage(viewport, batch);
-
-    Table table = new Table();
-    table.top();
-    table.setFillParent(true);
-
-    Label healthLabel = new Label(String.format("%03d", 100), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    Label attackLabel = new Label(String.format("%03d", 0), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    Label defenseLabel = new Label(String.format("%03d", 0), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
-    TextureRegion region = new TextureRegion(new Texture("kenney_tiny-dungeon/Potions/tile_0116.png"));
-    Image speedPotion = new Image(region);
-    region = new TextureRegion(new Texture("kenney_tiny-dungeon/Potions/tile_0114.png"));
-    Image jumpPotion = new Image(region);
-    region = new TextureRegion(new Texture("kenney_tiny-dungeon/Potions/tile_0115.png"));
-    Image strengthPotion = new Image(region);
-    region = new TextureRegion(new Texture("kenney_tiny-town/Key/tile_0117_empty.png"));
-    Image keyImg = new Image(region);
-
-    table.add(healthLabel).expandX().padTop(500);
-    table.add(speedPotion).expandX().padTop(500);
-    table.add(jumpPotion).expandX().padTop(500);
-    table.add(strengthPotion).expandX().padTop(500);
-    table.add(keyImg).expandX().padTop(10);
-    table.row();
-    table.add(attackLabel);
-    table.row();
-    table.add(defenseLabel);
-
-    stage.addActor(table);
-  }*/
 
   @Override
   public void pause() {
