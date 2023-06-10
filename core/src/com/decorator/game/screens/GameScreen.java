@@ -42,6 +42,7 @@ public class GameScreen extends ScreenAdapter {
     private Door door;
     private Key key;
     private List<SpeedPotionEntity> speedPotions;
+    private List<Enemy> enemies;
     private List<JumpPotionEntity> jumpPotions;
     private List<StrengthPotionEntity> strengthPotions;
     private List<ShortSwordEntity> shortSwords;
@@ -59,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
         shortSwords = new LinkedList<>();
         longSwords = new LinkedList<>();
         punches = new LinkedList<>();
+        enemies = new LinkedList<>();
         bodiesToDelete = new LinkedList<>();
         batch = new SpriteBatch();
         world = new World(new Vector2(0, Constants.GRAVITY), false);
@@ -66,9 +68,6 @@ public class GameScreen extends ScreenAdapter {
         tileMapHelper = new TileMapHelper(this);
         orthogonalTiledMapRenderer = tileMapHelper.setupMap();
         doorEntered = false;
-
-        // TODO test to remove later, without this it doesnt work
-        //player = new Player(0, 0, BodyHelperService.createBody(0, 0, 32, 32, true, world));
 
         world.setContactListener(new ContactListener() {
             @Override
@@ -157,6 +156,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
     }
+
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
@@ -227,6 +227,9 @@ public class GameScreen extends ScreenAdapter {
         for (Body body : bodiesToDelete) {
             world.destroyBody(body);
         }
+        for (Enemy enemy : enemies) {
+            enemy.render(batch);
+        }
 
         if (doorEntered) {
             endScreen();
@@ -283,6 +286,11 @@ public class GameScreen extends ScreenAdapter {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void setEnemy(Enemy enemy) {
+        enemies.add(enemy);
+
     }
 
     public void setDoor(Door door) {
