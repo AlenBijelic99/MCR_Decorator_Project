@@ -15,16 +15,18 @@ import com.decorator.game.utils.Constants;
 
 
 public class Player extends MovableGameEntity {
+
+  private final String[] WEAPON_NAMES = {"None", "Dagger", "LSword"};
+  private final String[] ARMOR_NAMES = {"None", "Bronze", "Silver", "Gold"};
+  private final String[] ACTIONS_NAMES = {"Idle", "Run", "Jump", "Attack", "Dead"};
+  private final int currentWeapon = 2;
+  private final int currentArmor = 3;
+  private final Animation<TextureRegion>[][][] animations = new Animation[WEAPON_NAMES.length][ARMOR_NAMES.length][ACTIONS_NAMES.length];
   public enum State {JUMPING, IDLE, RUNNING, ATTACKING, DEAD};
   public State currentState;
   public State previousState;
   private float stateTimer;
   private int jumpCount;
-  private final Animation<TextureRegion> idle;
-  private final Animation<TextureRegion> run;
-  private final Animation<TextureRegion> jump;
-  private final Animation<TextureRegion> attack;
-  private final Animation<TextureRegion> dead;
   private boolean isRunningRight;
   private Equipment equipment;
   private float jumpHeight;
@@ -34,6 +36,46 @@ public class Player extends MovableGameEntity {
   private boolean isDead;
   private boolean isDeadAnimationFinished;
 
+  private void initAnimations(){
+    for (int i = 0; i < WEAPON_NAMES.length; ++i){
+      for (int j = 0; j < ARMOR_NAMES.length; ++j){
+        Array<TextureRegion> frames = new Array<>();
+        // Idle
+        for (int f = 0; f < 1; ++f) {
+          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[0] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+        }
+        animations[i][j][0] = new Animation<>(0.3f, frames);
+        frames.clear();
+        // Run
+        for (int f = 0; f < 9; ++f) {
+          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[1] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+        }
+        animations[i][j][1] = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+        frames.clear();
+
+        // Jump
+        for (int f = 0; f < 1; ++f) {
+          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[2] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+        }
+        animations[i][j][2] = new Animation<>(0.3f, frames);
+        frames.clear();
+
+        // Attack
+        for (int f = 0; f < 11; ++f) {
+          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[3] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+        }
+        animations[i][j][3] = new Animation<>(0.031f, frames);
+        frames.clear();
+
+        // Dead
+        for (int f = 0; f < 5; ++f) {
+          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[4] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+        }
+        animations[i][j][4] = new Animation<>(0.3f, frames);
+        frames.clear();
+      }
+    }
+  }
 
   public Player(float width, float height, Body body) {
     super(width, height, body);
@@ -45,37 +87,7 @@ public class Player extends MovableGameEntity {
     stateTimer = 0;
     isRunningRight = true;
 
-    Array<TextureRegion> frames = new Array<>();
-
-    for (int i = 0; i < 1; ++i){
-      frames.add(new TextureRegion(new Texture("player/idle/Player_None_None_" + i + ".png")));
-    }
-    idle = new Animation<>(0.3f, frames);
-    frames.clear();
-
-    for (int i = 0; i < 9; ++i){
-      frames.add(new TextureRegion(new Texture("player/run/Player_None_None_" + i + ".png")));
-    }
-    run = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
-    frames.clear();
-
-    for (int i = 0; i < 1; ++i){
-      frames.add(new TextureRegion(new Texture("player/idle/Player_None_None_" + i + ".png")));
-    }
-    jump = new Animation<>(0.3f, frames);
-    frames.clear();
-
-    for (int i = 0; i < 11; ++i){
-      frames.add(new TextureRegion(new Texture("player/attack/Player_None_None_" + i + ".png")));
-    }
-    attack = new Animation<>(0.06f, frames);
-    frames.clear();
-
-    for (int i = 0; i < 5; ++i){
-      frames.add(new TextureRegion(new Texture("player/dead/Player_None_None_" + i + ".png")));
-    }
-    dead = new Animation<>(0.3f, frames);
-    frames.clear();
+    initAnimations();
   }
 
   @Override
@@ -117,7 +129,7 @@ public class Player extends MovableGameEntity {
         isRunning = false;
       }
 
-      if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) && jumpCount < Constants.MAX_JUMPING_COUNT) {
+      if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) && jumpCount < Constants.MAX_JUMPING_COUNT && body.getLinearVelocity().y == 0) {
         ++jumpCount;
         body.setLinearVelocity(body.getLinearVelocity().x, 0);
         body.applyLinearImpulse(new Vector2(0, body.getMass() * Constants.JUMPING_SPEED), body.getPosition(), true);
@@ -151,10 +163,7 @@ public class Player extends MovableGameEntity {
   public State getState(){
     if (body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
       return State.JUMPING;
-    }/*
-    else if (body.getLinearVelocity().y < 0){
-      return State.FALLING;
-    }*/
+    }
     else if (isRunning){
       return State.RUNNING;
     }
@@ -164,8 +173,9 @@ public class Player extends MovableGameEntity {
     else if (isDead){
       return State.DEAD;
     }
-    else
+    else {
       return State.IDLE;
+    }
   }
 
   public TextureRegion getFrame(float dt) {
@@ -175,20 +185,20 @@ public class Player extends MovableGameEntity {
 
     switch (currentState) {
       case JUMPING:
-        region = jump.getKeyFrame(stateTimer);
+        region = animations[currentWeapon][currentArmor][2].getKeyFrame(stateTimer);
         break;
       case RUNNING:
-        region = run.getKeyFrame(stateTimer, true);
+        region = animations[currentWeapon][currentArmor][1].getKeyFrame(stateTimer, true);
         break;
       case ATTACKING:
-        region = attack.getKeyFrame(stateTimer);
-        if (attack.isAnimationFinished(stateTimer)) {
+        region = animations[currentWeapon][currentArmor][3].getKeyFrame(stateTimer);
+        if (animations[currentWeapon][currentArmor][3].isAnimationFinished(stateTimer)) {
           currentState = State.IDLE;
         }
         break;
       case DEAD:
-        region = dead.getKeyFrame(stateTimer);
-        if (dead.isAnimationFinished(stateTimer)) {
+        region = animations[currentWeapon][currentArmor][4].getKeyFrame(stateTimer);
+        if (animations[currentWeapon][currentArmor][4].isAnimationFinished(stateTimer)) {
           if (!isDeadAnimationFinished) {
             isDeadAnimationFinished = true;
             stateTimer -= dt; // Subtract the delta time to keep the last frame
@@ -196,7 +206,7 @@ public class Player extends MovableGameEntity {
         }
         break;
       default:
-        region = idle.getKeyFrame(stateTimer, true);
+        region = animations[currentWeapon][currentArmor][0].getKeyFrame(stateTimer, true);
     }
     // Flip player if he is running left
     if ((body.getLinearVelocity().x < 0 || !isRunningRight) && !region.isFlipX()) {
