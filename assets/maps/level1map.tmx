@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="60" height="38" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="55">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="60" height="38" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="64">
  <tileset firstgid="1" source="Images.tsx"/>
  <tileset firstgid="5" source="sand.tsx"/>
  <tileset firstgid="261" source="jungle.tsx"/>
@@ -58,7 +58,7 @@
 1886,1887,1888,1889,1890,1891,1892,1702,1702,0,0,0,0,1566,1566,1794,1794,1794,1794,1794,0,0,0,0,2265,2266,2267,0,0,0,0,2265,2266,2267,2256,2257,2258,0,0,1405,1406,1407,1408,1409,0,0,1412,1413,1414,1415,1416,1417,0,0,1420,1421,1422,1423,1424,2265
 </data>
  </layer>
- <objectgroup id="5" name="objects" visible="0">
+ <objectgroup id="5" name="objects">
   <object id="2" x="0" y="763.636">
    <polygon points="0,0 160.606,3.0303 163.636,-124.242 0,-127.273"/>
   </object>
@@ -127,7 +127,7 @@
  <objectgroup id="2" name="background" visible="0">
   <object id="1" gid="4" x="2.33577" y="1214.77" width="1914.39" height="1211.21"/>
  </objectgroup>
- <objectgroup id="4" name="equipments" visible="0">
+ <objectgroup id="4" name="equipments">
   <object id="15" name="strengthPotion" x="387.879" y="490.909" width="48.4848" height="54.5455"/>
   <object id="16" name="strengthPotion" x="900" y="809.091" width="60.6061" height="75.7576"/>
   <object id="18" name="speedPotion" x="1439.39" y="818.182"/>
@@ -135,9 +135,17 @@
   <object id="20" name="shortSword" x="809.091" y="551.515" width="48.4848" height="60.6061"/>
   <object id="21" name="longSword" x="909.091" y="1090.91" width="24.2424" height="48.4848"/>
   <object id="23" name="punch" x="175.758" y="851.515" width="54.5455" height="63.6364"/>
-  <object id="24" name="speedPotion" x="1487.88" y="475.758" width="66.6667" height="75.7576"/>
+  <object id="24" name="strengthPotion" x="1487.88" y="475.758" width="66.6667" height="75.7576"/>
  </objectgroup>
- <objectgroup id="6" name="door" visible="0">
+ <objectgroup id="7" name="enemies">
+  <object id="55" name="enemy" x="1575.76" y="551.515" width="24.2424" height="54.5455"/>
+  <object id="56" name="enemy" x="1290.91" y="569.697" width="30.303" height="66.6667"/>
+  <object id="57" name="enemy" x="1584.85" y="336.364" width="36.3636" height="51.5152"/>
+  <object id="60" name="enemy" x="572.727" y="760.606" width="36.3636" height="69.697"/>
+  <object id="61" name="enemy" x="1515.15" y="972.727" width="45.4545" height="60.6061"/>
+  <object id="62" name="enemy" x="260.606" y="1103.03" width="39.3939" height="87.8788"/>
+ </objectgroup>
+ <objectgroup id="6" name="door">
   <object id="41" name="key" x="1663.7" y="307.273" width="43" height="35"/>
   <object id="44" name="door" x="1766.51" y="310.178" width="113.784" height="34.606"/>
  </objectgroup>
