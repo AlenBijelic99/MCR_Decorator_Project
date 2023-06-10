@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
@@ -67,7 +68,7 @@ public class GameScreen extends ScreenAdapter {
         doorEntered = false;
 
         // TODO test to remove later, without this it doesnt work
-        player = new Player(0, 0, BodyHelperService.createBody(0, 0, 32, 32, false, world));
+        //player = new Player(0, 0, BodyHelperService.createBody(0, 0, 32, 32, true, world));
 
         world.setContactListener(new ContactListener() {
             @Override
@@ -166,9 +167,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         // Load the background image
-
         backgroundTexture = new Texture("backgroundImage/Desert.jpg");
         // Create a FitViewport with the desired virtual screen size
+        /*float virtualWidth = Gdx.graphics.getWidth(); // TODO change size to min
+        float virtualHeight = Gdx.graphics.getHeight();
+        viewport = new ExtendViewport(1900,1200,virtualWidth, virtualHeight, camera);
+        viewport.apply(true);*/
         float virtualWidth = 4920;
         float virtualHeight = 3200;
         viewport = new FitViewport(virtualWidth, virtualHeight, camera);
@@ -231,7 +235,8 @@ public class GameScreen extends ScreenAdapter {
 
         bodiesToDelete.clear();
 
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     private void update() {
