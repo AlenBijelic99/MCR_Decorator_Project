@@ -26,12 +26,20 @@ public class TileMapHelper {
 
   public TileMapHelper(GameScreen gameScreen) {
     this.gameScreen = gameScreen;
+    /* TODO recheck , moved this part to setupMap
     tiledMap = new TmxMapLoader().load(MAPS[0]);
     parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
     parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
     parseDoor(tiledMap.getLayers().get("door").getObjects());
+
+     */
   }
   public OrthogonalTiledMapRenderer setupMap(){
+    tiledMap = new TmxMapLoader().load(MAPS[0]);
+    parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+    parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
+    parseDoor(tiledMap.getLayers().get("door").getObjects());
+
     return new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAPS[0]));
   }
 
