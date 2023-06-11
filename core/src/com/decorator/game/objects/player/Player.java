@@ -13,7 +13,6 @@ import com.decorator.game.objects.equipment.Equipment;
 import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.utils.Constants;
 
-
 public class Player extends MovableGameEntity {
 
   private final String[] WEAPON_NAMES = {"None", "Dagger", "LSword"};
@@ -35,6 +34,7 @@ public class Player extends MovableGameEntity {
   private boolean isAttacking;
   private boolean isDead;
   private boolean isDeadAnimationFinished;
+  private float attackStateTimer;
 
   private void initAnimations(){
     for (int i = 0; i < WEAPON_NAMES.length; ++i){
@@ -135,12 +135,16 @@ public class Player extends MovableGameEntity {
         body.applyLinearImpulse(new Vector2(0, body.getMass() * Constants.JUMPING_SPEED), body.getPosition(), true);
       }
 
+      // Reset jump count if player is on the ground
       if (body.getLinearVelocity().y == 0) {
         jumpCount = 0;
       }
 
       if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-        isAttacking = true;
+        if (!isAttacking) {
+          isAttacking = true;
+          attackStateTimer = 0;
+        }
       }
     } else {
       isRunning = false;
@@ -156,19 +160,26 @@ public class Player extends MovableGameEntity {
       }
     }
 
-
     body.setLinearVelocity(dx * speed, Math.min(body.getLinearVelocity().y, jumpHeight));
   }
 
   public State getState(){
     if (body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
+      if (isAttacking && !animations[currentWeapon][currentArmor][3].isAnimationFinished(stateTimer)) {
+        return State.ATTACKING;
+      }
       return State.JUMPING;
+    }
+    else if (isAttacking) {
+      if (attackStateTimer < animations[currentWeapon][currentArmor][3].getAnimationDuration()) {
+        return State.ATTACKING;
+      } else {
+        isAttacking = false;
+        return State.IDLE;
+      }
     }
     else if (isRunning){
       return State.RUNNING;
-    }
-    else if (isAttacking){
-      return State.ATTACKING;
     }
     else if (isDead){
       return State.DEAD;
@@ -191,9 +202,11 @@ public class Player extends MovableGameEntity {
         region = animations[currentWeapon][currentArmor][1].getKeyFrame(stateTimer, true);
         break;
       case ATTACKING:
-        region = animations[currentWeapon][currentArmor][3].getKeyFrame(stateTimer);
-        if (animations[currentWeapon][currentArmor][3].isAnimationFinished(stateTimer)) {
-          currentState = State.IDLE;
+        region = animations[currentWeapon][currentArmor][3].getKeyFrame(attackStateTimer);
+        if (attackStateTimer < animations[currentWeapon][currentArmor][3].getAnimationDuration()) {
+          attackStateTimer += dt;
+        } else {
+          isAttacking = false;
         }
         break;
       case DEAD:
@@ -207,6 +220,7 @@ public class Player extends MovableGameEntity {
         break;
       default:
         region = animations[currentWeapon][currentArmor][0].getKeyFrame(stateTimer, true);
+        break;
     }
     // Flip player if he is running left
     if ((body.getLinearVelocity().x < 0 || !isRunningRight) && !region.isFlipX()) {
