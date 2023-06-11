@@ -175,7 +175,11 @@ public class Player extends MovableGameEntity {
         return State.ATTACKING;
       } else {
         isAttacking = false;
-        return State.IDLE;
+        if (body.getLinearVelocity().y == 0){
+          return State.IDLE;
+        } else {
+          return State.JUMPING;
+        }
       }
     }
     else if (isRunning){
