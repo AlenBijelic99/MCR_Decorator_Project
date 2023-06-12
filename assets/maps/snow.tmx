@@ -40,6 +40,7 @@
  </objectgroup>
  <objectgroup id="4" name="equipments">
   <object id="21" name="speedPotion" x="292.727" y="1965" width="44.3636" height="57.2727"/>
+  <object id="33" name="jumpPotion" x="568.818" y="1754.36" width="44.3636" height="57.2727"/>
   <object id="34" name="strengthPotion" x="708.818" y="1755.36" width="44.3636" height="57.2727"/>
   <object id="35" name="jumpPotion" x="583.818" y="1947.36" width="44.3636" height="57.2727"/>
   <object id="45" name="speedPotion" x="503.818" y="1757.36" width="44.3636" height="57.2727"/>
