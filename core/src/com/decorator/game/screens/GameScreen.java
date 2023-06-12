@@ -3,15 +3,23 @@ package com.decorator.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
@@ -21,6 +29,7 @@ import com.decorator.game.objects.equipment.StrengthPotion;
 import com.decorator.game.objects.player.*;
 import com.decorator.game.utils.Constants;
 import com.decorator.game.utils.TileMapHelper;
+import com.decorator.game.ui.HUD;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +43,7 @@ public class GameScreen extends ScreenAdapter {
   private final Box2DDebugRenderer box2DDebugRenderer;
   private final TileMapHelper tileMapHelper;
   private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+  private HUD hud;
 
   private boolean doorEntered;
 
@@ -56,6 +66,7 @@ public class GameScreen extends ScreenAdapter {
     box2DDebugRenderer = new Box2DDebugRenderer();
     tileMapHelper = new TileMapHelper(this);
     orthogonalTiledMapRenderer = tileMapHelper.setupMap();
+    hud = new HUD(batch, player);
 
     doorEntered = false;
 
@@ -69,6 +80,7 @@ public class GameScreen extends ScreenAdapter {
             bodiesToDelete.add(potion.getBody());
             speedPotions.remove(potion);
             System.out.println("Speed Potion drank");
+            hud.updateSpeedPotionCount();
           }
         }
         // Collision with one of the jump potions
@@ -78,6 +90,7 @@ public class GameScreen extends ScreenAdapter {
             bodiesToDelete.add(potion.getBody());
             jumpPotions.remove(potion);
             System.out.println("Jump Potion drank");
+            hud.updateJumpPotionCount();
           }
         }
         // Collision with one of the strength potions
@@ -87,6 +100,7 @@ public class GameScreen extends ScreenAdapter {
             bodiesToDelete.add(potion.getBody());
             strengthPotions.remove(potion);
             System.out.println("Strength Potion drank");
+            hud.updateStrengthPotionCount();
           }
         }
 
@@ -96,6 +110,7 @@ public class GameScreen extends ScreenAdapter {
           System.out.println("You got the key!");
           // We set the Door as unlocked
           setDoor(new DoorUnlocked(door.getX(), door.getY(), door.getWidth(), door.getHeight(), door.getBody()));
+          hud.updateKey();
         }
 
         // Collision with the unlocked door
@@ -153,14 +168,17 @@ public class GameScreen extends ScreenAdapter {
       world.destroyBody(body);
     }
 
+    bodiesToDelete.clear();
+
+    box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
     if (doorEntered) {
       endScreen();
       pause();
     }
 
-    bodiesToDelete.clear();
+    hud.render();
 
-    box2DDebugRenderer.render(world, camera.combined.scl(PPM));
   }
 
   private void update() {
@@ -230,8 +248,8 @@ public class GameScreen extends ScreenAdapter {
   private void endScreen() {
     batch.begin();
     TextureRegion region = new TextureRegion(new Texture("screens/endscreen.png"));
-    batch.draw(region, camera.position.x / 2, camera.position.y / 2,
-            region.getRegionWidth() * 2, region.getRegionHeight() * 2);
+    float x = Gdx.graphics.getWidth() / 2f - region.getRegionWidth() / 2f;
+    batch.draw(region, x, 0, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
     batch.end();
   }
 }
