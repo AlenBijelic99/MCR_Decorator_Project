@@ -46,7 +46,7 @@ public class TileMapHelper {
     public OrthogonalTiledMapRenderer setupMap() {
         tiledMap = new TmxMapLoader().load(MAPS[0]);
         parseDoor(tiledMap.getLayers().get("door").getObjects());
-        parseEnemies(tiledMap.getLayers().get("enemies").getObjects());
+        //parseEnemies(tiledMap.getLayers().get("enemies").getObjects());
         parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
 
