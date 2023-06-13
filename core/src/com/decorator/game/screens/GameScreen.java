@@ -173,11 +173,7 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the bronze armors
                 for (BronzeArmorEntity armor : bronzeArmors) {
                     if (contact.getFixtureB().getBody() == armor.getBody()) {
-                        // check if the player already has an armor and that it is not the same armor and then remove it
-                        // from the world and add it to the bodiesToDelete list and then add the new armor to the player
-                        // and remove it from the world and add it to the bodiesToDelete list
-
-
+                       //TODO modify logic
                         player.setEquipment(new BronzeArmor(player.getEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         bronzeArmors.remove(armor);
