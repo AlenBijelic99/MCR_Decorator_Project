@@ -11,15 +11,19 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.decorator.game.objects.equipment.Equipment;
 import com.decorator.game.objects.equipment.PlayerEquipment;
+import com.decorator.game.objects.equipment.armor.Armor;
+import com.decorator.game.objects.equipment.weapon.Weapon;
 import com.decorator.game.utils.Constants;
+
+import java.util.Arrays;
 
 public class Player extends MovableGameEntity {
 
   private final String[] WEAPON_NAMES = {"None", "Dagger", "LSword"};
   private final String[] ARMOR_NAMES = {"None", "Bronze", "Silver", "Gold"};
   private final String[] ACTIONS_NAMES = {"Idle", "Run", "Jump", "Attack", "Dead"};
-  private final int currentWeapon = 2;
-  private final int currentArmor = 3;
+  private int currentWeapon = 0;
+  private int currentArmor = 0;
   private final Animation<TextureRegion>[][][] animations = new Animation[WEAPON_NAMES.length][ARMOR_NAMES.length][ACTIONS_NAMES.length];
   public enum State {JUMPING, IDLE, RUNNING, ATTACKING, DEAD};
   public State currentState;
@@ -111,6 +115,13 @@ public class Player extends MovableGameEntity {
     jumpHeight = equipment.addJump();
     strength = equipment.addStrength();
     defense = equipment.addDefense();
+    equipment.getDescription();
+
+    if (equipment instanceof Weapon) {
+      currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(equipment.toString());
+    } else if (equipment instanceof Armor) {
+      currentArmor = Arrays.asList(ARMOR_NAMES).indexOf(equipment.toString());
+    }
   }
 
   @Override

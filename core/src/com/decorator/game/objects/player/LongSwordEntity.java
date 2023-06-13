@@ -9,6 +9,6 @@ public class LongSwordEntity extends WeaponEntity {
 
     @Override
     public String getImagePath() {
-        return "kenney_tiny-dungeon/Weapons/tile_0104.png";
+        return "weapons/LSword.png";
     }
 }

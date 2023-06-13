@@ -16,7 +16,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
-import com.decorator.game.objects.equipment.*;
+import com.decorator.game.objects.equipment.potion.JumpPotion;
+import com.decorator.game.objects.equipment.potion.SpeedPotion;
+import com.decorator.game.objects.equipment.potion.StrengthPotion;
+import com.decorator.game.objects.equipment.weapon.Dagger;
+import com.decorator.game.objects.equipment.weapon.LongSword;
 import com.decorator.game.objects.player.*;
 import com.decorator.game.utils.Constants;
 import com.decorator.game.utils.TileMapHelper;
@@ -45,9 +49,8 @@ public class GameScreen extends ScreenAdapter {
     private List<Enemy> enemies;
     private List<JumpPotionEntity> jumpPotions;
     private List<StrengthPotionEntity> strengthPotions;
-    private List<ShortSwordEntity> shortSwords;
+    private List<DaggerEntity> shortSwords;
     private List<LongSwordEntity> longSwords;
-    private List<PunchEntity> punches;
     private List<Body> bodiesToDelete;
     private Texture backgroundTexture;
     private FitViewport viewport;
@@ -59,7 +62,6 @@ public class GameScreen extends ScreenAdapter {
         strengthPotions = new LinkedList<>();
         shortSwords = new LinkedList<>();
         longSwords = new LinkedList<>();
-        punches = new LinkedList<>();
         enemies = new LinkedList<>();
         bodiesToDelete = new LinkedList<>();
         batch = new SpriteBatch();
@@ -108,9 +110,9 @@ public class GameScreen extends ScreenAdapter {
                     }
                 }
                 // Collision with one of the short swords
-                for (ShortSwordEntity sword : shortSwords) {
+                for (DaggerEntity sword : shortSwords) {
                     if (contact.getFixtureB().getBody() == sword.getBody()) {
-                        player.setEquipment(new ShortSword(player.getEquipment()));
+                        player.setEquipment(new Dagger(player.getEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         shortSwords.remove(sword);
                         System.out.println("Short Sword equipped");
@@ -125,17 +127,6 @@ public class GameScreen extends ScreenAdapter {
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
                         System.out.println("Long Sword equipped");
-                        hud.updateSpeedPotionCount();
-
-                    }
-                }
-                // Collision with one of the punches
-                for (PunchEntity punch : punches) {
-                    if (contact.getFixtureB().getBody() == punch.getBody()) {
-                        player.setEquipment(new Punch(player.getEquipment()));
-                        bodiesToDelete.add(punch.getBody());
-                        punches.remove(punch);
-                        System.out.println("Punch equipped");
                         hud.updateSpeedPotionCount();
 
                     }
@@ -236,10 +227,6 @@ public class GameScreen extends ScreenAdapter {
             sword.render(batch);
         }
 
-        for (WeaponEntity punch : punches) {
-            punch.render(batch);
-        }
-
         for (Body body : bodiesToDelete) {
             world.destroyBody(body);
         }
@@ -320,7 +307,7 @@ public class GameScreen extends ScreenAdapter {
         strengthPotions.add(potion);
     }
 
-    public void setShortSwords(ShortSwordEntity shortSwords) {
+    public void setShortSwords(DaggerEntity shortSwords) {
         this.shortSwords.add(shortSwords);
     }
 
@@ -334,10 +321,6 @@ public class GameScreen extends ScreenAdapter {
 
     public void setLongSwords(LongSwordEntity longSwords) {
         this.longSwords.add(longSwords);
-    }
-
-    public void setPunches(PunchEntity punch) {
-        punches.add(punch);
     }
 
 }

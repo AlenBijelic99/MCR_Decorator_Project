@@ -1,4 +1,6 @@
-package com.decorator.game.objects.equipment;
+package com.decorator.game.objects.equipment.potion;
+
+import com.decorator.game.objects.equipment.Equipment;
 
 public class StrengthPotion extends Potion {
 

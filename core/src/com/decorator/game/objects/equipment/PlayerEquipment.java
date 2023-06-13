@@ -30,4 +30,9 @@ public class PlayerEquipment implements Equipment {
     public int addDefense() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "Player equipment";
+    }
 }
