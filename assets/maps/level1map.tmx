@@ -137,7 +137,6 @@
   <object id="94" name="strengthPotion" x="385.167" y="509.121" width="29.6667" height="67.7576"/>
   <object id="95" name="shortSword" x="1296.76" y="909.197" width="24.4848" height="55.6061"/>
   <object id="96" name="longSword" x="1050.27" y="970.258" width="31.4545" height="61.4848"/>
-  <object id="97" name="punch" x="81.7273" y="577.182" width="32.5455" height="63.6364"/>
   <object id="98" name="silverArmor" x="1603.03" y="221.212" width="57.5758" height="96.9697"/>
   <object id="100" name="goldArmor" x="759.091" y="284.848" width="57.5758" height="96.9697"/>
   <object id="101" name="bronzeArmor" x="1346.97" y="921.212" width="57.5758" height="96.9697"/>

@@ -1,8 +1,5 @@
-package com.decorator.game.objects.player;
+package com.decorator.game.objects.player.potionEntity;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class JumpPotionEntity extends PotionEntity {

@@ -15,6 +15,11 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.decorator.game.objects.door.DoorLocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.player.*;
+import com.decorator.game.objects.player.potionEntity.JumpPotionEntity;
+import com.decorator.game.objects.player.potionEntity.SpeedPotionEntity;
+import com.decorator.game.objects.player.potionEntity.StrengthPotionEntity;
+import com.decorator.game.objects.player.weaponEntity.DaggerEntity;
+import com.decorator.game.objects.player.weaponEntity.LongSwordEntity;
 import com.decorator.game.screens.GameScreen;
 
 

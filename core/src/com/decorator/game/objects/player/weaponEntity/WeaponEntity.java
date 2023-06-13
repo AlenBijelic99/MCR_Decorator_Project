@@ -1,6 +1,7 @@
-package com.decorator.game.objects.player;
+package com.decorator.game.objects.player.weaponEntity;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.decorator.game.objects.player.StaticGameEntity;
 
 public abstract class WeaponEntity extends StaticGameEntity {
 

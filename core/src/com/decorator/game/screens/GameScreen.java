@@ -16,12 +16,25 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
+import com.decorator.game.objects.equipment.armor.BronzeArmor;
+import com.decorator.game.objects.equipment.armor.GoldArmor;
+import com.decorator.game.objects.equipment.armor.SilverArmor;
 import com.decorator.game.objects.equipment.potion.JumpPotion;
 import com.decorator.game.objects.equipment.potion.SpeedPotion;
 import com.decorator.game.objects.equipment.potion.StrengthPotion;
 import com.decorator.game.objects.equipment.weapon.Dagger;
 import com.decorator.game.objects.equipment.weapon.LongSword;
 import com.decorator.game.objects.player.*;
+import com.decorator.game.objects.player.armorEntity.BronzeArmorEntity;
+import com.decorator.game.objects.player.armorEntity.GoldArmorEntity;
+import com.decorator.game.objects.player.armorEntity.SilverArmorEntity;
+import com.decorator.game.objects.player.potionEntity.JumpPotionEntity;
+import com.decorator.game.objects.player.potionEntity.PotionEntity;
+import com.decorator.game.objects.player.potionEntity.SpeedPotionEntity;
+import com.decorator.game.objects.player.potionEntity.StrengthPotionEntity;
+import com.decorator.game.objects.player.weaponEntity.DaggerEntity;
+import com.decorator.game.objects.player.weaponEntity.LongSwordEntity;
+import com.decorator.game.objects.player.weaponEntity.WeaponEntity;
 import com.decorator.game.utils.Constants;
 import com.decorator.game.utils.TileMapHelper;
 import com.decorator.game.ui.HUD;
@@ -45,12 +58,15 @@ public class GameScreen extends ScreenAdapter {
     private Player player;
     private Door door;
     private Key key;
-    private List<SpeedPotionEntity> speedPotions;
     private List<Enemy> enemies;
+    private List<SpeedPotionEntity> speedPotions;
     private List<JumpPotionEntity> jumpPotions;
     private List<StrengthPotionEntity> strengthPotions;
     private List<DaggerEntity> shortSwords;
     private List<LongSwordEntity> longSwords;
+    private List<GoldArmorEntity> goldArmors;
+    private List<SilverArmorEntity> silverArmors;
+    private List<BronzeArmorEntity> bronzeArmors;
     private List<Body> bodiesToDelete;
     private Texture backgroundTexture;
     private FitViewport viewport;
@@ -62,6 +78,7 @@ public class GameScreen extends ScreenAdapter {
         strengthPotions = new LinkedList<>();
         shortSwords = new LinkedList<>();
         longSwords = new LinkedList<>();
+
         enemies = new LinkedList<>();
         bodiesToDelete = new LinkedList<>();
         batch = new SpriteBatch();
@@ -115,7 +132,7 @@ public class GameScreen extends ScreenAdapter {
                         player.setEquipment(new Dagger(player.getEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         shortSwords.remove(sword);
-                        System.out.println("Short Sword equipped");
+                        System.out.println("Dagger Sword equipped");
                         hud.updateSpeedPotionCount();
 
                     }
@@ -131,7 +148,60 @@ public class GameScreen extends ScreenAdapter {
 
                     }
                 }
+                // Collision with one of the gold armors
+                for (GoldArmorEntity armor : goldArmors) {
+                    if (contact.getFixtureB().getBody() == armor.getBody()) {
+                        player.setEquipment(new GoldArmor(player.getEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        goldArmors.remove(armor);
+                        System.out.println("Gold Armor equipped");
+                        hud.updateSpeedPotionCount();
 
+                    }
+                }
+                // Collision with one of the silver armors
+                for (SilverArmorEntity armor : silverArmors) {
+                    if (contact.getFixtureB().getBody() == armor.getBody()) {
+                        player.setEquipment(new SilverArmor(player.getEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        silverArmors.remove(armor);
+                        System.out.println("Silver Armor equipped");
+                        hud.updateSpeedPotionCount();
+
+                    }
+                }
+                // Collision with one of the bronze armors
+                for (BronzeArmorEntity armor : bronzeArmors) {
+                    if (contact.getFixtureB().getBody() == armor.getBody()) {
+                        // check if the player already has an armor and that it is not the same armor and then remove it
+                        // from the world and add it to the bodiesToDelete list and then add the new armor to the player
+                        // and remove it from the world and add it to the bodiesToDelete list
+
+
+                        player.setEquipment(new BronzeArmor(player.getEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        bronzeArmors.remove(armor);
+                        System.out.println("Bronze Armor equipped");
+                        hud.updateSpeedPotionCount();
+
+                    }
+                }
+                // Collision with punch
+                /*
+                if (contact.getFixtureB().getBody() == player.getBody() && player.attak()) {
+                    for (Enemy enemy : enemies) {
+                        if (contact.getFixtureA().getBody() == enemy.getBody()) {
+                            enemy.setHealth(enemy.getHealth() - player.getEquipment().getDamage());
+                            System.out.println("Enemy health: " + enemy.getHealth());
+                            if (enemy.getHealth() <= 0) {
+                                bodiesToDelete.add(enemy.getBody());
+                                enemies.remove(enemy);
+                                System.out.println("Enemy killed");
+                            }
+                        }
+                    }
+                }
+                */
 
                 // Collision with the key
                 if (contact.getFixtureB().getBody() == key.getBody()) {
@@ -226,6 +296,7 @@ public class GameScreen extends ScreenAdapter {
         for (WeaponEntity sword : longSwords) {
             sword.render(batch);
         }
+
 
         for (Body body : bodiesToDelete) {
             world.destroyBody(body);
