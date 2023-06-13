@@ -21,10 +21,11 @@ public class Enemy extends MovableGameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        //TODO change by enemy sprite for the image
+        //TODO change by enemy sprite for the image and change region by frame once enemy emplemented
         batch.begin();
         TextureRegion region = new TextureRegion(new Texture("assets/player/idle/Player_Dagger_Bronze_0.png"));
-        batch.draw(region, x - 10, y, region.getRegionWidth() * 4, region.getRegionHeight() * 4);
+        batch.draw(region, x - width / 2, y - height / 2, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
         batch.end();
+
     }
 }

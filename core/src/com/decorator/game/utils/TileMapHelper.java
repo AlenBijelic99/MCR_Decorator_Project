@@ -166,7 +166,7 @@ public class TileMapHelper {
                         (int) (rectangle.getY() + rectangle.getHeight() / 2),
                         rectangle.getWidth(),
                         rectangle.getHeight(),
-                        true,
+                        false,
                         gameScreen.getWorld()
                 );
                 gameScreen.setEnemy(new Enemy(rectangle.getX(), rectangle.getY(), body));
