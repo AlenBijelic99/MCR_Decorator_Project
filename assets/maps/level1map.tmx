@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="60" height="38" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="86">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="60" height="38" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="102">
  <tileset firstgid="1" source="Images.tsx"/>
  <tileset firstgid="5" source="sand.tsx"/>
  <tileset firstgid="261" source="jungle.tsx"/>
@@ -128,25 +128,30 @@
   <object id="1" gid="4" x="2.33577" y="1214.77" width="1914.39" height="1211.21"/>
  </objectgroup>
  <objectgroup id="4" name="equipments">
-  <object id="15" name="strengthPotion" x="387.879" y="490.909" width="48.4848" height="54.5455"/>
-  <object id="16" name="strengthPotion" x="900" y="809.091" width="60.6061" height="75.7576"/>
   <object id="18" name="speedPotion" x="1439.39" y="818.182"/>
-  <object id="19" name="longSword" x="330.303" y="1063.64" width="45.4545" height="48.4848"/>
-  <object id="20" name="shortSword" x="809.091" y="551.515" width="48.4848" height="60.6061"/>
-  <object id="21" name="longSword" x="909.091" y="1090.91" width="24.2424" height="48.4848"/>
-  <object id="23" name="punch" x="175.758" y="851.515" width="54.5455" height="63.6364"/>
-  <object id="24" name="strengthPotion" x="1487.88" y="475.758" width="66.6667" height="75.7576"/>
+  <object id="19" name="longSword" x="319.303" y="1056.64" width="31.4545" height="61.4848"/>
+  <object id="20" name="shortSword" x="803.091" y="551.515" width="24.4848" height="55.6061"/>
+  <object id="23" name="punch" x="285.758" y="766.515" width="32.5455" height="63.6364"/>
+  <object id="24" name="strengthPotion" x="1504.88" y="475.758" width="29.6667" height="67.7576"/>
+  <object id="93" name="strengthPotion" x="967.167" y="822.121" width="29.6667" height="67.7576"/>
+  <object id="94" name="strengthPotion" x="385.167" y="509.121" width="29.6667" height="67.7576"/>
+  <object id="95" name="shortSword" x="1296.76" y="909.197" width="24.4848" height="55.6061"/>
+  <object id="96" name="longSword" x="1050.27" y="970.258" width="31.4545" height="61.4848"/>
+  <object id="97" name="punch" x="81.7273" y="577.182" width="32.5455" height="63.6364"/>
+  <object id="98" name="silverArmor" x="1603.03" y="221.212" width="57.5758" height="96.9697"/>
+  <object id="100" name="goldArmor" x="759.091" y="284.848" width="57.5758" height="96.9697"/>
+  <object id="101" name="bronzeArmor" x="1346.97" y="921.212" width="57.5758" height="96.9697"/>
  </objectgroup>
  <objectgroup id="7" name="enemies">
-  <object id="55" name="enemy" x="1575.76" y="551.515" width="24.2424" height="54.5455"/>
-  <object id="56" name="enemy" x="1290.91" y="569.697" width="30.303" height="66.6667"/>
-  <object id="57" name="enemy" x="1584.85" y="336.364" width="36.3636" height="51.5152"/>
-  <object id="60" name="enemy" x="572.727" y="760.606" width="36.3636" height="69.697"/>
-  <object id="61" name="enemy" x="1515.15" y="972.727" width="45.4545" height="60.6061"/>
-  <object id="62" name="enemy" x="260.606" y="1103.03" width="39.3939" height="87.8788"/>
+  <object id="87" name="enemy" x="416.303" y="1059.06" width="39.3939" height="87.8788"/>
+  <object id="88" name="enemy" x="1562.3" y="937.061" width="39.3939" height="87.8788"/>
+  <object id="89" name="enemy" x="580.303" y="741.061" width="39.3939" height="87.8788"/>
+  <object id="90" name="enemy" x="1760.3" y="938.061" width="39.3939" height="87.8788"/>
+  <object id="91" name="enemy" x="1315.3" y="554.061" width="39.3939" height="87.8788"/>
+  <object id="92" name="enemy" x="1562.3" y="521.061" width="39.3939" height="87.8788"/>
  </objectgroup>
  <objectgroup id="6" name="door">
-  <object id="41" name="key" x="1663.7" y="307.273" width="43" height="35"/>
-  <object id="44" name="door" x="1766.51" y="310.178" width="113.784" height="34.606"/>
+  <object id="41" name="key" x="1858.7" y="982.273" width="43" height="35"/>
+  <object id="44" name="door" x="1814.99" y="319.269" width="113.784" height="34.606"/>
  </objectgroup>
 </map>
