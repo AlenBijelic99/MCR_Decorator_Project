@@ -99,96 +99,89 @@ public class GameScreen extends ScreenAdapter {
             public void beginContact(Contact contact) {
                 // Collision with one of the speed potions
                 for (SpeedPotionEntity potion : speedPotions) {
-                    if (contact.getFixtureB().getBody() == potion.getBody()) {
+                    if (contact.getFixtureA().getBody() == potion.getBody()) {
                         player.setEquipment(new SpeedPotion(player.getEquipment()));
                         bodiesToDelete.add(potion.getBody());
                         speedPotions.remove(potion);
                         System.out.println("Speed Potion drank");
                         hud.updateSpeedPotionCount();
-
                     }
                 }
                 // Collision with one of the jump potions
                 for (JumpPotionEntity potion : jumpPotions) {
-                    if (contact.getFixtureB().getBody() == potion.getBody()) {
+                    if (contact.getFixtureA().getBody() == potion.getBody()) {
                         player.setEquipment(new JumpPotion(player.getEquipment()));
                         bodiesToDelete.add(potion.getBody());
                         jumpPotions.remove(potion);
                         System.out.println("Jump Potion drank");
-                        hud.updateSpeedPotionCount();
-
+                        hud.updateJumpPotionCount();
                     }
                 }
                 // Collision with one of the strength potions
                 for (StrengthPotionEntity potion : strengthPotions) {
-                    if (contact.getFixtureB().getBody() == potion.getBody()) {
+                    if (contact.getFixtureA().getBody() == potion.getBody()) {
                         player.setEquipment(new StrengthPotion(player.getEquipment()));
                         bodiesToDelete.add(potion.getBody());
                         strengthPotions.remove(potion);
                         System.out.println("Strength Potion drank");
-                        hud.updateSpeedPotionCount();
-
+                        hud.updateStrengthPotionCount();
                     }
                 }
                 // Collision with one of the short swords
                 for (DaggerEntity sword : shortSwords) {
-                    if (contact.getFixtureB().getBody() == sword.getBody()) {
+                    if (contact.getFixtureA().getBody() == sword.getBody()) {
                         player.setEquipment(new Dagger(player.getEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         shortSwords.remove(sword);
                         System.out.println("Dagger Sword equipped");
-                        hud.updateSpeedPotionCount();
-
+                        hud.updateSwordImagePath("weapons/Dagger.png");
                     }
                 }
                 // Collision with one of the long swords
                 for (LongSwordEntity sword : longSwords) {
-                    if (contact.getFixtureB().getBody() == sword.getBody()) {
+                    if (contact.getFixtureA().getBody() == sword.getBody()) {
                         player.setEquipment(new LongSword(player.getEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
                         System.out.println("Long Sword equipped");
                         hud.updateSpeedPotionCount();
-
+                        hud.updateSwordImagePath("weapons/LSword.png");
                     }
                 }
                 // Collision with one of the gold armors
                 for (GoldArmorEntity armor : goldArmors) {
-                    if (contact.getFixtureB().getBody() == armor.getBody()) {
+                    if (contact.getFixtureA().getBody() == armor.getBody()) {
                         player.setEquipment(new GoldArmor(player.getEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         goldArmors.remove(armor);
                         System.out.println("Gold Armor equipped");
-                        hud.updateSpeedPotionCount();
-
+                        hud.updateArmorImagePath("assets/armor/gold.png");
                     }
                 }
                 // Collision with one of the silver armors
                 for (SilverArmorEntity armor : silverArmors) {
-                    if (contact.getFixtureB().getBody() == armor.getBody()) {
+                    if (contact.getFixtureA().getBody() == armor.getBody()) {
                         player.setEquipment(new SilverArmor(player.getEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         silverArmors.remove(armor);
                         System.out.println("Silver Armor equipped");
-                        hud.updateSpeedPotionCount();
-
+                        hud.updateArmorImagePath("assets/armor/silver.png");
                     }
                 }
                 // Collision with one of the bronze armors
                 for (BronzeArmorEntity armor : bronzeArmors) {
-                    if (contact.getFixtureB().getBody() == armor.getBody()) {
+                    if (contact.getFixtureA().getBody() == armor.getBody()) {
                         //TODO modify logic
                         player.setEquipment(new BronzeArmor(player.getEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         bronzeArmors.remove(armor);
                         System.out.println("Bronze Armor equipped");
-                        hud.updateSpeedPotionCount();
-
+                        hud.updateArmorImagePath("assets/armor/silver.png");
                     }
                 }
                 // Collision with punch
                 /*
-                if (contact.getFixtureB().getBody() == player.getBody() && player.attak()) {
+                if (contact.getFixtureA().getBody() == player.getBody() && player.attak()) {
                     for (Enemy enemy : enemies) {
                         if (contact.getFixtureA().getBody() == enemy.getBody()) {
                             enemy.setHealth(enemy.getHealth() - player.getEquipment().getDamage());
@@ -204,7 +197,7 @@ public class GameScreen extends ScreenAdapter {
                 */
 
                 // Collision with the key
-                if (contact.getFixtureB().getBody() == key.getBody()) {
+                if (contact.getFixtureA().getBody() == key.getBody()) {
                     bodiesToDelete.add(key.getBody());
                     System.out.println("You got the key!");
                     // We set the Door as unlocked
@@ -213,7 +206,7 @@ public class GameScreen extends ScreenAdapter {
                 }
 
                 // Collision with the unlocked door
-                if (contact.getFixtureB().getBody() == door.getBody() && door.isUnlocked()) {
+                if (contact.getFixtureA().getBody() == door.getBody() && door.isUnlocked()) {
                     doorEntered = true;
                     System.out.println("Door entered");
                 }
