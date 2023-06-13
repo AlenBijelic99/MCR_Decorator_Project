@@ -8,7 +8,7 @@ public class ShortSwordEntity extends WeaponEntity{
     }
     @Override
     public String getImagePath() {
-        return "kenney_tiny-dungeon/Weapons/tile_0103.png";
+        return "assets/weapons/Dagger.png";
     }
 
 }
