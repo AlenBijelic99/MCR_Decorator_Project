@@ -1,7 +1,4 @@
 package com.decorator.game.objects.equipment;
-
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.decorator.game.utils.Constants;
 
 public class PlayerEquipment implements Equipment {

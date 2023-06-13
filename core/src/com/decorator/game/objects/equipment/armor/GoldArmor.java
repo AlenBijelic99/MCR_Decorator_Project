@@ -2,6 +2,8 @@ package com.decorator.game.objects.equipment.armor;
 
 import com.decorator.game.objects.equipment.Equipment;
 
+import static com.decorator.game.utils.Constants.GOLD_ARMOR_DEFENSE;
+
 public class GoldArmor extends Armor{
     public GoldArmor(Equipment equipment) {
         super(equipment);
@@ -14,7 +16,7 @@ public class GoldArmor extends Armor{
 
     @Override
     public int addDefense() {
-        return super.addDefense() + 50;
+        return GOLD_ARMOR_DEFENSE;
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.decorator.game.objects.equipment.weapon;
 
 import com.decorator.game.objects.equipment.Equipment;
 
+import static com.decorator.game.utils.Constants.LONG_SWORD_DAMAGE;
+
 public class LongSword extends Weapon {
     public LongSword(Equipment equipment) {
         super(equipment);
@@ -14,7 +16,7 @@ public class LongSword extends Weapon {
 
     @Override
     public int addStrength() {
-        return super.addStrength() + 100;
+        return LONG_SWORD_DAMAGE;
     }
 
     @Override

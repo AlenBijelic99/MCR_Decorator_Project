@@ -2,6 +2,8 @@ package com.decorator.game.objects.equipment.weapon;
 
 import com.decorator.game.objects.equipment.Equipment;
 
+import static com.decorator.game.utils.Constants.DAGGER_DAMAGE;
+
 public class Dagger extends Weapon{
     public Dagger(Equipment equipment) {
         super(equipment);
@@ -14,7 +16,7 @@ public class Dagger extends Weapon{
 
     @Override
     public int addStrength() {
-        return super.addStrength() + 50;
+        return DAGGER_DAMAGE;
     }
 
     @Override
