@@ -32,4 +32,8 @@ public class EquipmentDecorator implements Equipment {
         return equipment.addDefense();
     }
 
+    @Override
+    public String toString() {
+        return equipment.toString();
+    }
 }

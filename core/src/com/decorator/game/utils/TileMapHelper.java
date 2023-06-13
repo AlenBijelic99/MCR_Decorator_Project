@@ -96,13 +96,10 @@ public class TileMapHelper {
                 gameScreen.setStrengthPotions(new StrengthPotionEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
             } else if (rectangleName.contains("shortSword")) {
-                gameScreen.setShortSwords(new ShortSwordEntity(rectangle.getX(), rectangle.getY(),
+                gameScreen.setShortSwords(new DaggerEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
             } else if (rectangleName.contains("longSword")) {
                 gameScreen.setLongSwords(new LongSwordEntity(rectangle.getX(), rectangle.getY(),
-                        rectangle.getWidth(), rectangle.getHeight(), body));
-            } else if (rectangleName.contains("punch")) {
-                gameScreen.setPunches(new PunchEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
             }
         }
