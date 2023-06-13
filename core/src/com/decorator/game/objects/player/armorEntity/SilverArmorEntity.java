@@ -11,5 +11,6 @@ public class SilverArmorEntity extends ArmorEntity {
     @Override
     public String getImagePath() {
         return "assets/armor/silver.png";
+
     }
 }

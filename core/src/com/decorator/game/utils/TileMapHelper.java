@@ -15,6 +15,9 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.decorator.game.objects.door.DoorLocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.player.*;
+import com.decorator.game.objects.player.armorEntity.BronzeArmorEntity;
+import com.decorator.game.objects.player.armorEntity.GoldArmorEntity;
+import com.decorator.game.objects.player.armorEntity.SilverArmorEntity;
 import com.decorator.game.objects.player.potionEntity.JumpPotionEntity;
 import com.decorator.game.objects.player.potionEntity.SpeedPotionEntity;
 import com.decorator.game.objects.player.potionEntity.StrengthPotionEntity;
@@ -42,14 +45,14 @@ public class TileMapHelper {
 
     public OrthogonalTiledMapRenderer setupMap() {
         tiledMap = new TmxMapLoader().load(MAPS[0]);
-        parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
-        parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
         parseDoor(tiledMap.getLayers().get("door").getObjects());
         parseEnemies(tiledMap.getLayers().get("enemies").getObjects());
-
+        parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
+        parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
 
         return new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAPS[0]));
     }
+
 
     private Body getBody(Rectangle rectangle) {
         return BodyHelperService.createBody(
@@ -85,6 +88,7 @@ public class TileMapHelper {
         }
     }
 
+
     private void parseMapEquipments(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
             if (!(mapObject instanceof RectangleMapObject)) return;
@@ -106,7 +110,17 @@ public class TileMapHelper {
             } else if (rectangleName.contains("longSword")) {
                 gameScreen.setLongSwords(new LongSwordEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
+            } else if (rectangleName.contains("goldArmor")) {
+                gameScreen.setGoldArmors(new GoldArmorEntity(rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight(), body));
+            } else if (rectangleName.contains("silverArmor")) {
+                gameScreen.setSilverArmor(new SilverArmorEntity(rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight(), body));
+            } else if (rectangleName.contains("bronzeArmor")) {
+                gameScreen.setBronzeArmor(new BronzeArmorEntity(rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight(), body));
             }
+
         }
     }
 

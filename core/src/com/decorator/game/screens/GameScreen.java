@@ -25,6 +25,7 @@ import com.decorator.game.objects.equipment.potion.StrengthPotion;
 import com.decorator.game.objects.equipment.weapon.Dagger;
 import com.decorator.game.objects.equipment.weapon.LongSword;
 import com.decorator.game.objects.player.*;
+import com.decorator.game.objects.player.armorEntity.ArmorEntity;
 import com.decorator.game.objects.player.armorEntity.BronzeArmorEntity;
 import com.decorator.game.objects.player.armorEntity.GoldArmorEntity;
 import com.decorator.game.objects.player.armorEntity.SilverArmorEntity;
@@ -78,6 +79,9 @@ public class GameScreen extends ScreenAdapter {
         strengthPotions = new LinkedList<>();
         shortSwords = new LinkedList<>();
         longSwords = new LinkedList<>();
+        goldArmors = new LinkedList<>();
+        silverArmors = new LinkedList<>();
+        bronzeArmors = new LinkedList<>();
 
         enemies = new LinkedList<>();
         bodiesToDelete = new LinkedList<>();
@@ -173,7 +177,7 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the bronze armors
                 for (BronzeArmorEntity armor : bronzeArmors) {
                     if (contact.getFixtureB().getBody() == armor.getBody()) {
-                       //TODO modify logic
+                        //TODO modify logic
                         player.setEquipment(new BronzeArmor(player.getEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         bronzeArmors.remove(armor);
@@ -240,7 +244,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         // Load the background image
-        backgroundTexture = new Texture("backgroundImage/Desert.jpg");
+        //backgroundTexture = new Texture("assets/backgroundImage/Desert.jpg");
         // Create a FitViewport with the desired virtual screen size
         /*float virtualWidth = Gdx.graphics.getWidth(); // TODO change size to min
         float virtualHeight = Gdx.graphics.getHeight();
@@ -264,7 +268,7 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
 
         // Draw the background image
-        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+       // batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         orthogonalTiledMapRenderer.render();
 
@@ -291,6 +295,15 @@ public class GameScreen extends ScreenAdapter {
 
         for (WeaponEntity sword : longSwords) {
             sword.render(batch);
+        }
+        for (ArmorEntity armor : goldArmors) {
+            armor.render(batch);
+        }
+        for (ArmorEntity armor : silverArmors) {
+            armor.render(batch);
+        }
+        for (ArmorEntity armor : bronzeArmors) {
+            armor.render(batch);
         }
 
 
@@ -378,6 +391,17 @@ public class GameScreen extends ScreenAdapter {
         this.shortSwords.add(shortSwords);
     }
 
+    public void setGoldArmors(GoldArmorEntity goldArmorEntity) {
+        this.goldArmors.add(goldArmorEntity);
+    }
+
+    public void setSilverArmor(SilverArmorEntity silverArmorEntity) {
+        this.silverArmors.add(silverArmorEntity);
+    }
+
+    public void setBronzeArmor(BronzeArmorEntity bronzeArmorEntity) {
+    }
+
     private void endScreen() {
         batch.begin();
         TextureRegion region = new TextureRegion(new Texture("screens/endscreen.png"));
@@ -386,8 +410,10 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
     }
 
+
     public void setLongSwords(LongSwordEntity longSwords) {
         this.longSwords.add(longSwords);
     }
+
 
 }
