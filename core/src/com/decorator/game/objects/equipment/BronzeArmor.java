@@ -1,7 +1,7 @@
 package com.decorator.game.objects.equipment;
 
-public class SteelArmor extends Armor {
-    public SteelArmor(Equipment equipment) {
+public class BronzeArmor extends Armor {
+    public BronzeArmor(Equipment equipment) {
         super(equipment);
     }
 
