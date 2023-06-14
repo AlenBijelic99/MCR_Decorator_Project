@@ -145,6 +145,11 @@ public class GameScreen extends ScreenAdapter {
                 for (LongSwordEntity sword : longSwords) {
                     // change in any case
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
+                        //if the player already has a long sword, then dont take this long sword
+                        if (player.getEquipment() instanceof LongSword) {
+                            break;
+                        }
+
                         player.setEquipments(new LongSword(player.getEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
@@ -155,8 +160,13 @@ public class GameScreen extends ScreenAdapter {
                 }
                 // Collision with one of the gold armors
                 for (GoldArmorEntity armor : goldArmors) {
-                    // in any case take this gold since it is the best
+
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
+                        // if the player already has a gold armor, then dont take this gold armor
+
+                        if (player.getEquipment() instanceof GoldArmor) {
+                            break;
+                        }
                         player.setEquipments(new GoldArmor(player.getEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         goldArmors.remove(armor);
