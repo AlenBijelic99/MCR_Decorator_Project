@@ -154,7 +154,6 @@ public class GameScreen extends ScreenAdapter {
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
                         System.out.println("Long Sword equipped");
-                        hud.updateSpeedPotionCount();
                         hud.updateSwordImagePath("weapons/LSword.png");
                     }
                 }
