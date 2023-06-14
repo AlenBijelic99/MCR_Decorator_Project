@@ -7,7 +7,7 @@ public interface Equipment {
     float addSpeed();
     float addJump();
     int addDefense();
-    void removeEquipment(Class<Equipment> equipmentClass);
     void setEquipment(Equipment equipment);
     Equipment getEquipment();
+    void removeEquipment(Class<Equipment> c);
 }

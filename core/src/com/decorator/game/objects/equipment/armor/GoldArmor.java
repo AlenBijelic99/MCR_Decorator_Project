@@ -25,13 +25,8 @@ public class GoldArmor extends Armor{
     }
 
     @Override
-    public void removeEquipment(Class<Equipment> equipmentClass) {
-        System.out.println("D GoldArmor removeEquipment");
-        if (this.getEquipment().getClass() == equipmentClass) {
-            setEquipment(this.getEquipment().getEquipment());
-        } else {
-            super.removeEquipment(equipmentClass);
-        }
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
     }
 
     @Override

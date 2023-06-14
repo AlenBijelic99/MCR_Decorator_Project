@@ -14,8 +14,8 @@ public class Weapon extends EquipmentDecorator {
     }
 
     @Override
-    public void removeEquipment(Class<Equipment> equipmentClass) {
-        getEquipment().removeEquipment(equipmentClass);
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
     }
 
     @Override

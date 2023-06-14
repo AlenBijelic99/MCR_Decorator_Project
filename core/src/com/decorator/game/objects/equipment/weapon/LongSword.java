@@ -24,14 +24,10 @@ public class LongSword extends Weapon {
         return "LSword";
     }
 
+
     @Override
-    public void removeEquipment(Class<Equipment> equipmentClass) {
-        System.out.println("D LongSword removeEquipment");
-        if (this.getEquipment().getClass() == equipmentClass) {
-            setEquipment(this.getEquipment().getEquipment());
-        } else {
-            super.removeEquipment(equipmentClass);
-        }
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
     }
 
     @Override

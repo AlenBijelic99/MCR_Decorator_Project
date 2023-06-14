@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.EquipmentDecorator;
 import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.weapon.Weapon;
@@ -135,8 +136,8 @@ public class Player extends MovableGameEntity {
     }
 
 
-    public void removeEquipment(Class c) {
-        currentEquipment.removeEquipment(c);
+    public void removeEquipment(Class<? extends Equipment> c) {
+        currentEquipment.removeEquipment((Class<Equipment>) c);
     }
     public void setDead(boolean dead) {
         isDead = dead;

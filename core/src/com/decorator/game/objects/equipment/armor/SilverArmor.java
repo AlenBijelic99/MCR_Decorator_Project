@@ -25,13 +25,8 @@ public class SilverArmor extends Armor {
     }
 
     @Override
-    public void removeEquipment(Class<Equipment> equipmentClass) {
-        System.out.println("D SilverArmor removeEquipment");
-        if (this.getEquipment().getClass() == equipmentClass) {
-            setEquipment(this.getEquipment().getEquipment());
-        } else {
-            super.removeEquipment(equipmentClass);
-        }
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
     }
 
     @Override

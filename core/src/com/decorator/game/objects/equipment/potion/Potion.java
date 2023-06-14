@@ -7,4 +7,6 @@ public class Potion extends EquipmentDecorator {
     public Potion(Equipment equipment) {
         super(equipment);
     }
+
+
 }
