@@ -15,11 +15,7 @@ public class Weapon extends EquipmentDecorator {
 
     @Override
     public void removeEquipment(Class<Equipment> equipmentClass) {
-        if (this.getEquipment().getClass() == equipmentClass) {
-            setEquipment(this.getEquipment());
-        } else {
-            getEquipment().removeEquipment(equipmentClass);
-        }
+        getEquipment().removeEquipment(equipmentClass);
     }
 
     @Override
