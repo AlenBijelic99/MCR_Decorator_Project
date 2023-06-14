@@ -137,17 +137,23 @@ public class GameScreen extends ScreenAdapter {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
                         // if the player already has a long sword, then dont take this daggeer
                         boolean hasLongSword = false;
+                        boolean hasDagger = false;
 
 
                         for (Equipment e : player.getEquipments()) {
                             if (e instanceof LongSword) {
                                 hasLongSword = true;
                                 break;
+                            } else if (e instanceof Dagger) {
+                                hasDagger = true;
+                                break;
+
                             }
                         }
-                        if (hasLongSword) {
+                        if (hasLongSword || hasDagger) {
                             break;
                         }
+
 
                         player.setEquipments(new Dagger(player.getCurrentEquipment()));
                         bodiesToDelete.add(sword.getBody());
