@@ -16,7 +16,7 @@ public class LongSword extends Weapon {
 
     @Override
     public int addStrength() {
-        return LONG_SWORD_DAMAGE;
+        return super.addStrength() + LONG_SWORD_DAMAGE;
     }
 
     @Override

@@ -10,7 +10,7 @@ public class PlayerEquipment implements Equipment {
 
     @Override
     public int addStrength() {
-        return 0;
+        return 10;
     }
 
     @Override
