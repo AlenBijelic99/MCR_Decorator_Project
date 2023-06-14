@@ -16,7 +16,7 @@ public class BronzeArmor extends Armor{
 
     @Override
     public int addDefense() {
-        return BRONZE_ARMOR_DEFENSE;
+        return super.addDefense() + BRONZE_ARMOR_DEFENSE;
     }
 
     @Override

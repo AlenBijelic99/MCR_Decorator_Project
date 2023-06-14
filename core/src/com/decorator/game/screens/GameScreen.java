@@ -46,7 +46,6 @@ import com.decorator.game.ui.HUD;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.decorator.game.utils.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
@@ -326,10 +325,11 @@ public class GameScreen extends ScreenAdapter {
         float virtualHeight = Gdx.graphics.getHeight();
         viewport = new ExtendViewport(1900,1200,virtualWidth, virtualHeight, camera);
         viewport.apply(true);*/
-        float virtualWidth = 4920;
-        float virtualHeight = 3200;
-        viewport = new FitViewport(virtualWidth, virtualHeight, camera);
-        viewport.apply(true);
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+        // Utiliser les dimensions réelles pour configurer votre caméra et votre viewport
+        viewport = new FitViewport(screenWidth, screenHeight, camera);
+        viewport.apply();
     }
 
     @Override
@@ -431,9 +431,9 @@ public class GameScreen extends ScreenAdapter {
 
     private void updateCamera() {
         Vector3 position = camera.position;
-        // Multiply and divide by 10 to round to the nearest 10th for smoother camera movement
-        position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
-        position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
+        // Mettez les coordonnées de la caméra au centre de l'image
+        position.x = Gdx.graphics.getWidth() / 2;
+        position.y = Gdx.graphics.getHeight() / 2;
         camera.position.set(position);
         camera.update();
     }

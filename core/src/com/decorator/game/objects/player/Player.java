@@ -30,7 +30,7 @@ public class Player extends MovableGameEntity {
 
     public enum State {JUMPING, IDLE, RUNNING, ATTACKING, DEAD}
 
-    ;
+
     public State currentState;
     public State previousState;
     private float stateTimer;
@@ -94,6 +94,7 @@ public class Player extends MovableGameEntity {
         super(width, height, body);
         //setEquipments(new PlayerEquipment());
 
+        health = 100;
         paused = false;
         jumpCount = 0;
         currentState = State.IDLE;
@@ -172,6 +173,11 @@ public class Player extends MovableGameEntity {
             e.getDescription();
         }
 */
+        speed = currentEquipment.addSpeed();
+        jumpHeight = currentEquipment.addJump();
+        strength = currentEquipment.addStrength();
+        defense = currentEquipment.addDefense();
+
         if (currentEquipment instanceof Weapon) {
             currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(currentEquipment.toString());
         } else if (currentEquipment instanceof Armor) {
