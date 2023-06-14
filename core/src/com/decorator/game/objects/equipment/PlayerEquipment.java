@@ -1,4 +1,6 @@
 package com.decorator.game.objects.equipment;
+import com.decorator.game.objects.equipment.armor.Armor;
+import com.decorator.game.objects.equipment.weapon.Weapon;
 import com.decorator.game.utils.Constants;
 
 public class PlayerEquipment implements Equipment {
@@ -26,6 +28,21 @@ public class PlayerEquipment implements Equipment {
     @Override
     public int addDefense() {
         return 0;
+    }
+
+    @Override
+    public void removeEquipment(Class<Equipment> equipmentClass) {
+        System.out.println("No equipment to remove");
+    }
+
+    @Override
+    public void setEquipment(Equipment equipment) {
+        System.out.println("No equipment to set");
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return null;
     }
 
     @Override

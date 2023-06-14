@@ -174,6 +174,9 @@ public class GameScreen extends ScreenAdapter {
                             break;
                         }
 
+
+                        player.removeEquipment(Dagger.class);
+
                         player.setEquipments(new LongSword(player.getCurrentEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
@@ -197,6 +200,8 @@ public class GameScreen extends ScreenAdapter {
                         if (hasGoldArmor) {
                             break;
                         }
+                        player.removeEquipment(SilverArmor.class);
+                        player.removeEquipment(BronzeArmor.class);
                         player.setEquipments(new GoldArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         goldArmors.remove(armor);
@@ -220,6 +225,7 @@ public class GameScreen extends ScreenAdapter {
                             break;
                         }
 
+                        player.removeEquipment(BronzeArmor.class);
                         player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         silverArmors.remove(armor);

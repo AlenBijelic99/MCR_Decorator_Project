@@ -136,12 +136,7 @@ public class Player extends MovableGameEntity {
 
 
     public void removeEquipment(Class c) {
-        for (Equipment e : this.equipments) {
-            if (e.getClass().equals(c)) {
-                this.equipments.remove(e);
-                return;
-            }
-        }
+        currentEquipment.removeEquipment(c);
     }
     public void setDead(boolean dead) {
         isDead = dead;

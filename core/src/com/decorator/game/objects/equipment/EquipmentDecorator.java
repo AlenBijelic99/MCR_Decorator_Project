@@ -1,7 +1,7 @@
 package com.decorator.game.objects.equipment;
 
 public class EquipmentDecorator implements Equipment {
-    private final Equipment equipment;
+    private Equipment equipment;
 
     public EquipmentDecorator(Equipment equipment) {
         this.equipment = equipment;
@@ -31,6 +31,23 @@ public class EquipmentDecorator implements Equipment {
     public int addDefense() {
         return equipment.addDefense();
     }
+
+    @Override
+    public void removeEquipment(Class<Equipment> equipmentClass) {
+        this.equipment.removeEquipment(equipmentClass);
+    }
+
+    @Override
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+
 
     @Override
     public String toString() {

@@ -12,4 +12,18 @@ public class Weapon extends EquipmentDecorator {
     public String toString() {
         return "None";
     }
+
+    @Override
+    public void removeEquipment(Class<Equipment> equipmentClass) {
+        if (this.getEquipment().getClass() == equipmentClass) {
+            setEquipment(this.getEquipment());
+        } else {
+            getEquipment().removeEquipment(equipmentClass);
+        }
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
+    }
 }
