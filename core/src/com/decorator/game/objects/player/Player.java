@@ -36,7 +36,8 @@ public class Player extends MovableGameEntity {
     private float stateTimer;
     private int jumpCount;
     private boolean isRunningRight;
-    private List<Equipment> equipment;
+    private List<Equipment> equipments;
+    private Equipment currentEquipment;
     private float jumpHeight;
     private int strength;
     private boolean paused;
@@ -91,7 +92,7 @@ public class Player extends MovableGameEntity {
 
     public Player(float width, float height, Body body) {
         super(width, height, body);
-        setEquipment(new PlayerEquipment());
+        //setEquipments(new PlayerEquipment());
 
         paused = false;
         jumpCount = 0;
@@ -99,8 +100,15 @@ public class Player extends MovableGameEntity {
         previousState = State.IDLE;
         stateTimer = 0;
         isRunningRight = true;
-
+        this.equipments = new LinkedList<>();
+        currentEquipment = new PlayerEquipment();
+        speed = currentEquipment.addSpeed();
+        jumpHeight = currentEquipment.addJump();
+        strength = currentEquipment.addStrength();
+        defense = currentEquipment.addDefense();
+        this.equipments.add(currentEquipment);
         initAnimations();
+
     }
 
     @Override
@@ -110,24 +118,39 @@ public class Player extends MovableGameEntity {
         if (!paused) checkUserInput();
     }
 
-    public Equipment getEquipment(Class c) {
-        for (Equipment e : this.equipment) {
+    public Equipment getEquipment() {
+        /*
+        for (Equipment e : this.equipments) {
             if (e.getClass().equals(c)) {
                 return e;
             }
-        }
+        }*/
+        return currentEquipment;
 
-        return null;
+        //return null;
     }
 
-    public void setEquipment(Equipment eq) {
+    public void removeEquipment(Class c) {
+        for (Equipment e : this.equipments) {
+            if (e.getClass().equals(c)) {
+                this.equipments.remove(e);
+                return;
+            }
+        }
+    }
+
+    public void setEquipments(Equipment eq) {
+        currentEquipment = eq;
+        this.equipments.add(eq);
+
+        currentEquipment.getDescription();
         // this.equipment = equipment;
-        this.equipment = new LinkedList<>();
-        this.equipment.add(eq);
+        /*this.equipment = new LinkedList<>();
         speed = eq.addSpeed();
         jumpHeight = eq.addJump();
         strength = eq.addStrength();
         defense = eq.addDefense();
+        this.equipment.add(eq);
         eq.getDescription();
 
        /* for (int i = 0; i < this.equipment.size(); i++) {
@@ -138,19 +161,13 @@ public class Player extends MovableGameEntity {
             defense = e.addDefense();
             e.getDescription();
         }
-
-
-        speed = equipment.addSpeed();
-        jumpHeight = equipment.addJump();
-        strength = equipment.addStrength();
-        defense = equipment.addDefense();
-        equipment.getDescription();
 */
-        if (equipment instanceof Weapon) {
-            currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(equipment.toString());
-        } else if (equipment instanceof Armor) {
-            currentArmor = Arrays.asList(ARMOR_NAMES).indexOf(equipment.toString());
+        if (currentEquipment instanceof Weapon) {
+            currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(currentEquipment.toString());
+        } else if (currentEquipment instanceof Armor) {
+            currentArmor = Arrays.asList(ARMOR_NAMES).indexOf(currentEquipment.toString());
         }
+
     }
 
     @Override
