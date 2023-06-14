@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.decorator.game.objects.Hole;
 import com.decorator.game.objects.door.DoorLocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.player.*;
@@ -54,10 +55,25 @@ public class TileMapHelper {
         return new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAPS[0]));
     }
 
-    private void parseHoles(MapObjects holes) {
-        for (MapObject hole : holes) {
-            if ((hole instanceof RectangleMapObject)) return;
-            createStaticBody((PolygonMapObject)  hole);
+    private void parseHoles(MapObjects mapObjects) {
+        for (MapObject mapObject : mapObjects) {
+            if (!(mapObject instanceof RectangleMapObject)) return;
+            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+            String rectangleName = mapObject.getName();
+            if (rectangleName.equals("hole")) {
+                Body body = BodyHelperService.createSensorBody(
+                        (int) (rectangle.getX() + rectangle.getWidth() / 2),
+                        (int) (rectangle.getY() + rectangle.getHeight() / 2),
+                        rectangle.getWidth(),
+                        rectangle.getHeight(),
+                        gameScreen.getWorld()
+                );
+                gameScreen.setHole(new Hole(rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight(), body));
+
+
+            }
+
         }
     }
 

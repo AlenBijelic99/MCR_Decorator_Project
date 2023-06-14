@@ -272,6 +272,7 @@ public class GameScreen extends ScreenAdapter {
                         player.setDead(true);
                         bodiesToDelete.add(player.getBody());
                         System.out.println("You fell into the hole");
+                        deadScreen();
 
                     }
                 }
