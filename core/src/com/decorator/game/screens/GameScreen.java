@@ -401,6 +401,7 @@ public class GameScreen extends ScreenAdapter {
             endScreen();
             pause();
         }
+
         if (player.isDead()) {
             deadScreen();
             pause();
@@ -432,8 +433,8 @@ public class GameScreen extends ScreenAdapter {
     private void updateCamera() {
         Vector3 position = camera.position;
         // Mettez les coordonnées de la caméra au centre de l'image
-        position.x = Gdx.graphics.getWidth() / 2;
-        position.y = Gdx.graphics.getHeight() / 2;
+        position.x = Gdx.graphics.getWidth() / 2f;
+        position.y = Gdx.graphics.getHeight() / 2f;
         camera.position.set(position);
         camera.update();
     }
@@ -492,20 +493,20 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void endScreen() {
-        batch.begin();
-        TextureRegion region = new TextureRegion(new Texture("screens/endscreen.png"));
-        float x = Gdx.graphics.getWidth() / 2f - region.getRegionWidth() / 2f;
-        batch.draw(region, x, 0, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
-        batch.end();
+        screen("screens/endscreen.png");
     }
+
     private void deadScreen() {
+        screen("screens/gameOver.png");
+    }
 
+    private void screen(String imagePath) {
         batch.begin();
-        TextureRegion region = new TextureRegion(new Texture("screens/gameOver.png"));
-        float x = Gdx.graphics.getWidth() / 2f - region.getRegionWidth() / 2f;
-        batch.draw(region, x, 0, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
+        TextureRegion region = new TextureRegion(new Texture(imagePath));
+        float x = Gdx.graphics.getWidth() / 2f - region.getRegionWidth();
+        float y = Gdx.graphics.getHeight() / 2f - region.getRegionHeight();
+        batch.draw(region, x, y, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
         batch.end();
-
     }
 
     public void setLongSwords(LongSwordEntity longSwords) {
