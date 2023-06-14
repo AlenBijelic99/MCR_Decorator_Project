@@ -65,8 +65,6 @@ public class TileMapHelper {
             if (rectangleName.equals("hole")) {
                 gameScreen.setHole(new Hole(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
-
-
             }
 
         }

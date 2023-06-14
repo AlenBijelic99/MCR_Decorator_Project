@@ -268,7 +268,7 @@ public class GameScreen extends ScreenAdapter {
                 */
                 // Collision with the holes
                 for (Hole hole : holes) {
-                    if (contact.getFixtureA().getBody() == hole.getBody()) {
+                    if (contact.getFixtureB().getBody() == hole.getBody()) {
                         player.setDead(true);
                         bodiesToDelete.add(player.getBody());
                         System.out.println("You fell into the hole");

@@ -21,6 +21,4 @@ public class Hole extends StaticGameEntity {
 
     }
 
-
-
 }
