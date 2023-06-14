@@ -118,7 +118,7 @@ public class Player extends MovableGameEntity {
         if (!paused) checkUserInput();
     }
 
-    public Equipment getEquipment() {
+    public Equipment getCurrentEquipment() {
         /*
         for (Equipment e : this.equipments) {
             if (e.getClass().equals(c)) {
@@ -129,6 +129,10 @@ public class Player extends MovableGameEntity {
 
         //return null;
     }
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+
 
     public void removeEquipment(Class c) {
         for (Equipment e : this.equipments) {

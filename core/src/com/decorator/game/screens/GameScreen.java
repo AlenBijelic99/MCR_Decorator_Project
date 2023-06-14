@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
+import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.armor.BronzeArmor;
 import com.decorator.game.objects.equipment.armor.GoldArmor;
 import com.decorator.game.objects.equipment.armor.SilverArmor;
@@ -97,10 +99,11 @@ public class GameScreen extends ScreenAdapter {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
+
                 // Collision with one of the speed potions
                 for (SpeedPotionEntity potion : speedPotions) {
                     if (contact.getFixtureA().getBody() == potion.getBody()) {
-                        player.setEquipments(new SpeedPotion(player.getEquipment()));
+                        player.setEquipments(new SpeedPotion(player.getCurrentEquipment()));
                         bodiesToDelete.add(potion.getBody());
                         speedPotions.remove(potion);
                         System.out.println("Speed Potion drank");
@@ -110,7 +113,7 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the jump potions
                 for (JumpPotionEntity potion : jumpPotions) {
                     if (contact.getFixtureA().getBody() == potion.getBody()) {
-                        player.setEquipments(new JumpPotion(player.getEquipment()));
+                        player.setEquipments(new JumpPotion(player.getCurrentEquipment()));
                         bodiesToDelete.add(potion.getBody());
                         jumpPotions.remove(potion);
                         System.out.println("Jump Potion drank");
@@ -120,7 +123,7 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the strength potions
                 for (StrengthPotionEntity potion : strengthPotions) {
                     if (contact.getFixtureA().getBody() == potion.getBody()) {
-                        player.setEquipments(new StrengthPotion(player.getEquipment()));
+                        player.setEquipments(new StrengthPotion(player.getCurrentEquipment()));
                         bodiesToDelete.add(potion.getBody());
                         strengthPotions.remove(potion);
                         System.out.println("Strength Potion drank");
@@ -130,11 +133,21 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the short swords
                 for (DaggerEntity sword : shortSwords) {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
-                        // if the player already has a long sword, then dont take this dagger
-                        if (player.getEquipment() != null) {
+                        // if the player already has a long sword, then dont take this daggeer
+                        boolean hasLongSword = false;
+
+
+                        for (Equipment e : player.getEquipments()) {
+                            if (e instanceof LongSword) {
+                                hasLongSword = true;
+                                break;
+                            }
+                        }
+                        if (hasLongSword) {
                             break;
                         }
-                        player.setEquipments(new Dagger(player.getEquipment()));
+
+                        player.setEquipments(new Dagger(player.getCurrentEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         shortSwords.remove(sword);
                         System.out.println("Dagger Sword equipped");
@@ -146,11 +159,20 @@ public class GameScreen extends ScreenAdapter {
                     // change in any case
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
                         //if the player already has a long sword, then dont take this long sword
-                        if (player.getEquipment() instanceof LongSword) {
+                        boolean hasLongSword = false;
+
+
+                        for (Equipment e : player.getEquipments()) {
+                            if (e instanceof LongSword) {
+                                hasLongSword = true;
+                                break;
+                            }
+                        }
+                        if (hasLongSword) {
                             break;
                         }
 
-                        player.setEquipments(new LongSword(player.getEquipment()));
+                        player.setEquipments(new LongSword(player.getCurrentEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
                         System.out.println("Long Sword equipped");
@@ -162,11 +184,18 @@ public class GameScreen extends ScreenAdapter {
 
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
                         // if the player already has a gold armor, then dont take this gold armor
+                        boolean hasGoldArmor = false;
 
-                        if (player.getEquipment() instanceof GoldArmor) {
+                        for (Equipment e : player.getEquipments()) {
+                            if (e instanceof GoldArmor) {
+                                hasGoldArmor = true;
+                                break;
+                            }
+                        }
+                        if (hasGoldArmor) {
                             break;
                         }
-                        player.setEquipments(new GoldArmor(player.getEquipment()));
+                        player.setEquipments(new GoldArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         goldArmors.remove(armor);
                         System.out.println("Gold Armor equipped");
@@ -178,26 +207,45 @@ public class GameScreen extends ScreenAdapter {
 
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
                         // update only if player has no gold armor
-                        if (!(player.getEquipment() instanceof GoldArmor)) {
-                            player.setEquipments(new SilverArmor(player.getEquipment()));
-                            bodiesToDelete.add(armor.getBody());
-                            silverArmors.remove(armor);
-                            System.out.println("Silver Armor equipped");
-                            hud.updateArmorImagePath("assets/armor/silver.png");
+                        boolean hasGoldOrSilverArmor = false;
+                        for (Equipment e : player.getEquipments()) {
+                            if (e instanceof GoldArmor || e instanceof SilverArmor) {
+                                hasGoldOrSilverArmor = true;
+                                break;
+                            }
                         }
+                        if (hasGoldOrSilverArmor) {
+                            break;
+                        }
+
+                        player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        silverArmors.remove(armor);
+                        System.out.println("Silver Armor equipped");
+                        hud.updateArmorImagePath("assets/armor/silver.png");
+
                     }
                 }
                 // Collision with one of the bronze armors
                 for (BronzeArmorEntity armor : bronzeArmors) {
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
-                        // update only if player has no gold or silver armor
-                        if (!(player.getEquipment() instanceof GoldArmor) && !(player.getEquipment() instanceof SilverArmor)) {
-                            player.setEquipments(new BronzeArmor(player.getEquipment()));
-                            bodiesToDelete.add(armor.getBody());
-                            bronzeArmors.remove(armor);
-                            System.out.println("Bronze Armor equipped");
-                            hud.updateArmorImagePath("assets/armor/bronze.png");
+                        // update only if player doesnt have any armor
+                        boolean hasArmor = false;
+                        for (Equipment e : player.getEquipments()) {
+                            if (e instanceof Armor) {
+                                hasArmor = true;
+                                break;
+                            }
                         }
+                        if(hasArmor) {
+                            break;
+                        }
+                        player.setEquipments(new BronzeArmor(player.getCurrentEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        bronzeArmors.remove(armor);
+                        System.out.println("Bronze Armor equipped");
+                        hud.updateArmorImagePath("assets/armor/bronze.png");
+
                     }
                 }
                 // Collision with punch
