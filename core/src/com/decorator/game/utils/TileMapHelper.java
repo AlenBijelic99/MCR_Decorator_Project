@@ -49,8 +49,16 @@ public class TileMapHelper {
         //parseEnemies(tiledMap.getLayers().get("enemies").getObjects());
         parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+        parseHoles(tiledMap.getLayers().get("holes").getObjects());
 
         return new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAPS[0]));
+    }
+
+    private void parseHoles(MapObjects holes) {
+        for (MapObject hole : holes) {
+            if ((hole instanceof RectangleMapObject)) return;
+            createStaticBody((PolygonMapObject)  hole);
+        }
     }
 
 

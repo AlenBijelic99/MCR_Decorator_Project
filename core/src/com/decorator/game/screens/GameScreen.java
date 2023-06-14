@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.decorator.game.objects.Hole;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
@@ -73,6 +74,7 @@ public class GameScreen extends ScreenAdapter {
     private List<Body> bodiesToDelete;
     private Texture backgroundTexture;
     private FitViewport viewport;
+    private List<Hole> holes;
 
     public GameScreen(final OrthographicCamera camera) {
         this.camera = camera;
@@ -84,6 +86,7 @@ public class GameScreen extends ScreenAdapter {
         goldArmors = new LinkedList<>();
         silverArmors = new LinkedList<>();
         bronzeArmors = new LinkedList<>();
+        holes = new LinkedList<>();
 
         enemies = new LinkedList<>();
         bodiesToDelete = new LinkedList<>();
@@ -237,7 +240,7 @@ public class GameScreen extends ScreenAdapter {
                                 break;
                             }
                         }
-                        if(hasArmor) {
+                        if (hasArmor) {
                             break;
                         }
                         player.setEquipments(new BronzeArmor(player.getCurrentEquipment()));
@@ -264,6 +267,16 @@ public class GameScreen extends ScreenAdapter {
                     }
                 }
                 */
+                // Collision with the holes
+                for (Hole hole : holes) {
+                    if (contact.getFixtureA().getBody() == hole.getBody()) {
+                        player.setDead(true);
+                        bodiesToDelete.add(player.getBody());
+                        System.out.println("You fell into the hole");
+
+                    }
+                }
+
 
                 // Collision with the key
                 if (contact.getFixtureA().getBody() == key.getBody()) {
@@ -279,6 +292,7 @@ public class GameScreen extends ScreenAdapter {
                     doorEntered = true;
                     System.out.println("Door entered");
                 }
+
 
             }
 
@@ -368,14 +382,16 @@ public class GameScreen extends ScreenAdapter {
             armor.render(batch);
         }
 
-
-        for (Body body : bodiesToDelete) {
-            world.destroyBody(body);
+        for(Hole hole : holes){
+            hole.render(batch);
         }
+
         for (Enemy enemy : enemies) {
             enemy.render(batch);
         }
-
+        for (Body body : bodiesToDelete) {
+            world.destroyBody(body);
+        }
 
         bodiesToDelete.clear();
 
@@ -385,8 +401,14 @@ public class GameScreen extends ScreenAdapter {
             endScreen();
             pause();
         }
+        if (player.isDead()) {
+            deadScreen();
+            pause();
+        }
         hud.render();
     }
+
+
 
     private void update() {
         world.step(1 / 60f, 6, 2);
@@ -437,6 +459,10 @@ public class GameScreen extends ScreenAdapter {
         this.key = key;
     }
 
+    public void setHole(Hole hole) {
+        this.holes.add(hole);
+    }
+
     public void setSpeedPotions(SpeedPotionEntity potion) {
         speedPotions.add(potion);
     }
@@ -462,6 +488,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void setBronzeArmor(BronzeArmorEntity bronzeArmorEntity) {
+        this.bronzeArmors.add(bronzeArmorEntity);
     }
 
     private void endScreen() {
@@ -471,7 +498,15 @@ public class GameScreen extends ScreenAdapter {
         batch.draw(region, x, 0, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
         batch.end();
     }
+    private void deadScreen() {
 
+        batch.begin();
+        TextureRegion region = new TextureRegion(new Texture("screens/gameOver.png"));
+        float x = Gdx.graphics.getWidth() / 2f - region.getRegionWidth() / 2f;
+        batch.draw(region, x, 0, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
+        batch.end();
+
+    }
 
     public void setLongSwords(LongSwordEntity longSwords) {
         this.longSwords.add(longSwords);

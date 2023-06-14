@@ -142,6 +142,12 @@ public class Player extends MovableGameEntity {
             }
         }
     }
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+    public boolean isDead() {
+        return isDead;
+    }
 
     public void setEquipments(Equipment eq) {
         currentEquipment = eq;
