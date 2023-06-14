@@ -60,14 +60,9 @@ public class TileMapHelper {
             if (!(mapObject instanceof RectangleMapObject)) return;
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             String rectangleName = mapObject.getName();
+            Body body = BodyHelperService.createSensorBody((int) rectangle.getX(), (int) rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight(), gameScreen.getWorld());
             if (rectangleName.equals("hole")) {
-                Body body = BodyHelperService.createSensorBody(
-                        (int) (rectangle.getX() + rectangle.getWidth() / 2),
-                        (int) (rectangle.getY() + rectangle.getHeight() / 2),
-                        rectangle.getWidth(),
-                        rectangle.getHeight(),
-                        gameScreen.getWorld()
-                );
                 gameScreen.setHole(new Hole(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
 
@@ -118,8 +113,8 @@ public class TileMapHelper {
             if (!(mapObject instanceof RectangleMapObject)) return;
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             String rectangleName = mapObject.getName();
-            Body body = BodyHelperService.createSensorBody((int)rectangle.getX(), (int)rectangle.getY(),
-                    rectangle.getWidth(), rectangle.getHeight(),gameScreen.getWorld());
+            Body body = BodyHelperService.createSensorBody((int) rectangle.getX(), (int) rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight(), gameScreen.getWorld());
             if (rectangleName.contains("speedPotion")) {
                 gameScreen.setSpeedPotions(new SpeedPotionEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));

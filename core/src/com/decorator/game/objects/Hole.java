@@ -14,17 +14,13 @@ public class Hole extends StaticGameEntity {
 
     @Override
     public String getImagePath() {
-        return "";
+        return "assets/deserttileset/png/Objects/killerBush.png";
     }
     @Override
     public void update() {
 
     }
-    @Override
-    public void render(SpriteBatch batch) {
 
-
-    }
 
 
 }
