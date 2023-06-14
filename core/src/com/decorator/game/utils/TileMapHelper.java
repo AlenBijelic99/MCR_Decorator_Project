@@ -118,7 +118,8 @@ public class TileMapHelper {
             if (!(mapObject instanceof RectangleMapObject)) return;
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             String rectangleName = mapObject.getName();
-            Body body = getBody(rectangle);
+            Body body = BodyHelperService.createSensorBody((int)rectangle.getX(), (int)rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight(),gameScreen.getWorld());
             if (rectangleName.contains("speedPotion")) {
                 gameScreen.setSpeedPotions(new SpeedPotionEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
@@ -165,12 +166,11 @@ public class TileMapHelper {
                 gameScreen.setDoor(new DoorLocked(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
             } else if (rectangleName.equals("key")) {
-                Body body = BodyHelperService.createBody(
+                Body body = BodyHelperService.createSensorBody(
                         (int) (rectangle.getX() + rectangle.getWidth() / 2),
                         (int) (rectangle.getY() + rectangle.getHeight() / 2),
                         rectangle.getWidth(),
                         rectangle.getHeight(),
-                        true,
                         gameScreen.getWorld()
                 );
                 gameScreen.setKey(new Key(rectangle.getX(), rectangle.getY(),

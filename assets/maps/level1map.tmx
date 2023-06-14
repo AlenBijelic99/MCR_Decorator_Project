@@ -179,9 +179,9 @@
   <object id="18" name="speedPotion" x="1439.39" y="818.182"/>
   <object id="24" name="jumpPotion" x="1504.88" y="475.758" width="29.6667" height="67.7576"/>
   <object id="93" name="strengthPotion" x="967.167" y="822.121" width="29.6667" height="67.7576"/>
-  <object id="94" name="strengthPotion" x="385.167" y="509.121" width="29.6667" height="67.7576"/>
-  <object id="100" name="goldArmor" x="634.849" y="375.757" width="57.5758" height="96.9697"/>
-  <object id="98" name="silverArmor" x="1609.09" y="284.848" width="57.5758" height="96.9697"/>
+  <object id="94" name="speedPotion" x="385.167" y="509.121" width="29.6667" height="67.7576"/>
+  <object id="100" name="goldArmor" x="1620.85" y="327.757" width="57.5758" height="96.9697"/>
+  <object id="98" name="silverArmor" x="631.09" y="406.848" width="57.5758" height="96.9697"/>
   <object id="101" name="bronzeArmor" x="56.0609" y="539.394" width="57.5758" height="96.9697"/>
   <object id="96" name="longSword" x="1050.27" y="970.258" width="31.4545" height="61.4848"/>
   <object id="19" name="longSword" x="319.303" y="1056.64" width="31.4545" height="61.4848"/>
