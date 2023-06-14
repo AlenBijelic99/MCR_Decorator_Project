@@ -23,4 +23,19 @@ public class Dagger extends Weapon{
     public String toString() {
         return "Dagger";
     }
+
+    @Override
+    public void removeEquipment(Class<Equipment> equipmentClass) {
+        System.out.println("D Dagger removeEquipment");
+        if (this.getEquipment().getClass() == equipmentClass) {
+            setEquipment(this.getEquipment().getEquipment());
+        } else {
+            super.removeEquipment(equipmentClass);
+        }
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
+    }
 }

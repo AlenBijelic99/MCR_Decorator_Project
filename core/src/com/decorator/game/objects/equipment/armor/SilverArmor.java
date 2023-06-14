@@ -23,4 +23,19 @@ public class SilverArmor extends Armor {
     public String toString() {
         return "Silver";
     }
+
+    @Override
+    public void removeEquipment(Class<Equipment> equipmentClass) {
+        System.out.println("D SilverArmor removeEquipment");
+        if (this.getEquipment().getClass() == equipmentClass) {
+            setEquipment(this.getEquipment().getEquipment());
+        } else {
+            super.removeEquipment(equipmentClass);
+        }
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
+    }
 }
