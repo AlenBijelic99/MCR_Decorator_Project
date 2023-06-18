@@ -16,11 +16,21 @@ public class GoldArmor extends Armor{
 
     @Override
     public int addDefense() {
-        return GOLD_ARMOR_DEFENSE;
+        return super.addDefense() + GOLD_ARMOR_DEFENSE;
     }
 
     @Override
     public String toString() {
         return "Gold";
+    }
+
+    @Override
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
     }
 }

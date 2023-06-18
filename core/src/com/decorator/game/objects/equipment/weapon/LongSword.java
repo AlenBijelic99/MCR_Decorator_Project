@@ -16,11 +16,22 @@ public class LongSword extends Weapon {
 
     @Override
     public int addStrength() {
-        return LONG_SWORD_DAMAGE;
+        return super.addStrength() + LONG_SWORD_DAMAGE;
     }
 
     @Override
     public String toString() {
         return "LSword";
+    }
+
+
+    @Override
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
     }
 }

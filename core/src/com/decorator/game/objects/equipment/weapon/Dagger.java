@@ -16,11 +16,21 @@ public class Dagger extends Weapon{
 
     @Override
     public int addStrength() {
-        return DAGGER_DAMAGE;
+        return super.addStrength() + DAGGER_DAMAGE;
     }
 
     @Override
     public String toString() {
         return "Dagger";
+    }
+
+    @Override
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
     }
 }

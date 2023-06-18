@@ -10,280 +10,324 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.EquipmentDecorator;
 import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.weapon.Weapon;
 import com.decorator.game.utils.Constants;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Player extends MovableGameEntity {
 
-  private final String[] WEAPON_NAMES = {"None", "Dagger", "LSword"};
-  private final String[] ARMOR_NAMES = {"None", "Bronze", "Silver", "Gold"};
-  private final String[] ACTIONS_NAMES = {"Idle", "Run", "Jump", "Attack", "Dead"};
-  private int currentWeapon = 0;
-  private int currentArmor = 0;
-  private final Animation<TextureRegion>[][][] animations = new Animation[WEAPON_NAMES.length][ARMOR_NAMES.length][ACTIONS_NAMES.length];
-  public enum State {JUMPING, IDLE, RUNNING, ATTACKING, DEAD};
-  public State currentState;
-  public State previousState;
-  private float stateTimer;
-  private int jumpCount;
-  private boolean isRunningRight;
-  private Equipment equipment;
-  private float jumpHeight;
-  private int strength;
-  private boolean paused;
-  private int health;
-  private int defense;
-  private boolean isRunning;
-  private boolean isAttacking;
-  private boolean isDead;
-  private boolean isDeadAnimationFinished;
-  private float attackStateTimer;
+    private final String[] WEAPON_NAMES = {"None", "Dagger", "LSword"};
+    private final String[] ARMOR_NAMES = {"None", "Bronze", "Silver", "Gold"};
+    private final String[] ACTIONS_NAMES = {"Idle", "Run", "Jump", "Attack", "Dead"};
+    private int currentWeapon = 0;
+    private int currentArmor = 0;
+    private final Animation<TextureRegion>[][][] animations = new Animation[WEAPON_NAMES.length][ARMOR_NAMES.length][ACTIONS_NAMES.length];
 
-  private void initAnimations(){
-    for (int i = 0; i < WEAPON_NAMES.length; ++i){
-      for (int j = 0; j < ARMOR_NAMES.length; ++j){
-        Array<TextureRegion> frames = new Array<>();
-        // Idle
-        for (int f = 0; f < 1; ++f) {
-          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[0] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
-        }
-        animations[i][j][0] = new Animation<>(0.3f, frames);
-        frames.clear();
-        // Run
-        for (int f = 0; f < 9; ++f) {
-          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[1] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
-        }
-        animations[i][j][1] = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
-        frames.clear();
+    public enum State {JUMPING, IDLE, RUNNING, ATTACKING, DEAD}
 
-        // Jump
-        for (int f = 0; f < 1; ++f) {
-          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[2] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
-        }
-        animations[i][j][2] = new Animation<>(0.3f, frames);
-        frames.clear();
 
-        // Attack
-        for (int f = 0; f < 11; ++f) {
-          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[3] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
-        }
-        animations[i][j][3] = new Animation<>(0.031f, frames);
-        frames.clear();
+    public State currentState;
+    public State previousState;
+    private float stateTimer;
+    private int jumpCount;
+    private boolean isRunningRight;
+    private Equipment currentEquipment;
+    private float jumpHeight;
+    private int strength;
+    private boolean paused;
+    private int health;
+    private int defense;
+    private boolean isRunning;
+    private boolean isAttacking;
+    private boolean isDead;
+    private boolean isDeadAnimationFinished;
+    private float attackStateTimer;
 
-        // Dead
-        for (int f = 0; f < 5; ++f) {
-          frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[4] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+    private void initAnimations() {
+        for (int i = 0; i < WEAPON_NAMES.length; ++i) {
+            for (int j = 0; j < ARMOR_NAMES.length; ++j) {
+                Array<TextureRegion> frames = new Array<>();
+                // Idle
+                for (int f = 0; f < 1; ++f) {
+                    frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[0] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+                }
+                animations[i][j][0] = new Animation<>(0.3f, frames);
+                frames.clear();
+                // Run
+                for (int f = 0; f < 9; ++f) {
+                    frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[1] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+                }
+                animations[i][j][1] = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+                frames.clear();
+
+                // Jump
+                for (int f = 0; f < 1; ++f) {
+                    frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[2] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+                }
+                animations[i][j][2] = new Animation<>(0.3f, frames);
+                frames.clear();
+
+                // Attack
+                for (int f = 0; f < 11; ++f) {
+                    frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[3] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+                }
+                animations[i][j][3] = new Animation<>(0.031f, frames);
+                frames.clear();
+
+                // Dead
+                for (int f = 0; f < 5; ++f) {
+                    frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[4] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
+                }
+                animations[i][j][4] = new Animation<>(0.3f, frames);
+                frames.clear();
+            }
         }
-        animations[i][j][4] = new Animation<>(0.3f, frames);
-        frames.clear();
-      }
     }
-  }
 
-  public Player(float width, float height, Body body) {
-    super(width, height, body);
-    setEquipment(new PlayerEquipment());
+    public Player(float width, float height, Body body) {
+        super(width, height, body);
+        //setEquipments(new PlayerEquipment());
 
-    paused = false;
-    jumpCount = 0;
-    currentState = State.IDLE;
-    previousState = State.IDLE;
-    stateTimer = 0;
-    isRunningRight = true;
-
-    initAnimations();
-  }
-
-  @Override
-  public void update() {
-    x = body.getPosition().x * Constants.PPM;
-    y = body.getPosition().y * Constants.PPM;
-    if (!paused) checkUserInput();
-  }
-
-  public Equipment getEquipment() {
-    return equipment;
-  }
-
-  public void setEquipment(Equipment equipment) {
-    this.equipment = equipment;
-    speed = equipment.addSpeed();
-    jumpHeight = equipment.addJump();
-    strength = equipment.addStrength();
-    defense = equipment.addDefense();
-    equipment.getDescription();
-
-    if (equipment instanceof Weapon) {
-      currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(equipment.toString());
-    } else if (equipment instanceof Armor) {
-      currentArmor = Arrays.asList(ARMOR_NAMES).indexOf(equipment.toString());
-    }
-  }
-
-  @Override
-  public void render(SpriteBatch batch) {
-    batch.begin();
-    TextureRegion region = getFrame(Gdx.graphics.getDeltaTime());
-    batch.draw(region, x - width / 2, y - height / 2, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
-    batch.end();
-  }
-
-  private void checkUserInput() {
-    dx = 0;
-    if (!isDead) {
-      if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-        dx = -1;
-        isRunning = true;
-      } else if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-        dx = 1;
-        isRunning = true;
-      } else {
-        isRunning = false;
-      }
-
-      if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) && jumpCount < Constants.MAX_JUMPING_COUNT && body.getLinearVelocity().y == 0) {
-        ++jumpCount;
-        body.setLinearVelocity(body.getLinearVelocity().x, 0);
-        body.applyLinearImpulse(new Vector2(0, body.getMass() * Constants.JUMPING_SPEED), body.getPosition(), true);
-      }
-
-      // Reset jump count if player is on the ground
-      if (body.getLinearVelocity().y == 0) {
+        health = 100;
+        paused = false;
         jumpCount = 0;
-      }
+        currentState = State.IDLE;
+        previousState = State.IDLE;
+        stateTimer = 0;
+        isRunningRight = true;
+        currentEquipment = new PlayerEquipment();
+        speed = currentEquipment.addSpeed();
+        jumpHeight = currentEquipment.addJump();
+        strength = currentEquipment.addStrength();
+        defense = currentEquipment.addDefense();
+        initAnimations();
 
-      if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-        if (!isAttacking) {
-          isAttacking = true;
-          attackStateTimer = 0;
+    }
+
+    @Override
+    public void update() {
+        x = body.getPosition().x * Constants.PPM;
+        y = body.getPosition().y * Constants.PPM;
+        if (!paused) checkUserInput();
+    }
+
+    public Equipment getCurrentEquipment() {
+        /*
+        for (Equipment e : this.equipments) {
+            if (e.getClass().equals(c)) {
+                return e;
+            }
+        }*/
+        return currentEquipment;
+
+        //return null;
+    }
+
+    public void removeEquipment(Class<? extends Equipment> c) {
+        currentEquipment = currentEquipment.removeEquipment((Class<Equipment>) c);
+    }
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setEquipments(Equipment eq) {
+        currentEquipment = eq;
+        currentEquipment.getDescription();
+        // this.equipment = equipment;
+        /*this.equipment = new LinkedList<>();
+        speed = eq.addSpeed();
+        jumpHeight = eq.addJump();
+        strength = eq.addStrength();
+        defense = eq.addDefense();
+        this.equipment.add(eq);
+        eq.getDescription();
+
+       /* for (int i = 0; i < this.equipment.size(); i++) {
+            Equipment e = equipment.get(i);
+            speed = e.addSpeed();
+            jumpHeight = e.addJump();
+            strength = e.addStrength();
+            defense = e.addDefense();
+            e.getDescription();
         }
-      }
-    } else {
-      isRunning = false;
-      isAttacking = false;
+*/
+        speed = currentEquipment.addSpeed();
+        jumpHeight = currentEquipment.addJump();
+        strength = currentEquipment.addStrength();
+        defense = currentEquipment.addDefense();
+
+        if (currentEquipment instanceof Weapon) {
+            currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(currentEquipment.toString());
+        } else if (currentEquipment instanceof Armor) {
+            currentArmor = Arrays.asList(ARMOR_NAMES).indexOf(currentEquipment.toString());
+        }
+
     }
 
-    if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-      if (!isDead) {
-        isDead = true;
-        isDeadAnimationFinished = false;
-      } else if (isDeadAnimationFinished) {
-        // Restart the game or perform any other action
-      }
+    @Override
+    public void render(SpriteBatch batch) {
+        batch.begin();
+        TextureRegion region = getFrame(Gdx.graphics.getDeltaTime());
+        batch.draw(region, x - width / 2, y - height / 2, region.getRegionWidth() * 2, region.getRegionHeight() * 2);
+        batch.end();
     }
 
-    body.setLinearVelocity(dx * speed, Math.min(body.getLinearVelocity().y, jumpHeight));
-  }
+    private void checkUserInput() {
+        dx = 0;
+        if (!isDead) {
+            if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                dx = -1;
+                isRunning = true;
+            } else if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                dx = 1;
+                isRunning = true;
+            } else {
+                isRunning = false;
+            }
 
-  public State getState(){
-    if (body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
-      if (isAttacking && !animations[currentWeapon][currentArmor][3].isAnimationFinished(stateTimer)) {
-        return State.ATTACKING;
-      }
-      return State.JUMPING;
-    }
-    else if (isAttacking) {
-      if (attackStateTimer < animations[currentWeapon][currentArmor][3].getAnimationDuration()) {
-        return State.ATTACKING;
-      } else {
-        isAttacking = false;
-        if (body.getLinearVelocity().y == 0){
-          return State.IDLE;
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) && jumpCount < Constants.MAX_JUMPING_COUNT && body.getLinearVelocity().y == 0) {
+                ++jumpCount;
+                body.setLinearVelocity(body.getLinearVelocity().x, 0);
+                body.applyLinearImpulse(new Vector2(0, body.getMass() * Constants.JUMPING_SPEED), body.getPosition(), true);
+            }
+
+            // Reset jump count if player is on the ground
+            if (body.getLinearVelocity().y == 0) {
+                jumpCount = 0;
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                if (!isAttacking) {
+                    isAttacking = true;
+                    attackStateTimer = 0;
+                }
+            }
         } else {
-          return State.JUMPING;
+            isRunning = false;
+            isAttacking = false;
         }
-      }
-    }
-    else if (isRunning){
-      return State.RUNNING;
-    }
-    else if (isDead){
-      return State.DEAD;
-    }
-    else {
-      return State.IDLE;
-    }
-  }
 
-  public TextureRegion getFrame(float dt) {
-    previousState = currentState;
-    currentState = getState();
-    TextureRegion region;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+            if (!isDead) {
+                isDead = true;
+                isDeadAnimationFinished = false;
+            } else if (isDeadAnimationFinished) {
+                // Restart the game or perform any other action
+            }
+        }
 
-    switch (currentState) {
-      case JUMPING:
-        region = animations[currentWeapon][currentArmor][2].getKeyFrame(stateTimer);
-        break;
-      case RUNNING:
-        region = animations[currentWeapon][currentArmor][1].getKeyFrame(stateTimer, true);
-        break;
-      case ATTACKING:
-        region = animations[currentWeapon][currentArmor][3].getKeyFrame(attackStateTimer);
-        if (attackStateTimer < animations[currentWeapon][currentArmor][3].getAnimationDuration()) {
-          attackStateTimer += dt;
+        body.setLinearVelocity(dx * speed, Math.min(body.getLinearVelocity().y, jumpHeight));
+    }
+
+    public State getState() {
+        if (body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && previousState == State.JUMPING)) {
+            if (isAttacking && !animations[currentWeapon][currentArmor][3].isAnimationFinished(stateTimer)) {
+                return State.ATTACKING;
+            }
+            return State.JUMPING;
+        } else if (isAttacking) {
+            if (attackStateTimer < animations[currentWeapon][currentArmor][3].getAnimationDuration()) {
+                return State.ATTACKING;
+            } else {
+                isAttacking = false;
+                if (body.getLinearVelocity().y == 0) {
+                    return State.IDLE;
+                } else {
+                    return State.JUMPING;
+                }
+            }
+        } else if (isRunning) {
+            return State.RUNNING;
+        } else if (isDead) {
+            return State.DEAD;
         } else {
-          isAttacking = false;
+            return State.IDLE;
         }
-        break;
-      case DEAD:
-        region = animations[currentWeapon][currentArmor][4].getKeyFrame(stateTimer);
-        if (animations[currentWeapon][currentArmor][4].isAnimationFinished(stateTimer)) {
-          if (!isDeadAnimationFinished) {
-            isDeadAnimationFinished = true;
-            stateTimer -= dt; // Subtract the delta time to keep the last frame
-          }
+    }
+
+    public TextureRegion getFrame(float dt) {
+        previousState = currentState;
+        currentState = getState();
+        TextureRegion region;
+
+        switch (currentState) {
+            case JUMPING:
+                region = animations[currentWeapon][currentArmor][2].getKeyFrame(stateTimer);
+                break;
+            case RUNNING:
+                region = animations[currentWeapon][currentArmor][1].getKeyFrame(stateTimer, true);
+                break;
+            case ATTACKING:
+                region = animations[currentWeapon][currentArmor][3].getKeyFrame(attackStateTimer);
+                if (attackStateTimer < animations[currentWeapon][currentArmor][3].getAnimationDuration()) {
+                    attackStateTimer += dt;
+                } else {
+                    isAttacking = false;
+                }
+                break;
+            case DEAD:
+                region = animations[currentWeapon][currentArmor][4].getKeyFrame(stateTimer);
+                if (animations[currentWeapon][currentArmor][4].isAnimationFinished(stateTimer)) {
+                    if (!isDeadAnimationFinished) {
+                        isDeadAnimationFinished = true;
+                        stateTimer -= dt; // Subtract the delta time to keep the last frame
+                    }
+                }
+                break;
+            default:
+                region = animations[currentWeapon][currentArmor][0].getKeyFrame(stateTimer, true);
+                break;
         }
-        break;
-      default:
-        region = animations[currentWeapon][currentArmor][0].getKeyFrame(stateTimer, true);
-        break;
+        // Flip player if he is running left
+        if ((body.getLinearVelocity().x < 0 || !isRunningRight) && !region.isFlipX()) {
+            region.flip(true, false);
+            isRunningRight = false;
+        } else if ((body.getLinearVelocity().x > 0 || isRunningRight) && region.isFlipX()) {
+            region.flip(true, false);
+            isRunningRight = true;
+        }
+
+        //if the current state is the same as the previous state increase the state timer.
+        //otherwise the state has changed and we need to reset timer.
+        stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        //update previous state
+        previousState = currentState;
+        //return our final adjusted frame
+        return region;
     }
-    // Flip player if he is running left
-    if ((body.getLinearVelocity().x < 0 || !isRunningRight) && !region.isFlipX()) {
-      region.flip(true, false);
-      isRunningRight = false;
-    }
-    else if((body.getLinearVelocity().x > 0 || isRunningRight) && region.isFlipX()){
-      region.flip(true, false);
-      isRunningRight = true;
+
+    public boolean isPaused() {
+        return paused;
     }
 
-    //if the current state is the same as the previous state increase the state timer.
-    //otherwise the state has changed and we need to reset timer.
-    stateTimer = currentState == previousState ? stateTimer + dt : 0;
-    //update previous state
-    previousState = currentState;
-    //return our final adjusted frame
-    return region;
-  }
+    public int getHealth() {
+        return health;
+    }
 
-  public boolean isPaused() {
-    return paused;
-  }
+    public int getStrength() {
+        return strength;
+    }
 
-  public int getHealth() {
-    return health;
-  }
+    public int getDefense() {
+        return defense;
+    }
 
-  public int getStrength() {
-    return strength;
-  }
+    public void pause() {
+        currentState = State.IDLE;
+        body.setLinearVelocity(0, Math.min(body.getLinearVelocity().y, jumpHeight));
+        paused = true;
+    }
 
-  public int getDefense() {
-    return defense;
-  }
-
-  public void pause() {
-    currentState = State.IDLE;
-    body.setLinearVelocity(0, Math.min(body.getLinearVelocity().y, jumpHeight));
-    paused = true;
-  }
-
-  public void resume() {
-    paused = false;
-  }
+    public void resume() {
+        paused = false;
+    }
 }

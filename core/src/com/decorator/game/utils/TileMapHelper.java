@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.decorator.game.objects.Hole;
 import com.decorator.game.objects.door.DoorLocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.player.*;
@@ -49,8 +50,24 @@ public class TileMapHelper {
         //parseEnemies(tiledMap.getLayers().get("enemies").getObjects());
         parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+        parseHoles(tiledMap.getLayers().get("holes").getObjects());
 
         return new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAPS[0]));
+    }
+
+    private void parseHoles(MapObjects mapObjects) {
+        for (MapObject mapObject : mapObjects) {
+            if (!(mapObject instanceof RectangleMapObject)) return;
+            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+            String rectangleName = mapObject.getName();
+            Body body = BodyHelperService.createSensorBody((int) rectangle.getX(), (int) rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight(), gameScreen.getWorld());
+            if (rectangleName.equals("hole")) {
+                gameScreen.setHole(new Hole(rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight(), body));
+            }
+
+        }
     }
 
 
@@ -94,7 +111,8 @@ public class TileMapHelper {
             if (!(mapObject instanceof RectangleMapObject)) return;
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             String rectangleName = mapObject.getName();
-            Body body = getBody(rectangle);
+            Body body = BodyHelperService.createSensorBody((int) rectangle.getX(), (int) rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight(), gameScreen.getWorld());
             if (rectangleName.contains("speedPotion")) {
                 gameScreen.setSpeedPotions(new SpeedPotionEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
@@ -141,12 +159,11 @@ public class TileMapHelper {
                 gameScreen.setDoor(new DoorLocked(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));
             } else if (rectangleName.equals("key")) {
-                Body body = BodyHelperService.createBody(
+                Body body = BodyHelperService.createSensorBody(
                         (int) (rectangle.getX() + rectangle.getWidth() / 2),
                         (int) (rectangle.getY() + rectangle.getHeight() / 2),
                         rectangle.getWidth(),
                         rectangle.getHeight(),
-                        true,
                         gameScreen.getWorld()
                 );
                 gameScreen.setKey(new Key(rectangle.getX(), rectangle.getY(),

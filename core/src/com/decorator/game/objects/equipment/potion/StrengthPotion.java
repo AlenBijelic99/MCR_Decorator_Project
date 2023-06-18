@@ -19,4 +19,14 @@ public class StrengthPotion extends Potion {
     public int addStrength() {
         return super.addStrength() + STRENGTH_INCREASE;
     }
+
+    @Override
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
+    }
 }

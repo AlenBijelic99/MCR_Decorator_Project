@@ -16,11 +16,22 @@ public class BronzeArmor extends Armor{
 
     @Override
     public int addDefense() {
-        return BRONZE_ARMOR_DEFENSE;
+        return super.addDefense() + BRONZE_ARMOR_DEFENSE;
     }
 
     @Override
     public String toString() {
         return "Bronze";
+    }
+
+
+    @Override
+    public void setEquipment(Equipment equipment) {
+        super.setEquipment(equipment);
+    }
+
+    @Override
+    public Equipment getEquipment() {
+        return super.getEquipment();
     }
 }
