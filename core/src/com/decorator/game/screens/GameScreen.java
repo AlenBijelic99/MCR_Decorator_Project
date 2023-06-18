@@ -45,6 +45,13 @@ import com.decorator.game.ui.HUD;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Represents a game screen.
+ *
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
@@ -69,7 +76,11 @@ public class GameScreen extends ScreenAdapter {
     private final List<Hole> holes;
     private FitViewport viewport;
 
-
+    /**
+     * Constructor that creates a new game screen.
+     *
+     * @param camera camera of the game screen
+     */
     public GameScreen(final OrthographicCamera camera) {
         this.camera = camera;
         speedPotions = new LinkedList<>();
@@ -91,8 +102,11 @@ public class GameScreen extends ScreenAdapter {
         doorEntered = false;
         hud = new HUD(batch, player);
 
-
         world.setContactListener(new ContactListener() {
+            /**
+             * Called when two fixtures begin to touch.
+             * @param contact contact between two fixtures
+             */
             @Override
             public void beginContact(Contact contact) {
 
