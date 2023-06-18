@@ -1,7 +1,6 @@
 package com.decorator.game.objects.player.potionEntity;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.decorator.game.objects.player.potionEntity.PotionEntity;
 
 /**
  * Represents a Strength Potion Entity

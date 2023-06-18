@@ -88,9 +88,8 @@ public class PlayerEquipment implements Equipment {
      * @return Equipment basic player's equipment
      */
     @Override
-    public Equipment removeEquipment(Class<Equipment> c) {
+    public void removeEquipment(Class<Equipment> c) {
         System.out.println("No equipment to remove");
-        return this;
     }
 
     /**

@@ -140,8 +140,8 @@ public class GameScreen extends ScreenAdapter {
                         boolean hasWeapon = false;
 
                         Equipment e = player.getCurrentEquipment();
-                        while(!(e instanceof PlayerEquipment)){
-                            if(e instanceof LongSword || e instanceof Dagger) {
+                        while (!(e instanceof PlayerEquipment)) {
+                            if (e instanceof LongSword || e instanceof Dagger) {
                                 hasWeapon = true;
                                 break;
                             }
@@ -159,15 +159,13 @@ public class GameScreen extends ScreenAdapter {
                 }
                 // Collision with one of the long swords
                 for (LongSwordEntity sword : longSwords) {
-                    // change in any case
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
                         //if the player already has a long sword, then dont take this long sword
                         boolean hasLongSword = false;
 
-
                         Equipment e = player.getCurrentEquipment();
-                        while(!(e instanceof PlayerEquipment)){
-                            if(e instanceof LongSword){
+                        while (!(e instanceof PlayerEquipment)) {
+                            if (e instanceof LongSword) {
                                 hasLongSword = true;
                                 break;
                             }
@@ -193,8 +191,8 @@ public class GameScreen extends ScreenAdapter {
                         boolean hasGoldArmor = false;
 
                         Equipment e = player.getCurrentEquipment();
-                        while(!(e instanceof PlayerEquipment)){
-                            if(e instanceof GoldArmor){
+                        while (!(e instanceof PlayerEquipment)) {
+                            if (e instanceof GoldArmor) {
                                 hasGoldArmor = true;
                                 break;
                             }
@@ -219,8 +217,8 @@ public class GameScreen extends ScreenAdapter {
                         // update only if player has no gold armor
                         boolean hasGoldOrSilverArmor = false;
                         Equipment e = player.getCurrentEquipment();
-                        while(!(e instanceof PlayerEquipment)){
-                            if(e instanceof GoldArmor || e instanceof SilverArmor){
+                        while (!(e instanceof PlayerEquipment)) {
+                            if (e instanceof GoldArmor || e instanceof SilverArmor) {
                                 hasGoldOrSilverArmor = true;
                                 break;
                             }
@@ -245,8 +243,8 @@ public class GameScreen extends ScreenAdapter {
                         // update only if player doesnt have any armor
                         boolean hasArmor = false;
                         Equipment e = player.getCurrentEquipment();
-                        while(!(e instanceof PlayerEquipment)){
-                            if(e instanceof Armor){
+                        while (!(e instanceof PlayerEquipment)) {
+                            if (e instanceof Armor) {
                                 hasArmor = true;
                                 break;
                             }
@@ -263,6 +261,7 @@ public class GameScreen extends ScreenAdapter {
 
                     }
                 }
+
                 // Collision with the holes
                 for (Hole hole : holes) {
                     if (contact.getFixtureB().getBody() == hole.getBody()) {
@@ -316,9 +315,9 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-        // Utiliser les dimensions réelles pour configurer votre caméra et votre viewport
         viewport = new FitViewport(screenWidth, screenHeight, camera);
         viewport.apply();
     }
@@ -328,13 +327,9 @@ public class GameScreen extends ScreenAdapter {
         this.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Set the viewport's dimensions for rendering
         viewport.apply();
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
 
-        // Draw the background image
-        batch.end();
         orthogonalTiledMapRenderer.render();
 
         if (!door.isUnlocked()) key.render(batch);
@@ -371,7 +366,7 @@ public class GameScreen extends ScreenAdapter {
             armor.render(batch);
         }
 
-        for(Hole hole : holes){
+        for (Hole hole : holes) {
             hole.render(batch);
         }
 
@@ -384,6 +379,7 @@ public class GameScreen extends ScreenAdapter {
 
         bodiesToDelete.clear();
 
+
         if (doorEntered) {
             endScreen();
             pause();
@@ -395,7 +391,6 @@ public class GameScreen extends ScreenAdapter {
         }
         hud.render();
     }
-
 
 
     private void update() {
@@ -419,7 +414,6 @@ public class GameScreen extends ScreenAdapter {
 
     private void updateCamera() {
         Vector3 position = camera.position;
-        // Mettez les coordonnées de la caméra au centre de l'image
         position.x = Gdx.graphics.getWidth() / 2f;
         position.y = Gdx.graphics.getHeight() / 2f;
         camera.position.set(position);

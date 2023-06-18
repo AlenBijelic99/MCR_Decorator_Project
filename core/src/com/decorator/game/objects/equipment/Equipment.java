@@ -71,5 +71,5 @@ public interface Equipment {
      * @return Equipment
      */
 
-    Equipment removeEquipment(Class<Equipment> c);
+    void removeEquipment(Class<Equipment> c);
 }

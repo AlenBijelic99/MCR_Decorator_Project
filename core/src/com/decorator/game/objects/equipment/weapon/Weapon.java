@@ -46,17 +46,15 @@ public class Weapon extends EquipmentDecorator {
      * Removes the equipment
      *
      * @param c Class of the equipment to remove
-     * @return Equipment after eventual removing of the equipment
      */
     @Override
-    public Equipment removeEquipment(Class<Equipment> c) {
+    public void removeEquipment(Class<Equipment> c) {
         if (equipment.getClass() == c) {
             System.out.println("Removing " + equipment.getClass().getSimpleName());
             equipment = equipment.getEquipment();
         } else if (equipment instanceof EquipmentDecorator) {
             equipment.removeEquipment(c);
         }
-        return equipment;
     }
 
     /**
