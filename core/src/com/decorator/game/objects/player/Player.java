@@ -130,7 +130,7 @@ public class Player extends MovableGameEntity {
     }
 
     public void removeEquipment(Class<? extends Equipment> c) {
-        currentEquipment = currentEquipment.removeEquipment((Class<Equipment>) c);
+        currentEquipment.removeEquipment((Class<Equipment>) c);
     }
     public void setDead(boolean dead) {
         isDead = dead;
