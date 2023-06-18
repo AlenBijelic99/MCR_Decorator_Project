@@ -256,29 +256,29 @@ public class GameScreen extends ScreenAdapter {
                             }
 
                             equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
-
-
-                            if (hasGoldOrSilverArmor) {
-                                break;
-                            }
-                            player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
-                            bodiesToDelete.add(armor.getBody());
-                            goldArmors.remove(armor);
-                            System.out.println("Long Sword equipped");
-                            hud.updateArmorImagePath("assets/armor/gold.png");
-                            System.out.println("Gold Armor equipped");
-
-
-                            player.getCurrentEquipment().removeDecorator(BronzeArmor.class);
-                            player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
-                            bodiesToDelete.add(armor.getBody());
-                            silverArmors.remove(armor);
-                            System.out.println("Silver Armor equipped");
-                            hud.updateArmorImagePath("assets/armor/silver.png");
-
                         }
+
+                        if (hasGoldOrSilverArmor) {
+                            break;
+                        }
+                        player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        goldArmors.remove(armor);
+                        System.out.println("Long Sword equipped");
+                        hud.updateArmorImagePath("assets/armor/gold.png");
+                        System.out.println("Gold Armor equipped");
+
+
+                        player.getCurrentEquipment().removeDecorator(BronzeArmor.class);
+                        player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        silverArmors.remove(armor);
+                        System.out.println("Silver Armor equipped");
+                        hud.updateArmorImagePath("assets/armor/silver.png");
+
                     }
                 }
+
 
                 // Collision with one of the bronze armors
                 for (BronzeArmorEntity armor : bronzeArmors) {
@@ -293,9 +293,9 @@ public class GameScreen extends ScreenAdapter {
                                 break;
                             }
 
-                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
-                        Equipment e = player.getCurrentEquipment();
 
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
+                        }
 
                         if (hasArmor) {
                             break;
@@ -339,21 +339,21 @@ public class GameScreen extends ScreenAdapter {
 
 
             }
-            }
 
-            @Override
-            public void endContact(Contact contact) {
-            }
 
-            @Override
-            public void postSolve(Contact arg0, ContactImpulse arg1) {
-            }
+        @Override
+        public void endContact (Contact contact){
+        }
 
-            @Override
-            public void preSolve(Contact arg0, Manifold arg1) {
-            }
-        });
-    }
+        @Override
+        public void postSolve (Contact arg0, ContactImpulse arg1){
+        }
+
+        @Override
+        public void preSolve (Contact arg0, Manifold arg1){
+        }
+    });
+}
 
     @Override
     public void resize(int width, int height) {
