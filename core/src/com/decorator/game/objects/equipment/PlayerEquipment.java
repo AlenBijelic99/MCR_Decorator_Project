@@ -23,6 +23,7 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Returns the strength of the basic player's equipment.
+     *
      * @return int represent the strength of the equipment
      */
     @Override
@@ -32,6 +33,7 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Returns the speed of the player's equipment.
+     *
      * @return float represent the speed of the equipment
      */
     @Override
@@ -41,6 +43,7 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Returns the jumping capacity of the player's equipment.
+     *
      * @return float represent the jumping capacity of the equipment
      */
     @Override
@@ -50,6 +53,7 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Returns the defense of the player's equipment.
+     *
      * @return int represent the defense of the equipment
      */
     @Override
@@ -59,6 +63,7 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Sets the equipment, but there is no equipment to set since it is the basic player's equipment.
+     *
      * @param equipment equipment
      */
     @Override
@@ -68,7 +73,8 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Returns the equipment.
-     * @return
+     *
+     * @return Equipment basic player's equipment
      */
     @Override
     public Equipment getEquipment() {
@@ -77,6 +83,7 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Removes the equipment, but there is no equipment to remove since it is the basic player's equipment.
+     *
      * @param c class of the equipment to remove
      * @return Equipment basic player's equipment
      */
@@ -88,6 +95,7 @@ public class PlayerEquipment implements Equipment {
 
     /**
      * Returns the name of the player's equipment.
+     *
      * @return String represent the name of the equipment
      */
     @Override
