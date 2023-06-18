@@ -23,7 +23,7 @@ public class Dagger extends Weapon {
 
     @Override
     public int addStrength() {
-         return super.addStrength() + DAGGER_DAMAGE;
+         return  DAGGER_DAMAGE;
     }
 
 
