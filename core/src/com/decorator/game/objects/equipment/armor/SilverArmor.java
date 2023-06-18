@@ -7,6 +7,8 @@ import static com.decorator.game.utils.Constants.SILVER_ARMOR_DEFENSE;
 /**
  * Represents Silver Armor class
  * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
  */
 
 public class SilverArmor extends Armor {

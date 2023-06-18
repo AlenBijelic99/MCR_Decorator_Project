@@ -6,7 +6,9 @@ import com.decorator.game.objects.equipment.EquipmentDecorator;
 /**
  * Armor class that represents the different armors of the player
  *
- * @author Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
  */
 public class Armor extends EquipmentDecorator {
     /**
