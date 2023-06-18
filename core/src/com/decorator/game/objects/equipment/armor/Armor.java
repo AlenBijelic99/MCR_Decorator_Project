@@ -56,7 +56,6 @@ public class Armor extends EquipmentDecorator {
      * Removes the equipment
      *
      * @param c Class of the equipment to remove
-     * @return Equipment after eventual removing of the equipment
      */
     @Override
     public void removeEquipment(Class<Equipment> c) {

@@ -1,6 +1,5 @@
 package com.decorator.game.utils;
 
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class BodyHelperService {
