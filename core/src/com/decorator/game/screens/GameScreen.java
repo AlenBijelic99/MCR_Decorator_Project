@@ -110,6 +110,7 @@ public class GameScreen extends ScreenAdapter {
             @Override
             public void beginContact(Contact contact) {
 
+
                 // Collision with one of the speed potions
                 for (SpeedPotionEntity potion : speedPotions) {
                     if (contact.getFixtureA().getBody() == potion.getBody()) {
