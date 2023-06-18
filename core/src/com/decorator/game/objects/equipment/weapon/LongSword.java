@@ -4,34 +4,64 @@ import com.decorator.game.objects.equipment.Equipment;
 
 import static com.decorator.game.utils.Constants.LONG_SWORD_DAMAGE;
 
+/**
+ * Represents LongSword class
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 public class LongSword extends Weapon {
+    /**
+     * Constructor
+     * @param equipment Equipment
+     */
     public LongSword(Equipment equipment) {
         super(equipment);
     }
 
+    /**
+     * Returns the description of the weapon
+     * @return String describing the weapon
+     */
     @Override
     public String getDescription() {
         return super.getDescription() + this.getClass().getSimpleName();
     }
 
+    /**
+     * Adds the strength of the weapon
+     * @return int representing the strength of the weapon
+     */
     @Override
     public int addStrength() {
         return super.addStrength() + LONG_SWORD_DAMAGE;
     }
 
-    @Override
-    public String toString() {
-        return "LSword";
-    }
-
-
+    /**
+     * Sets the equipment
+     * @param equipment Equipment
+     */
     @Override
     public void setEquipment(Equipment equipment) {
         super.setEquipment(equipment);
     }
 
+    /**
+     * Returns the equipment
+     * @return Equipment
+     */
     @Override
     public Equipment getEquipment() {
         return super.getEquipment();
     }
+
+    /**
+     * Returns the name of the weapon
+     * @return String representing the name of the weapon
+     */
+    @Override
+    public String toString() {
+        return "LSword";
+    }
+
 }
