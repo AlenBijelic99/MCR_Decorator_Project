@@ -17,7 +17,7 @@ public class SilverArmor extends Armor {
 
     @Override
     public int addDefense() {
-        return super.addDefense() + SILVER_ARMOR_DEFENSE;
+        return SILVER_ARMOR_DEFENSE;
     }
 
 

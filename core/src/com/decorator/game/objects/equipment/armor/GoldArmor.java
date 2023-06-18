@@ -17,7 +17,7 @@ public class GoldArmor extends Armor {
 
     @Override
     public int addDefense() {
-        return super.addDefense() + GOLD_ARMOR_DEFENSE;
+        return  GOLD_ARMOR_DEFENSE;
     }
 
 
