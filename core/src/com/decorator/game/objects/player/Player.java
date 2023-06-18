@@ -16,9 +16,7 @@ import com.decorator.game.objects.equipment.weapon.Weapon;
 import com.decorator.game.utils.Constants;
 
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+
 
 public class Player extends MovableGameEntity {
 
@@ -41,7 +39,7 @@ public class Player extends MovableGameEntity {
     private float jumpHeight;
     private int strength;
     private boolean paused;
-    private int health;
+    private final int health;
     private int defense;
     private boolean isRunning;
     private boolean isAttacking;
@@ -53,12 +51,14 @@ public class Player extends MovableGameEntity {
         for (int i = 0; i < WEAPON_NAMES.length; ++i) {
             for (int j = 0; j < ARMOR_NAMES.length; ++j) {
                 Array<TextureRegion> frames = new Array<>();
+
                 // Idle
                 for (int f = 0; f < 1; ++f) {
                     frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[0] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
                 }
                 animations[i][j][0] = new Animation<>(0.3f, frames);
                 frames.clear();
+
                 // Run
                 for (int f = 0; f < 9; ++f) {
                     frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[1] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
@@ -66,7 +66,7 @@ public class Player extends MovableGameEntity {
                 animations[i][j][1] = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
                 frames.clear();
 
-                // Jump
+               // Jump
                 for (int f = 0; f < 1; ++f) {
                     frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[2] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
                 }
@@ -92,8 +92,6 @@ public class Player extends MovableGameEntity {
 
     public Player(float width, float height, Body body) {
         super(width, height, body);
-        //setEquipments(new PlayerEquipment());
-
         health = 100;
         paused = false;
         jumpCount = 0;
@@ -106,7 +104,7 @@ public class Player extends MovableGameEntity {
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
         defense = currentEquipment.addDefense();
-        //this.equipments.add(currentEquipment);
+
         initAnimations();
 
     }
@@ -149,6 +147,7 @@ public class Player extends MovableGameEntity {
     }
 
 
+
     public void setDead(boolean dead) {
         isDead = dead;
     }
@@ -157,13 +156,15 @@ public class Player extends MovableGameEntity {
         return isDead;
     }
 
-    public void setEquipments(Equipment equipment) {
-        currentEquipment = equipment;
+    public void setEquipments(Equipment eq) {
+        currentEquipment = eq;
+        currentEquipment.getDescription();
+
         speed = currentEquipment.addSpeed();
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
         defense = currentEquipment.addDefense();
-        equipment.getDescription();
+        currentEquipment.getDescription();
 
         if (currentEquipment instanceof Weapon) {
             currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(currentEquipment.toString());
@@ -249,6 +250,7 @@ public class Player extends MovableGameEntity {
                 isDeadAnimationFinished = false;
             } else if (isDeadAnimationFinished) {
                 // Restart the game or perform any other action
+
             }
         }
 
@@ -324,7 +326,7 @@ public class Player extends MovableGameEntity {
         }
 
         //if the current state is the same as the previous state increase the state timer.
-        //otherwise the state has changed and we need to reset timer.
+        //otherwise the state has changed, and we need to reset timer.
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         //update previous state
         previousState = currentState;

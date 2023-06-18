@@ -53,29 +53,29 @@ public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final World world;
-    private final Box2DDebugRenderer box2DDebugRenderer;
-    private final TileMapHelper tileMapHelper;
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
-    private HUD hud;
+    private final HUD hud;
 
     private boolean doorEntered;
 
+    // All the elements displayed on the map
     private Player player;
     private Door door;
     private Key key;
-    private List<Enemy> enemies;
-    private List<SpeedPotionEntity> speedPotions;
-    private List<JumpPotionEntity> jumpPotions;
-    private List<StrengthPotionEntity> strengthPotions;
-    private List<DaggerEntity> shortSwords;
-    private List<LongSwordEntity> longSwords;
-    private List<GoldArmorEntity> goldArmors;
-    private List<SilverArmorEntity> silverArmors;
-    private List<BronzeArmorEntity> bronzeArmors;
-    private List<Body> bodiesToDelete;
+    private final List<Enemy> enemies;
+    private final List<SpeedPotionEntity> speedPotions;
+    private final List<JumpPotionEntity> jumpPotions;
+    private final List<StrengthPotionEntity> strengthPotions;
+    private final List<DaggerEntity> shortSwords;
+    private final List<LongSwordEntity> longSwords;
+    private final List<GoldArmorEntity> goldArmors;
+    private final List<SilverArmorEntity> silverArmors;
+    private final List<BronzeArmorEntity> bronzeArmors;
+    private final List<Hole> holes;
+
+    private final List<Body> bodiesToDelete;  // List of bodies to remove from the map
     private Texture backgroundTexture;
-    private FitViewport viewport;
-    private List<Hole> holes;
+    private FitViewport viewport;             // The viewport of the map
 
     public GameScreen(final OrthographicCamera camera) {
         this.camera = camera;
@@ -93,8 +93,8 @@ public class GameScreen extends ScreenAdapter {
         bodiesToDelete = new LinkedList<>();
         batch = new SpriteBatch();
         world = new World(new Vector2(0, Constants.GRAVITY), false);
-        box2DDebugRenderer = new Box2DDebugRenderer();
-        tileMapHelper = new TileMapHelper(this);
+        Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
+        TileMapHelper tileMapHelper = new TileMapHelper(this);
         orthogonalTiledMapRenderer = tileMapHelper.setupMap();
         doorEntered = false;
         hud = new HUD(batch, player);
@@ -153,6 +153,7 @@ public class GameScreen extends ScreenAdapter {
                             break;
                         }
 
+
                         player.setEquipments(new Dagger(player.getCurrentEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         shortSwords.remove(sword);
@@ -163,7 +164,6 @@ public class GameScreen extends ScreenAdapter {
                 }
                 // Collision with one of the long swords
                 for (LongSwordEntity sword : longSwords) {
-                    // change in any case
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
                         //if the player already has a long sword, then dont take this long sword
                         boolean hasLongSword = false;
@@ -182,6 +182,7 @@ public class GameScreen extends ScreenAdapter {
                             break;
                         }
                         player.getCurrentEquipment().removeDecorator(Dagger.class);
+
                         player.setEquipments(new LongSword(player.getCurrentEquipment()));
 
                         bodiesToDelete.add(sword.getBody());
@@ -213,6 +214,8 @@ public class GameScreen extends ScreenAdapter {
                             break;
                         }
                         player.getCurrentEquipment().removeDecorator(GoldArmor.class);
+
+
                         player.setEquipments(new GoldArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         goldArmors.remove(armor);
@@ -237,28 +240,30 @@ public class GameScreen extends ScreenAdapter {
                             }
 
                             equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
+
+
+                            if (hasGoldOrSilverArmor) {
+                                break;
+                            }
+                            player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
+                            bodiesToDelete.add(armor.getBody());
+                            goldArmors.remove(armor);
+                            System.out.println("Long Sword equipped");
+                            hud.updateArmorImagePath("assets/armor/gold.png");
+                            System.out.println("Gold Armor equipped");
+
+
+                            player.getCurrentEquipment().removeDecorator(BronzeArmor.class);
+                            player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
+                            bodiesToDelete.add(armor.getBody());
+                            silverArmors.remove(armor);
+                            System.out.println("Silver Armor equipped");
+                            hud.updateArmorImagePath("assets/armor/silver.png");
+
                         }
-
-                        if (hasGoldOrSilverArmor) {
-                            break;
-                        }
-                        player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
-                        bodiesToDelete.add(armor.getBody());
-                        goldArmors.remove(armor);
-                        System.out.println("Long Sword equipped");
-                        hud.updateArmorImagePath("assets/armor/gold.png");
-                        System.out.println("Gold Armor equipped");
-
-
-                        player.getCurrentEquipment().removeDecorator(BronzeArmor.class);
-                        player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
-                        bodiesToDelete.add(armor.getBody());
-                        silverArmors.remove(armor);
-                        System.out.println("Silver Armor equipped");
-                        hud.updateArmorImagePath("assets/armor/silver.png");
-
                     }
                 }
+
                 // Collision with one of the bronze armors
                 for (BronzeArmorEntity armor : bronzeArmors) {
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
@@ -273,7 +278,8 @@ public class GameScreen extends ScreenAdapter {
                             }
 
                             equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
-                        }
+                        Equipment e = player.getCurrentEquipment();
+
 
                         if (hasArmor) {
                             break;
@@ -317,6 +323,7 @@ public class GameScreen extends ScreenAdapter {
 
 
             }
+            }
 
             @Override
             public void endContact(Contact contact) {
@@ -341,34 +348,21 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        // Load the background image
-        //backgroundTexture = new Texture("assets/backgroundImage/Desert.jpg");
-        // Create a FitViewport with the desired virtual screen size
-        /*float virtualWidth = Gdx.graphics.getWidth(); // TODO change size to min
-        float virtualHeight = Gdx.graphics.getHeight();
-        viewport = new ExtendViewport(1900,1200,virtualWidth, virtualHeight, camera);
-        viewport.apply(true);*/
+
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-        // Utiliser les dimensions réelles pour configurer votre caméra et votre viewport
         viewport = new FitViewport(screenWidth, screenHeight, camera);
         viewport.apply();
     }
 
     @Override
     public void render(float delta) {
-        //super.render(delta);
         this.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Set the viewport's dimensions for rendering
         viewport.apply();
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
 
-        // Draw the background image
-        // batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
         orthogonalTiledMapRenderer.render();
 
         if (!door.isUnlocked()) key.render(batch);
@@ -419,7 +413,6 @@ public class GameScreen extends ScreenAdapter {
         bodiesToDelete.clear();
 
 
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
         if (doorEntered) {
             endScreen();
             pause();
@@ -454,7 +447,6 @@ public class GameScreen extends ScreenAdapter {
 
     private void updateCamera() {
         Vector3 position = camera.position;
-        // Mettez les coordonnées de la caméra au centre de l'image
         position.x = Gdx.graphics.getWidth() / 2f;
         position.y = Gdx.graphics.getHeight() / 2f;
         camera.position.set(position);

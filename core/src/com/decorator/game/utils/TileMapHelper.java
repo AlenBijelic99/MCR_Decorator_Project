@@ -30,22 +30,15 @@ import com.decorator.game.screens.GameScreen;
 import static com.decorator.game.utils.Constants.MAPS;
 
 public class TileMapHelper {
-    private TiledMap tiledMap;
-    private GameScreen gameScreen;
+    private final GameScreen gameScreen;
 
     public TileMapHelper(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
-    /* TODO recheck , moved this part to setupMap
-    tiledMap = new TmxMapLoader().load(MAPS[0]);
-    parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
-    parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());
-    parseDoor(tiledMap.getLayers().get("door").getObjects());
 
-     */
     }
 
     public OrthogonalTiledMapRenderer setupMap() {
-        tiledMap = new TmxMapLoader().load(MAPS[0]);
+        TiledMap tiledMap = new TmxMapLoader().load(MAPS[0]);
         parseDoor(tiledMap.getLayers().get("door").getObjects());
         //parseEnemies(tiledMap.getLayers().get("enemies").getObjects());
         parseMapEquipments(tiledMap.getLayers().get("equipments").getObjects());

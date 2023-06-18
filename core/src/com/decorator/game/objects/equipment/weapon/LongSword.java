@@ -1,9 +1,15 @@
 package com.decorator.game.objects.equipment.weapon;
 
 import com.decorator.game.objects.equipment.Equipment;
-import com.decorator.game.objects.equipment.PlayerEquipment;
 
 import static com.decorator.game.utils.Constants.LONG_SWORD_DAMAGE;
+
+/**
+ * Represents LongSword class
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 
 public class LongSword extends Weapon {
     public LongSword(Equipment equipment) {

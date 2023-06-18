@@ -1,6 +1,5 @@
 package com.decorator.game.objects.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,7 +20,6 @@ public class Enemy extends MovableGameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        //TODO change by enemy sprite for the image and change region by frame once enemy emplemented
         batch.begin();
         TextureRegion region = new TextureRegion(new Texture("assets/player/idle/Player_Dagger_Bronze_0.png"));
         batch.draw(region, x - width / 2, y - height / 2, region.getRegionWidth() * 2, region.getRegionHeight() * 2);

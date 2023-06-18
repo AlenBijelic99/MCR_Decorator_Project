@@ -1,6 +1,12 @@
 package com.decorator.game.objects.equipment;
+/**
+ * Reprsents the equipment decorator.
+ *
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 
-import com.badlogic.gdx.physics.box2d.Body;
 
 public abstract class EquipmentDecorator implements Equipment {
     private Equipment decoratedEquipment;
@@ -43,8 +49,8 @@ public abstract class EquipmentDecorator implements Equipment {
         if(decoratorClass.isInstance(decoratedEquipment)) {
             return decoratedEquipment;
         } else {
-             decoratedEquipment.removeDecorator(decoratorClass);
-             return this;
+            decoratedEquipment.removeDecorator(decoratorClass);
+            return this;
         }
     }
     public Equipment getDecoratedEquipment() {
