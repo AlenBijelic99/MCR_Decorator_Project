@@ -92,7 +92,6 @@ public class Player extends MovableGameEntity {
 
     public Player(float width, float height, Body body) {
         super(width, height, body);
-        //setEquipments(new PlayerEquipment());
 
         health = 100;
         paused = false;
@@ -118,15 +117,7 @@ public class Player extends MovableGameEntity {
     }
 
     public Equipment getCurrentEquipment() {
-        /*
-        for (Equipment e : this.equipments) {
-            if (e.getClass().equals(c)) {
-                return e;
-            }
-        }*/
         return currentEquipment;
-
-        //return null;
     }
 
     public void removeEquipment(Class<? extends Equipment> c) {
@@ -142,24 +133,7 @@ public class Player extends MovableGameEntity {
     public void setEquipments(Equipment eq) {
         currentEquipment = eq;
         currentEquipment.getDescription();
-        // this.equipment = equipment;
-        /*this.equipment = new LinkedList<>();
-        speed = eq.addSpeed();
-        jumpHeight = eq.addJump();
-        strength = eq.addStrength();
-        defense = eq.addDefense();
-        this.equipment.add(eq);
-        eq.getDescription();
 
-       /* for (int i = 0; i < this.equipment.size(); i++) {
-            Equipment e = equipment.get(i);
-            speed = e.addSpeed();
-            jumpHeight = e.addJump();
-            strength = e.addStrength();
-            defense = e.addDefense();
-            e.getDescription();
-        }
-*/
         speed = currentEquipment.addSpeed();
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();

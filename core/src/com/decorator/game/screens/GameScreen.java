@@ -52,29 +52,29 @@ public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final World world;
-    private final Box2DDebugRenderer box2DDebugRenderer;
-    private final TileMapHelper tileMapHelper;
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
-    private HUD hud;
+    private final HUD hud;
 
     private boolean doorEntered;
 
+    // All the elements displayed on the map
     private Player player;
     private Door door;
     private Key key;
-    private List<Enemy> enemies;
-    private List<SpeedPotionEntity> speedPotions;
-    private List<JumpPotionEntity> jumpPotions;
-    private List<StrengthPotionEntity> strengthPotions;
-    private List<DaggerEntity> shortSwords;
-    private List<LongSwordEntity> longSwords;
-    private List<GoldArmorEntity> goldArmors;
-    private List<SilverArmorEntity> silverArmors;
-    private List<BronzeArmorEntity> bronzeArmors;
-    private List<Body> bodiesToDelete;
+    private final List<Enemy> enemies;
+    private final List<SpeedPotionEntity> speedPotions;
+    private final List<JumpPotionEntity> jumpPotions;
+    private final List<StrengthPotionEntity> strengthPotions;
+    private final List<DaggerEntity> shortSwords;
+    private final List<LongSwordEntity> longSwords;
+    private final List<GoldArmorEntity> goldArmors;
+    private final List<SilverArmorEntity> silverArmors;
+    private final List<BronzeArmorEntity> bronzeArmors;
+    private final List<Hole> holes;
+
+    private final List<Body> bodiesToDelete;  // List of bodies to remove from the map
     private Texture backgroundTexture;
-    private FitViewport viewport;
-    private List<Hole> holes;
+    private FitViewport viewport;             // The viewport of the map
 
     public GameScreen(final OrthographicCamera camera) {
         this.camera = camera;
@@ -92,8 +92,8 @@ public class GameScreen extends ScreenAdapter {
         bodiesToDelete = new LinkedList<>();
         batch = new SpriteBatch();
         world = new World(new Vector2(0, Constants.GRAVITY), false);
-        box2DDebugRenderer = new Box2DDebugRenderer();
-        tileMapHelper = new TileMapHelper(this);
+        Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
+        TileMapHelper tileMapHelper = new TileMapHelper(this);
         orthogonalTiledMapRenderer = tileMapHelper.setupMap();
         doorEntered = false;
         hud = new HUD(batch, player);
@@ -263,22 +263,6 @@ public class GameScreen extends ScreenAdapter {
 
                     }
                 }
-                // Collision with punch
-                /*
-                if (contact.getFixtureA().getBody() == player.getBody() && player.attak()) {
-                    for (Enemy enemy : enemies) {
-                        if (contact.getFixtureA().getBody() == enemy.getBody()) {
-                            enemy.setHealth(enemy.getHealth() - player.getEquipment().getDamage());
-                            System.out.println("Enemy health: " + enemy.getHealth());
-                            if (enemy.getHealth() <= 0) {
-                                bodiesToDelete.add(enemy.getBody());
-                                enemies.remove(enemy);
-                                System.out.println("Enemy killed");
-                            }
-                        }
-                    }
-                }
-                */
                 // Collision with the holes
                 for (Hole hole : holes) {
                     if (contact.getFixtureB().getBody() == hole.getBody()) {
@@ -332,13 +316,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        // Load the background image
-        //backgroundTexture = new Texture("assets/backgroundImage/Desert.jpg");
-        // Create a FitViewport with the desired virtual screen size
-        /*float virtualWidth = Gdx.graphics.getWidth(); // TODO change size to min
-        float virtualHeight = Gdx.graphics.getHeight();
-        viewport = new ExtendViewport(1900,1200,virtualWidth, virtualHeight, camera);
-        viewport.apply(true);*/
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         // Utiliser les dimensions réelles pour configurer votre caméra et votre viewport
@@ -348,7 +325,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        //super.render(delta);
         this.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -358,7 +334,6 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
 
         // Draw the background image
-        // batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         orthogonalTiledMapRenderer.render();
 
@@ -409,8 +384,6 @@ public class GameScreen extends ScreenAdapter {
 
         bodiesToDelete.clear();
 
-
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
         if (doorEntered) {
             endScreen();
             pause();

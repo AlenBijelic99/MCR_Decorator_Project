@@ -17,10 +17,17 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.decorator.game.objects.equipment.Equipment;
 import com.decorator.game.objects.player.Player;
 
-
+/**
+ * Class that represents the HUD of the game
+ *
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 public class HUD implements Disposable {
     public Stage stage;
 
+    // The information to display on the HUD
     private boolean keyGot;
     private int speedPotionCount;
     private int jumpPotionCount;
@@ -84,6 +91,7 @@ public class HUD implements Disposable {
 
         BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/VT323.fnt"));
 
+        // The graphical components of the HUD
         Label healthLabel = new Label(String.format("%-10s%03d", "Health:", player.getHealth()), new Label.LabelStyle(font, Color.WHITE));
         Label attackLabel = new Label(String.format("%-10s%03d", "Attack:", player.getStrength()), new Label.LabelStyle(font, Color.WHITE));
         Label defenseLabel = new Label(String.format("%-10s%03d", "Defense:", player.getDefense()), new Label.LabelStyle(font, Color.WHITE));
@@ -114,6 +122,7 @@ public class HUD implements Disposable {
         region = new TextureRegion(new Texture(path));
         Image key = new Image(region);
 
+        // The table that will display all the player's info
         table.add(healthLabel).left().padTop(TOP_PADDING).padLeft(LEFT_PADDING);
         table.add(armor).size(IMAGE_SIZE).padLeft(LEFT_PADDING * 2).padTop(TOP_PADDING);
         table.add(sword).size(IMAGE_SIZE).padTop(TOP_PADDING);
