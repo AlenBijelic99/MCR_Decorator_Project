@@ -2,9 +2,6 @@ package com.decorator.game.objects.equipment;
 
 import com.decorator.game.utils.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PlayerEquipment implements Equipment {
 
   @Override
@@ -43,8 +40,9 @@ public class PlayerEquipment implements Equipment {
   }
 
   @Override
-  public void removeEquipment(Class<Equipment> c) {
+  public Equipment removeEquipment(Class<Equipment> c) {
     System.out.println("No equipment to remove");
+    return this;
   }
 
   @Override

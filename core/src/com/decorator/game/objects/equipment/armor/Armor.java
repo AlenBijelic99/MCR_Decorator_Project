@@ -27,4 +27,15 @@ public class Armor extends EquipmentDecorator {
     public Equipment getEquipment() {
         return super.getEquipment();
     }
+
+    @Override
+    public Equipment removeEquipment(Class<Equipment> c) {
+        if (equipment.getClass() == c) {
+            System.out.println("Removing " + equipment.getClass().getSimpleName());
+            equipment = equipment.getEquipment();
+        } else if (equipment instanceof EquipmentDecorator) {
+            equipment.removeEquipment(c);
+        }
+        return equipment;
+    }
 }

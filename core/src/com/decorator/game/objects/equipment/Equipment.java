@@ -9,5 +9,5 @@ public interface Equipment {
     int addDefense();
     void setEquipment(Equipment equipment);
     Equipment getEquipment();
-    void removeEquipment(Class<Equipment> c);
+    Equipment removeEquipment(Class<Equipment> c);
 }

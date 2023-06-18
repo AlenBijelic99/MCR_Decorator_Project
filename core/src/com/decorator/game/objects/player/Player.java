@@ -37,7 +37,6 @@ public class Player extends MovableGameEntity {
     private float stateTimer;
     private int jumpCount;
     private boolean isRunningRight;
-    private List<Equipment> equipments;
     private Equipment currentEquipment;
     private float jumpHeight;
     private int strength;
@@ -102,13 +101,11 @@ public class Player extends MovableGameEntity {
         previousState = State.IDLE;
         stateTimer = 0;
         isRunningRight = true;
-        this.equipments = new LinkedList<>();
         currentEquipment = new PlayerEquipment();
         speed = currentEquipment.addSpeed();
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
         defense = currentEquipment.addDefense();
-        this.equipments.add(currentEquipment);
         initAnimations();
 
     }
@@ -131,13 +128,9 @@ public class Player extends MovableGameEntity {
 
         //return null;
     }
-    public List<Equipment> getEquipments() {
-        return equipments;
-    }
-
 
     public void removeEquipment(Class<? extends Equipment> c) {
-        currentEquipment.removeEquipment((Class<Equipment>) c);
+        currentEquipment = currentEquipment.removeEquipment((Class<Equipment>) c);
     }
     public void setDead(boolean dead) {
         isDead = dead;
@@ -148,8 +141,6 @@ public class Player extends MovableGameEntity {
 
     public void setEquipments(Equipment eq) {
         currentEquipment = eq;
-        this.equipments.add(eq);
-
         currentEquipment.getDescription();
         // this.equipment = equipment;
         /*this.equipment = new LinkedList<>();

@@ -18,6 +18,7 @@ import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.armor.BronzeArmor;
 import com.decorator.game.objects.equipment.armor.GoldArmor;
@@ -136,16 +137,17 @@ public class GameScreen extends ScreenAdapter {
                 for (DaggerEntity sword : shortSwords) {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
                         // if the player already has a long sword, then dont take this daggeer
-                        boolean hasLongSword = false;
+                        boolean hasWeapon = false;
 
-
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof LongSword) {
-                                hasLongSword = true;
+                        Equipment e = player.getCurrentEquipment();
+                        while(!(e instanceof PlayerEquipment)){
+                            if(e instanceof LongSword || e instanceof Dagger){
+                                hasWeapon = true;
                                 break;
                             }
+                            e = e.getEquipment();
                         }
-                        if (hasLongSword) {
+                        if (hasWeapon) {
                             break;
                         }
 
@@ -164,11 +166,13 @@ public class GameScreen extends ScreenAdapter {
                         boolean hasLongSword = false;
 
 
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof LongSword) {
+                        Equipment e = player.getCurrentEquipment();
+                        while(!(e instanceof PlayerEquipment)){
+                            if(e instanceof LongSword){
                                 hasLongSword = true;
                                 break;
                             }
+                            e = e.getEquipment();
                         }
                         if (hasLongSword) {
                             break;
@@ -189,11 +193,13 @@ public class GameScreen extends ScreenAdapter {
                         // if the player already has a gold armor, then dont take this gold armor
                         boolean hasGoldArmor = false;
 
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof GoldArmor) {
+                        Equipment e = player.getCurrentEquipment();
+                        while(!(e instanceof PlayerEquipment)){
+                            if(e instanceof GoldArmor){
                                 hasGoldArmor = true;
                                 break;
                             }
+                            e = e.getEquipment();
                         }
                         if (hasGoldArmor) {
                             break;
@@ -213,11 +219,13 @@ public class GameScreen extends ScreenAdapter {
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
                         // update only if player has no gold armor
                         boolean hasGoldOrSilverArmor = false;
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof GoldArmor || e instanceof SilverArmor) {
+                        Equipment e = player.getCurrentEquipment();
+                        while(!(e instanceof PlayerEquipment)){
+                            if(e instanceof GoldArmor || e instanceof SilverArmor){
                                 hasGoldOrSilverArmor = true;
                                 break;
                             }
+                            e = e.getEquipment();
                         }
                         if (hasGoldOrSilverArmor) {
                             break;
@@ -237,11 +245,13 @@ public class GameScreen extends ScreenAdapter {
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
                         // update only if player doesnt have any armor
                         boolean hasArmor = false;
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof Armor) {
+                        Equipment e = player.getCurrentEquipment();
+                        while(!(e instanceof PlayerEquipment)){
+                            if(e instanceof Armor){
                                 hasArmor = true;
                                 break;
                             }
+                            e = e.getEquipment();
                         }
                         if (hasArmor) {
                             break;

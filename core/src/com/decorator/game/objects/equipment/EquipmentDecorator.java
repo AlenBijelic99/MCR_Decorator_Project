@@ -1,8 +1,5 @@
 package com.decorator.game.objects.equipment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EquipmentDecorator implements Equipment {
     protected Equipment equipment;
 
@@ -51,25 +48,13 @@ public class EquipmentDecorator implements Equipment {
     }
 
     @Override
-    public void removeEquipment(Class<Equipment> decoratorToRemove) {
-        List<Class<? extends Equipment>> decoratorsToRemove = new ArrayList<>();
-        decoratorsToRemove.add(decoratorToRemove);
-        setEquipment(removeDecoratorsRecursively(decoratorsToRemove, getEquipment()));
-    }
-
-    private Equipment removeDecoratorsRecursively(List<Class<? extends Equipment>> decoratorsToRemove, Equipment currentEquipment) {
-        Equipment decoratedEquipment = currentEquipment;
-
-        if (currentEquipment instanceof EquipmentDecorator) {
-            EquipmentDecorator decorator = (EquipmentDecorator) currentEquipment;
-
-            if (decoratorsToRemove.contains(decorator.getClass())) {
-                decoratedEquipment = decorator.getEquipment();
-            } else {
-                decorator.setEquipment(removeDecoratorsRecursively(decoratorsToRemove, decorator.getEquipment()));
-            }
+    public Equipment removeEquipment(Class<Equipment> c) {
+        if (equipment.getClass() == c) {
+            System.out.println("Removing " + equipment.getClass().getSimpleName());
+            equipment = equipment.getEquipment();
+        } else if (equipment instanceof EquipmentDecorator) {
+            equipment.removeEquipment(c);
         }
-
-        return decoratedEquipment;
+        return equipment;
     }
 }
