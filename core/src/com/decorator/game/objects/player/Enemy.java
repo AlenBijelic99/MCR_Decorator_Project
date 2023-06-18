@@ -6,8 +6,22 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.decorator.game.utils.Constants;
 
+/**
+ * Represents an enemy.
+ *
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 public class Enemy extends MovableGameEntity {
 
+    /**
+     * Constructor with arguments.
+     *
+     * @param width  width of the enemy
+     * @param height height of the enemy
+     * @param body   body of the enemy
+     */
     public Enemy(float width, float height, Body body) {
         super(width, height, body);
     }
