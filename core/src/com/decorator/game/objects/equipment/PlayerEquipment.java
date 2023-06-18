@@ -1,102 +1,101 @@
 package com.decorator.game.objects.equipment;
-
+import com.badlogic.gdx.physics.box2d.Body;
 import com.decorator.game.utils.Constants;
 
-/**
- * Represents the player's equipment.
- *
- * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
- * @version : 11.0.12
- * @since : 17.05.2023
- */
+import java.util.LinkedList;
+import java.util.List;
 public class PlayerEquipment implements Equipment {
-    /**
-     * Returns the description of the player's equipment.
-     *
-     * @return String represent the description of the equipment
-     */
+    private List<Equipment> equipmentList;
 
+    public PlayerEquipment() {
+        equipmentList = new LinkedList<>();
+    }
+    public void addEquipment(Equipment equipment){
+        equipmentList.add(equipment);
+    }
+
+    public void removeEquipment(Equipment equipment) {
+        equipmentList.remove(equipment);
+    }
     @Override
     public String getDescription() {
-        return "Player equipment";
+        StringBuilder description = new StringBuilder("Player's equipment: ");
+        for (Equipment equipment : equipmentList) {
+            description.append(equipment.getDescription()).append(", ");
+        }
+        // Remove the trailing comma and space
+        if (equipmentList.size() > 0) {
+            description.setLength(description.length() - 2);
+        }
+        return description.toString();
     }
 
-    /**
-     * Returns the strength of the basic player's equipment.
-     *
-     * @return int represent the strength of the equipment
-     */
+
     @Override
     public int addStrength() {
-        return 10;
+        int totalStrength = 0;
+        for (Equipment equipment : equipmentList) {
+            totalStrength += equipment.addStrength();
+        }
+        return totalStrength;
     }
 
-    /**
-     * Returns the speed of the player's equipment.
-     *
-     * @return float represent the speed of the equipment
-     */
+
     @Override
     public float addSpeed() {
-        return Constants.PLAYER_SPEED;
+        float totalSpeed = Constants.PLAYER_SPEED;
+        for (Equipment equipment : equipmentList) {
+            totalSpeed += equipment.addSpeed();
+        }
+        return totalSpeed;
     }
 
-    /**
-     * Returns the jumping capacity of the player's equipment.
-     *
-     * @return float represent the jumping capacity of the equipment
-     */
+
+
     @Override
     public float addJump() {
-        return Constants.MAX_JUMPING_HEIGHT;
+        float totalJump = Constants.MAX_JUMPING_HEIGHT;
+        for (Equipment equipment : equipmentList) {
+            totalJump += equipment.addJump();
+        }
+        return totalJump;
     }
 
-    /**
-     * Returns the defense of the player's equipment.
-     *
-     * @return int represent the defense of the equipment
-     */
     @Override
     public int addDefense() {
-        return 0;
+        int totalDefense = 0;
+        for (Equipment equipment : equipmentList) {
+            totalDefense += equipment.addDefense();
+        }
+        return totalDefense;
     }
-
-    /**
-     * Sets the equipment, but there is no equipment to set since it is the basic player's equipment.
-     *
-     * @param equipment equipment
-     */
     @Override
-    public void setEquipment(Equipment equipment) {
-        System.out.println("No equipment to set");
+    public int addAttack() {
+        int totalAttack = 0;
+        for (Equipment equipment : equipmentList) {
+            totalAttack += equipment.addAttack();
+        }
+        return totalAttack;
     }
 
-    /**
-     * Returns the equipment.
-     *
-     * @return Equipment basic player's equipment
-     */
     @Override
-    public Equipment getEquipment() {
-        return this;
+    public Equipment removeDecorator(Class<? extends Equipment> decoratorClass) {
+        List<Equipment> updatedEquipmentList = new LinkedList<>();
+        Equipment removedDecorator = null;
+
+        for (Equipment equipment : equipmentList) {
+            if (decoratorClass.isInstance(equipment)) {
+                removedDecorator = equipment;
+            } else {
+                updatedEquipmentList.add(equipment);
+            }
+        }
+
+        equipmentList = updatedEquipmentList;
+        return removedDecorator;
     }
 
-    /**
-     * Removes the equipment, but there is no equipment to remove since it is the basic player's equipment.
-     *
-     * @param c class of the equipment to remove
-     * @return Equipment basic player's equipment
-     */
-    @Override
-    public void removeEquipment(Class<Equipment> c) {
-        System.out.println("No equipment to remove");
-    }
 
-    /**
-     * Returns the name of the player's equipment.
-     *
-     * @return String represent the name of the equipment
-     */
     @Override
     public String toString() {
         return "Player equipment";

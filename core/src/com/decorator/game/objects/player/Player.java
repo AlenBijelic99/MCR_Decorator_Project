@@ -104,9 +104,35 @@ public class Player extends MovableGameEntity {
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
         defense = currentEquipment.addDefense();
+
         initAnimations();
 
     }
+/*
+    public void displayEquipment() {
+        System.out.println(currentEquipment.getDescription());
+    }
+
+    public int getTotalStrength() {
+        return currentEquipment.addStrength();
+    }
+
+    public float getTotalSpeed() {
+        return currentEquipment.addSpeed();
+    }
+
+    public float getTotalJump() {
+        return currentEquipment.addJump();
+    }
+
+    public int getTotalDefense() {
+        return currentEquipment.addDefense();
+    }
+
+    public int getTotalAttack() {
+        return currentEquipment.addAttack();
+    }
+*/
 
     @Override
     public void update() {
@@ -118,12 +144,9 @@ public class Player extends MovableGameEntity {
     public Equipment getCurrentEquipment() {
 
         return currentEquipment;
-
     }
 
-    public void removeEquipment(Class<? extends Equipment> c) {
-        currentEquipment.removeEquipment((Class<Equipment>) c);
-    }
+
 
     public void setDead(boolean dead) {
         isDead = dead;
@@ -141,6 +164,7 @@ public class Player extends MovableGameEntity {
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
         defense = currentEquipment.addDefense();
+        currentEquipment.getDescription();
 
         if (currentEquipment instanceof Weapon) {
             currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(currentEquipment.toString());
@@ -150,6 +174,33 @@ public class Player extends MovableGameEntity {
 
     }
 
+    public Equipment getEquipment() {
+        return currentEquipment;
+    }
+    public int getHealth() {
+        return health;
+    }
+
+    public int getStrength() {
+        if (currentEquipment == null) {
+            return 0;
+        }
+        return strength;
+    }
+
+    public int getDefense() {
+        if (currentEquipment == null) {
+            return 0;
+        }
+        return currentEquipment.addDefense();
+    }
+
+    public int getAttack() {
+        if (currentEquipment == null) {
+            return 0;
+        }
+        return currentEquipment.addAttack();
+    }
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
@@ -287,17 +338,6 @@ public class Player extends MovableGameEntity {
         return paused;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public int getStrength() {
-        return strength;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
 
     public void pause() {
         currentState = State.IDLE;

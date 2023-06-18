@@ -35,31 +35,10 @@ public class SilverArmor extends Armor {
      */
     @Override
     public int addDefense() {
-        return super.addDefense() + SILVER_ARMOR_DEFENSE;
+        return SILVER_ARMOR_DEFENSE;
     }
 
-    /**
-     * Sets the equipment
-     * @param equipment Equipment
-     */
-    @Override
-    public void setEquipment(Equipment equipment) {
-        super.setEquipment(equipment);
-    }
 
-    /**
-     * Returns the equipment
-     * @return Equipment
-     */
-    @Override
-    public Equipment getEquipment() {
-        return super.getEquipment();
-    }
-
-    /**
-     * Returns the name of the armor
-     * @return String representing the name of the armor
-     */
     @Override
     public String toString() {
         return "Silver";

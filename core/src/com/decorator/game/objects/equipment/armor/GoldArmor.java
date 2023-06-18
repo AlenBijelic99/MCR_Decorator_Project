@@ -4,6 +4,7 @@ import com.decorator.game.objects.equipment.Equipment;
 
 import static com.decorator.game.utils.Constants.GOLD_ARMOR_DEFENSE;
 
+
 /**
  * Represents Gold Armor class
  *
@@ -38,33 +39,9 @@ public class GoldArmor extends Armor {
      */
     @Override
     public int addDefense() {
-        return super.addDefense() + GOLD_ARMOR_DEFENSE;
+        return  GOLD_ARMOR_DEFENSE;
     }
 
-    /**
-     * Sets the equipment
-     *
-     * @param equipment Equipment
-     */
-    @Override
-    public void setEquipment(Equipment equipment) {
-        super.setEquipment(equipment);
-    }
-
-    /**
-     * Returns the equipment
-     *
-     * @return Equipment
-     */
-    @Override
-    public Equipment getEquipment() {
-        return super.getEquipment();
-    }
-
-    /**
-     * Returns the name of the armor
-     * @return String representing the name of the armor
-     */
     @Override
     public String toString() {
         return "Gold";

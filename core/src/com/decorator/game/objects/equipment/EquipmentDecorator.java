@@ -1,5 +1,4 @@
 package com.decorator.game.objects.equipment;
-
 /**
  * Reprsents the equipment decorator.
  *
@@ -7,111 +6,60 @@ package com.decorator.game.objects.equipment;
  * @version : 11.0.12
  * @since : 17.05.2023
  */
-public class EquipmentDecorator implements Equipment {
-    protected Equipment equipment;
 
-    /**
-     * Constructor that creates an equipment decorator.
-     *
-     * @param equipment equipment
-     */
-    public EquipmentDecorator(Equipment equipment) {
-        this.equipment = equipment;
+
+public abstract class EquipmentDecorator implements Equipment {
+    private Equipment decoratedEquipment;
+
+    public EquipmentDecorator(Equipment decoratedEquipment) {
+        this.decoratedEquipment = decoratedEquipment;
     }
 
-    /**
-     * Returns the description of the decorated equipment.
-     *
-     * @return String represent the name of the equipment
-     */
     @Override
     public String getDescription() {
-        return equipment.getDescription();
+        return decoratedEquipment.getDescription();
     }
 
-    /**
-     * Returns the strength of the decorated equipment.
-     *
-     * @return int represent the strength of the equipment
-     */
     @Override
     public int addStrength() {
-        return equipment.addStrength();
+        return decoratedEquipment.addStrength();
     }
 
-    /**
-     * Returns the speed of the decorated equipment.
-     *
-     * @return float represent the speed of the equipment
-     */
     @Override
     public float addSpeed() {
-        return equipment.addSpeed();
+        return decoratedEquipment.addSpeed();
     }
 
-    /**
-     * Returns the jumping capacity of the decorated equipment.
-     *
-     * @return float represent the jumping capacity of the equipment
-     */
     @Override
     public float addJump() {
-        return equipment.addJump();
+        return decoratedEquipment.addJump();
     }
 
-    /**
-     * Returns the defense of the decorated equipment.
-     *
-     * @return int represent the defense of the equipment
-     */
     @Override
     public int addDefense() {
-        return equipment.addDefense();
+        return decoratedEquipment.addDefense();
     }
 
-    /**
-     * Sets the equipment.
-     *
-     * @param equipment equipment
-     */
     @Override
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
+    public int addAttack() {
+        return decoratedEquipment.addAttack();
     }
-
-    /**
-     * Returns the equipment.
-     *
-     * @return equipment
-     */
     @Override
-    public Equipment getEquipment() {
-        return equipment;
-    }
-
-    /**
-     * Adds an equipment.
-     *
-     * @param c class of the equipment to remove
-     * @return equipment after eventually removing the decorated equipment
-     */
-    @Override
-    public void removeEquipment(Class<Equipment> c) {
-        if (equipment.getClass() == c) {
-            System.out.println("Removing " + equipment.getClass().getSimpleName());
-            equipment = equipment.getEquipment();
-        } else if (equipment instanceof EquipmentDecorator) {
-            equipment.removeEquipment(c);
+    public Equipment removeDecorator(Class<? extends Equipment> decoratorClass) {
+        if(decoratorClass.isInstance(decoratedEquipment)) {
+            return decoratedEquipment;
+        } else {
+            decoratedEquipment.removeDecorator(decoratorClass);
+            return this;
         }
     }
+    public Equipment getDecoratedEquipment() {
+        return decoratedEquipment;
+    }
 
-    /**
-     * Returns the name of the decorated equipment.
-     *
-     * @return String represent the name of the equipment
-     */
+
     @Override
     public String toString() {
-        return equipment.toString();
+        return decoratedEquipment.toString();
     }
 }

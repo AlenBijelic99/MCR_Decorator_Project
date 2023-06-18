@@ -49,27 +49,8 @@ public interface Equipment {
      * @return int represent the defense of the equipment
      */
     int addDefense();
+    int addAttack();
+    Equipment removeDecorator(Class<? extends Equipment> decoratorClass);
 
-    /**
-     * Sets the equipment.
-     *
-     * @param equipment equipment
-     */
-    void setEquipment(Equipment equipment);
-
-    /**
-     * Returns the equipment.
-     *
-     * @return Equipment
-     */
-    Equipment getEquipment();
-
-    /**
-     * Removes the equipment.
-     *
-     * @param c class of the equipment to remove
-     * @return Equipment
-     */
-
-    void removeEquipment(Class<Equipment> c);
 }
+

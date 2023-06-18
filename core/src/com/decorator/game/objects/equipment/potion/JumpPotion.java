@@ -28,18 +28,11 @@ public class JumpPotion extends Potion {
         return super.getDescription() + ", Jump Potion";
     }
 
+
+
     @Override
     public float addJump() {
         return super.addJump() * JUMP_MULTIPLIER;
     }
 
-    @Override
-    public void setEquipment(Equipment equipment) {
-        super.setEquipment(equipment);
-    }
-
-    @Override
-    public Equipment getEquipment() {
-        return super.getEquipment();
-    }
 }

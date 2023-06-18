@@ -13,11 +13,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.decorator.game.objects.GameEntity;
 import com.decorator.game.objects.Hole;
 import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.EquipmentDecorator;
 import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.armor.BronzeArmor;
@@ -29,17 +31,14 @@ import com.decorator.game.objects.equipment.potion.StrengthPotion;
 import com.decorator.game.objects.equipment.weapon.Dagger;
 import com.decorator.game.objects.equipment.weapon.LongSword;
 import com.decorator.game.objects.player.*;
-import com.decorator.game.objects.player.armorEntity.ArmorEntity;
 import com.decorator.game.objects.player.armorEntity.BronzeArmorEntity;
 import com.decorator.game.objects.player.armorEntity.GoldArmorEntity;
 import com.decorator.game.objects.player.armorEntity.SilverArmorEntity;
 import com.decorator.game.objects.player.potionEntity.JumpPotionEntity;
-import com.decorator.game.objects.player.potionEntity.PotionEntity;
 import com.decorator.game.objects.player.potionEntity.SpeedPotionEntity;
 import com.decorator.game.objects.player.potionEntity.StrengthPotionEntity;
 import com.decorator.game.objects.player.weaponEntity.DaggerEntity;
 import com.decorator.game.objects.player.weaponEntity.LongSwordEntity;
-import com.decorator.game.objects.player.weaponEntity.WeaponEntity;
 import com.decorator.game.utils.Constants;
 import com.decorator.game.utils.TileMapHelper;
 import com.decorator.game.ui.HUD;
@@ -47,6 +46,13 @@ import com.decorator.game.ui.HUD;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Represents a game screen.
+ *
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
@@ -76,6 +82,11 @@ public class GameScreen extends ScreenAdapter {
     private Texture backgroundTexture;
     private FitViewport viewport;             // The viewport of the map
 
+    /**
+     * Constructor that creates a new game screen.
+     *
+     * @param camera camera of the game screen
+     */
     public GameScreen(final OrthographicCamera camera) {
         this.camera = camera;
         speedPotions = new LinkedList<>();
@@ -98,10 +109,14 @@ public class GameScreen extends ScreenAdapter {
         doorEntered = false;
         hud = new HUD(batch, player);
 
-
         world.setContactListener(new ContactListener() {
+            /**
+             * Called when two fixtures begin to touch.
+             * @param contact contact between two fixtures
+             */
             @Override
             public void beginContact(Contact contact) {
+
 
                 // Collision with one of the speed potions
                 for (SpeedPotionEntity potion : speedPotions) {
@@ -136,23 +151,28 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the short swords
                 for (DaggerEntity sword : shortSwords) {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
-                        // if the player already has a long sword, then dont take this daggeer
+                        Equipment equipment = player.getEquipment();
+                        // if the player already has a long sword, then don't take this dagger
                         boolean hasWeapon = false;
 
-                        Equipment e = player.getCurrentEquipment();
-                        while (!(e instanceof PlayerEquipment)) {
-                            if (e instanceof LongSword || e instanceof Dagger) {
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof LongSword || equipment instanceof Dagger) {
                                 hasWeapon = true;
                                 break;
                             }
-                            e = e.getEquipment();
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasWeapon) {
                             break;
                         }
+
+
                         player.setEquipments(new Dagger(player.getCurrentEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         shortSwords.remove(sword);
+                        player.getCurrentEquipment().removeDecorator(Dagger.class);
                         System.out.println("Dagger Sword equipped");
                         hud.updateSwordImagePath("weapons/Dagger.png");
                     }
@@ -160,75 +180,95 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the long swords
                 for (LongSwordEntity sword : longSwords) {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
-                        //if the player already has a long sword, then dont take this long sword
+                        //if the player already has a long sword, then don't take this long sword
                         boolean hasLongSword = false;
+                        Equipment equipment = player.getEquipment();
 
-                        Equipment e = player.getCurrentEquipment();
-                        while (!(e instanceof PlayerEquipment)) {
-                            if (e instanceof LongSword) {
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof LongSword) {
                                 hasLongSword = true;
                                 break;
                             }
-                            e = e.getEquipment();
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasLongSword) {
                             break;
                         }
+                        player.getCurrentEquipment().removeDecorator(Dagger.class);
 
-                        player.removeEquipment(Dagger.class);
                         player.setEquipments(new LongSword(player.getCurrentEquipment()));
+
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
+
                         System.out.println("Long Sword equipped");
                         hud.updateSwordImagePath("weapons/LSword.png");
+
                     }
                 }
                 // Collision with one of the gold armors
                 for (GoldArmorEntity armor : goldArmors) {
 
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
-                        // if the player already has a gold armor, then dont take this gold armor
+                        // if the player already has a gold armor, then don't take this gold armor
                         boolean hasGoldArmor = false;
+                        Equipment equipment = player.getEquipment();
 
-                        Equipment e = player.getCurrentEquipment();
-                        while (!(e instanceof PlayerEquipment)) {
-                            if (e instanceof GoldArmor) {
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof GoldArmor) {
                                 hasGoldArmor = true;
                                 break;
                             }
-                            e = e.getEquipment();
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasGoldArmor) {
                             break;
                         }
-                        player.removeEquipment(SilverArmor.class);
-                        player.removeEquipment(BronzeArmor.class);
+                        player.getCurrentEquipment().removeDecorator(GoldArmor.class);
+
+
                         player.setEquipments(new GoldArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         goldArmors.remove(armor);
-                        System.out.println("Gold Armor equipped");
+                        System.out.println("Long Sword equipped");
                         hud.updateArmorImagePath("assets/armor/gold.png");
+                        System.out.println("Gold Armor equipped");
                     }
                 }
                 // Collision with one of the silver armors
                 for (SilverArmorEntity armor : silverArmors) {
 
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
-                        // update only if player has no gold armor
+                        // update only if player has bronze armor
+
                         boolean hasGoldOrSilverArmor = false;
-                        Equipment e = player.getCurrentEquipment();
-                        while (!(e instanceof PlayerEquipment)) {
-                            if (e instanceof GoldArmor || e instanceof SilverArmor) {
+                        Equipment equipment = player.getEquipment();
+
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof GoldArmor || equipment instanceof SilverArmor) {
                                 hasGoldOrSilverArmor = true;
                                 break;
                             }
-                            e = e.getEquipment();
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasGoldOrSilverArmor) {
                             break;
                         }
+                        player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        goldArmors.remove(armor);
+                        System.out.println("Long Sword equipped");
+                        hud.updateArmorImagePath("assets/armor/gold.png");
+                        System.out.println("Gold Armor equipped");
 
-                        player.removeEquipment(BronzeArmor.class);
+
+                        player.getCurrentEquipment().removeDecorator(BronzeArmor.class);
                         player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         silverArmors.remove(armor);
@@ -237,22 +277,29 @@ public class GameScreen extends ScreenAdapter {
 
                     }
                 }
+
+
                 // Collision with one of the bronze armors
                 for (BronzeArmorEntity armor : bronzeArmors) {
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
-                        // update only if player doesnt have any armor
+                        // update only if player doesn't have any armor
                         boolean hasArmor = false;
-                        Equipment e = player.getCurrentEquipment();
-                        while (!(e instanceof PlayerEquipment)) {
-                            if (e instanceof Armor) {
+                        Equipment equipment = player.getEquipment();
+
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof BronzeArmor) {
                                 hasArmor = true;
                                 break;
                             }
-                            e = e.getEquipment();
+
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasArmor) {
                             break;
                         }
+
                         player.setEquipments(new BronzeArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         bronzeArmors.remove(armor);
@@ -292,19 +339,20 @@ public class GameScreen extends ScreenAdapter {
 
             }
 
-            @Override
-            public void endContact(Contact contact) {
-            }
 
-            @Override
-            public void postSolve(Contact arg0, ContactImpulse arg1) {
-            }
+        @Override
+        public void endContact (Contact contact){
+        }
 
-            @Override
-            public void preSolve(Contact arg0, Manifold arg1) {
-            }
-        });
-    }
+        @Override
+        public void postSolve (Contact arg0, ContactImpulse arg1){
+        }
+
+        @Override
+        public void preSolve (Contact arg0, Manifold arg1){
+        }
+    });
+}
 
     @Override
     public void resize(int width, int height) {
@@ -315,7 +363,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
         viewport = new FitViewport(screenWidth, screenHeight, camera);
@@ -324,72 +371,86 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        this.update();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        viewport.apply();
-        batch.setProjectionMatrix(camera.combined);
-
+        update();
+        clearScreen();
+        setupProjection();
         orthogonalTiledMapRenderer.render();
+        renderEntities();
+        renderHoles(holes);
+        renderEnemies(enemies);
+        destroyBodies();
+        handleEnteredDoor();
+        handlePlayerDeath();
+        hud.render();
+    }
 
-        if (!door.isUnlocked()) key.render(batch);
-        door.render(batch);
+    private void renderEntities(List<? extends GameEntity> entities) {
+        for (GameEntity entity : entities) {
+            entity.render(batch);
+        }
+    }
 
-        player.render(batch);
 
-        for (PotionEntity potion : speedPotions) {
-            potion.render(batch);
-        }
-
-        for (PotionEntity potion : jumpPotions) {
-            potion.render(batch);
-        }
-
-        for (PotionEntity potion : strengthPotions) {
-            potion.render(batch);
-        }
-
-        for (WeaponEntity sword : shortSwords) {
-            sword.render(batch);
-        }
-
-        for (WeaponEntity sword : longSwords) {
-            sword.render(batch);
-        }
-        for (ArmorEntity armor : goldArmors) {
-            armor.render(batch);
-        }
-        for (ArmorEntity armor : silverArmors) {
-            armor.render(batch);
-        }
-        for (ArmorEntity armor : bronzeArmors) {
-            armor.render(batch);
-        }
-
-        for (Hole hole : holes) {
-            hole.render(batch);
-        }
-
+    private void renderEnemies(List<Enemy> enemies) {
         for (Enemy enemy : enemies) {
             enemy.render(batch);
         }
+    }
+
+    private void clearScreen() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    private void setupProjection() {
+        viewport.apply();
+        batch.setProjectionMatrix(camera.combined);
+    }
+
+    private void renderEntities() {
+        if (!door.isUnlocked()) {
+            key.render(batch);
+        }
+        door.render(batch);
+        player.render(batch);
+        renderEntities(speedPotions);
+        renderEntities(jumpPotions);
+        renderEntities(strengthPotions);
+        renderEntities(shortSwords);
+        renderEntities(longSwords);
+        renderEntities(goldArmors);
+        renderEntities(silverArmors);
+        renderEntities(bronzeArmors);
+
+    }
+
+
+    private void renderHoles(List<Hole> holes) {
+        for (Hole hole : holes) {
+            hole.render(batch);
+        }
+    }
+
+
+    private void destroyBodies() {
         for (Body body : bodiesToDelete) {
             world.destroyBody(body);
         }
-
         bodiesToDelete.clear();
+    }
 
-
+    private void handleEnteredDoor() {
         if (doorEntered) {
             endScreen();
             pause();
         }
+    }
 
+    private void handlePlayerDeath() {
         if (player.isDead()) {
             deadScreen();
             pause();
         }
-        hud.render();
     }
 
 
@@ -404,11 +465,12 @@ public class GameScreen extends ScreenAdapter {
             Gdx.app.exit();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            if (!player.isPaused()) {
-                pause();
-            } else {
+            if (player.isPaused()) {
                 resume();
+            } else {
+                pause();
             }
+
         }
     }
 

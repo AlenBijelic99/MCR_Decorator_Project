@@ -21,6 +21,7 @@ public abstract class StaticGameEntity extends GameEntity {
      * @param width     Width of the entity
      * @param height    Height of the entity
      * @param body      Body of the entity
+
      */
     public StaticGameEntity(float x, float y, float width, float height, Body body) {
         super(width, height, body);
@@ -31,6 +32,7 @@ public abstract class StaticGameEntity extends GameEntity {
     /**
      * @return the path of the texture's image
      */
+
     public abstract String getImagePath();
 
     @Override

@@ -4,6 +4,7 @@ import com.decorator.game.objects.equipment.Equipment;
 
 import static com.decorator.game.utils.Constants.DAGGER_DAMAGE;
 
+
 /**
  * Represents Dagger class
  *
@@ -32,33 +33,6 @@ public class Dagger extends Weapon {
         return super.getDescription() + " ,Dagger";
     }
 
-    /**
-     * Adds the strength of the weapon
-     *
-     * @return int representing the strength of the weapon
-     */
-    @Override
-    public int addStrength() {
-        return super.addStrength() + DAGGER_DAMAGE;
-    }
-
-    /**
-     * Sets the equipment
-     * @param equipment Equipment
-     */
-    @Override
-    public void setEquipment(Equipment equipment) {
-        super.setEquipment(equipment);
-    }
-
-    /**
-     * Returns the equipment
-     * @return Equipment
-     */
-    @Override
-    public Equipment getEquipment() {
-        return super.getEquipment();
-    }
 
     /**
      * Returns the name of the weapon
@@ -69,4 +43,12 @@ public class Dagger extends Weapon {
     public String toString() {
         return "Dagger";
     }
+
+    @Override
+    public int addStrength() {
+         return  DAGGER_DAMAGE;
+    }
+
+
+
 }

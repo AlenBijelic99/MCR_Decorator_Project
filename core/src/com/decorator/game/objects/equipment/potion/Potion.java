@@ -10,9 +10,11 @@ import com.decorator.game.objects.equipment.EquipmentDecorator;
  * @version : 11.0.12
  * @since : 17.05.2023
  */
-public class Potion extends EquipmentDecorator {
+public abstract class Potion extends EquipmentDecorator {
+
     /**
      * Constructor of the Potion
+     *
      * @param equipment The equipment to decorate it with a Potion
      */
     public Potion(Equipment equipment) {
@@ -21,16 +23,14 @@ public class Potion extends EquipmentDecorator {
 
     @Override
     public String getDescription() {
-        return super.getDescription() + ", " + this.getClass().getSimpleName();
+        return super.getDescription() + this.getClass().getSimpleName();
     }
 
-    @Override
-    public void setEquipment(Equipment equipment) {
-        super.setEquipment(equipment);
-    }
 
     @Override
-    public Equipment getEquipment() {
-        return super.getEquipment();
+    public String toString() {
+        return "None";
     }
+
+
 }

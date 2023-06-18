@@ -34,41 +34,12 @@ public class BronzeArmor extends Armor {
 
     /**
      * Returns the defense of the armor
+     *
      * @return int representing the defense of the armor
      */
     @Override
     public int addDefense() {
-        return super.addDefense() + BRONZE_ARMOR_DEFENSE;
-    }
-
-
-    /**
-     * Sets the equipment
-     *
-     * @param equipment Equipment to set
-     */
-    @Override
-    public void setEquipment(Equipment equipment) {
-        super.setEquipment(equipment);
-    }
-
-    /**
-     * Returns the equipment
-     *
-     * @return Equipment
-     */
-    @Override
-    public Equipment getEquipment() {
-        return super.getEquipment();
-    }
-
-    /**
-     * Returns the name of the armor
-     * @return String representing the name of the armor
-     */
-    @Override
-    public String toString() {
-        return "Bronze";
+        return BRONZE_ARMOR_DEFENSE;
     }
 
 }

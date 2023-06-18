@@ -28,18 +28,10 @@ public class SpeedPotion extends Potion {
         return super.getDescription() + ", Speed Potion";
     }
 
+
     @Override
     public float addSpeed() {
         return super.addSpeed() * SPEED_MULTIPLIER;
     }
 
-    @Override
-    public void setEquipment(Equipment equipment) {
-        super.setEquipment(equipment);
-    }
-
-    @Override
-    public Equipment getEquipment() {
-        return super.getEquipment();
-    }
 }
