@@ -18,6 +18,8 @@ import com.decorator.game.objects.door.Door;
 import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.EquipmentDecorator;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.armor.BronzeArmor;
 import com.decorator.game.objects.equipment.armor.GoldArmor;
@@ -135,29 +137,26 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the short swords
                 for (DaggerEntity sword : shortSwords) {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
-                        // if the player already has a long sword, then dont take this daggeer
                         boolean hasLongSword = false;
-                        boolean hasDagger = false;
+                        Equipment equipment = player.getEquipment();
 
-
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof LongSword) {
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof LongSword) {
                                 hasLongSword = true;
                                 break;
-                            } else if (e instanceof Dagger) {
-                                hasDagger = true;
-                                break;
-
                             }
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
-                        if (hasLongSword || hasDagger) {
+
+                        if (hasLongSword) {
                             break;
                         }
-
 
                         player.setEquipments(new Dagger(player.getCurrentEquipment()));
                         bodiesToDelete.add(sword.getBody());
                         shortSwords.remove(sword);
+                        player.getCurrentEquipment().removeDecorator(Dagger.class);
                         System.out.println("Dagger Sword equipped");
                         hud.updateSwordImagePath("weapons/Dagger.png");
                     }
@@ -168,23 +167,29 @@ public class GameScreen extends ScreenAdapter {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
                         //if the player already has a long sword, then dont take this long sword
                         boolean hasLongSword = false;
+                        Equipment equipment = player.getEquipment();
 
-
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof LongSword) {
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof LongSword) {
                                 hasLongSword = true;
                                 break;
                             }
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasLongSword) {
                             break;
                         }
-
+                        player.getCurrentEquipment().removeDecorator(Dagger.class);
                         player.setEquipments(new LongSword(player.getCurrentEquipment()));
+
                         bodiesToDelete.add(sword.getBody());
                         longSwords.remove(sword);
+
                         System.out.println("Long Sword equipped");
                         hud.updateSwordImagePath("weapons/LSword.png");
+
                     }
                 }
                 // Collision with one of the gold armors
@@ -193,39 +198,59 @@ public class GameScreen extends ScreenAdapter {
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
                         // if the player already has a gold armor, then dont take this gold armor
                         boolean hasGoldArmor = false;
+                        Equipment equipment = player.getEquipment();
 
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof GoldArmor) {
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof GoldArmor) {
                                 hasGoldArmor = true;
                                 break;
                             }
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasGoldArmor) {
                             break;
                         }
+                        player.getCurrentEquipment().removeDecorator(GoldArmor.class);
                         player.setEquipments(new GoldArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         goldArmors.remove(armor);
-                        System.out.println("Gold Armor equipped");
+                        System.out.println("Long Sword equipped");
                         hud.updateArmorImagePath("assets/armor/gold.png");
+                        System.out.println("Gold Armor equipped");
                     }
                 }
                 // Collision with one of the silver armors
                 for (SilverArmorEntity armor : silverArmors) {
 
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
-                        // update only if player has no gold armor
+                        // update only if player has bronze armor
+
                         boolean hasGoldOrSilverArmor = false;
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof GoldArmor || e instanceof SilverArmor) {
+                        Equipment equipment = player.getEquipment();
+
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof GoldArmor || equipment instanceof SilverArmor) {
                                 hasGoldOrSilverArmor = true;
                                 break;
                             }
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasGoldOrSilverArmor) {
                             break;
                         }
+                        player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
+                        bodiesToDelete.add(armor.getBody());
+                        goldArmors.remove(armor);
+                        System.out.println("Long Sword equipped");
+                        hud.updateArmorImagePath("assets/armor/gold.png");
+                        System.out.println("Gold Armor equipped");
 
+
+                        player.getCurrentEquipment().removeDecorator(BronzeArmor.class);
                         player.setEquipments(new SilverArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         silverArmors.remove(armor);
@@ -239,15 +264,21 @@ public class GameScreen extends ScreenAdapter {
                     if (contact.getFixtureA().getBody() == armor.getBody()) {
                         // update only if player doesnt have any armor
                         boolean hasArmor = false;
-                        for (Equipment e : player.getEquipments()) {
-                            if (e instanceof Armor) {
+                        Equipment equipment = player.getEquipment();
+
+                        while (equipment instanceof EquipmentDecorator) {
+                            if (equipment instanceof BronzeArmor) {
                                 hasArmor = true;
                                 break;
                             }
+
+                            equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
+
                         if (hasArmor) {
                             break;
                         }
+
                         player.setEquipments(new BronzeArmor(player.getCurrentEquipment()));
                         bodiesToDelete.add(armor.getBody());
                         bronzeArmors.remove(armor);
@@ -256,22 +287,7 @@ public class GameScreen extends ScreenAdapter {
 
                     }
                 }
-                // Collision with punch
-                /*
-                if (contact.getFixtureA().getBody() == player.getBody() && player.attak()) {
-                    for (Enemy enemy : enemies) {
-                        if (contact.getFixtureA().getBody() == enemy.getBody()) {
-                            enemy.setHealth(enemy.getHealth() - player.getEquipment().getDamage());
-                            System.out.println("Enemy health: " + enemy.getHealth());
-                            if (enemy.getHealth() <= 0) {
-                                bodiesToDelete.add(enemy.getBody());
-                                enemies.remove(enemy);
-                                System.out.println("Enemy killed");
-                            }
-                        }
-                    }
-                }
-                */
+
                 // Collision with the holes
                 for (Hole hole : holes) {
                     if (contact.getFixtureB().getBody() == hole.getBody()) {
@@ -389,7 +405,7 @@ public class GameScreen extends ScreenAdapter {
             armor.render(batch);
         }
 
-        for(Hole hole : holes){
+        for (Hole hole : holes) {
             hole.render(batch);
         }
 
@@ -415,7 +431,6 @@ public class GameScreen extends ScreenAdapter {
         }
         hud.render();
     }
-
 
 
     private void update() {

@@ -1,6 +1,7 @@
 package com.decorator.game.objects.equipment.potion;
 
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 
 public class StrengthPotion extends Potion {
 
@@ -15,8 +16,14 @@ public class StrengthPotion extends Potion {
         return super.getDescription() + ", Strength Potion";
     }
 
+
+
     @Override
     public int addStrength() {
         return super.addStrength() + STRENGTH_INCREASE;
     }
+
+
+
+
 }

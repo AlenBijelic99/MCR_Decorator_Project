@@ -1,6 +1,7 @@
 package com.decorator.game.objects.equipment.armor;
 
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 
 import static com.decorator.game.utils.Constants.BRONZE_ARMOR_DEFENSE;
 
@@ -19,8 +20,11 @@ public class BronzeArmor extends Armor{
         return super.addDefense() + BRONZE_ARMOR_DEFENSE;
     }
 
+
+
     @Override
     public String toString() {
         return "Bronze";
     }
-}
+
+ }

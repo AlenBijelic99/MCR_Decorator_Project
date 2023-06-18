@@ -2,8 +2,11 @@ package com.decorator.game.objects.equipment.armor;
 
 import com.decorator.game.objects.equipment.Equipment;
 import com.decorator.game.objects.equipment.EquipmentDecorator;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 
-public class Armor extends EquipmentDecorator {
+import static com.decorator.game.utils.Constants.DAGGER_DAMAGE;
+
+public abstract class Armor extends EquipmentDecorator {
     public Armor(Equipment equipment) {
         super(equipment);
     }
@@ -13,8 +16,11 @@ public class Armor extends EquipmentDecorator {
         return super.getDescription() + this.getClass().getSimpleName();
     }
 
+
     @Override
     public String toString() {
         return "None";
     }
+
+
 }

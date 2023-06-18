@@ -16,6 +16,7 @@ import com.decorator.game.objects.equipment.weapon.Weapon;
 import com.decorator.game.utils.Constants;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +37,6 @@ public class Player extends MovableGameEntity {
     private float stateTimer;
     private int jumpCount;
     private boolean isRunningRight;
-    private List<Equipment> equipments;
     private Equipment currentEquipment;
     private float jumpHeight;
     private int strength;
@@ -101,16 +101,40 @@ public class Player extends MovableGameEntity {
         previousState = State.IDLE;
         stateTimer = 0;
         isRunningRight = true;
-        this.equipments = new LinkedList<>();
         currentEquipment = new PlayerEquipment();
         speed = currentEquipment.addSpeed();
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
         defense = currentEquipment.addDefense();
-        this.equipments.add(currentEquipment);
+        //this.equipments.add(currentEquipment);
         initAnimations();
 
     }
+/*
+    public void displayEquipment() {
+        System.out.println(currentEquipment.getDescription());
+    }
+
+    public int getTotalStrength() {
+        return currentEquipment.addStrength();
+    }
+
+    public float getTotalSpeed() {
+        return currentEquipment.addSpeed();
+    }
+
+    public float getTotalJump() {
+        return currentEquipment.addJump();
+    }
+
+    public int getTotalDefense() {
+        return currentEquipment.addDefense();
+    }
+
+    public int getTotalAttack() {
+        return currentEquipment.addAttack();
+    }
+*/
 
     @Override
     public void update() {
@@ -120,63 +144,26 @@ public class Player extends MovableGameEntity {
     }
 
     public Equipment getCurrentEquipment() {
-        /*
-        for (Equipment e : this.equipments) {
-            if (e.getClass().equals(c)) {
-                return e;
-            }
-        }*/
+
         return currentEquipment;
-
-        //return null;
-    }
-    public List<Equipment> getEquipments() {
-        return equipments;
     }
 
 
-    public void removeEquipment(Class c) {
-        for (Equipment e : this.equipments) {
-            if (e.getClass().equals(c)) {
-                this.equipments.remove(e);
-                return;
-            }
-        }
-    }
     public void setDead(boolean dead) {
         isDead = dead;
     }
+
     public boolean isDead() {
         return isDead;
     }
 
-    public void setEquipments(Equipment eq) {
-        currentEquipment = eq;
-        this.equipments.add(eq);
-
-        currentEquipment.getDescription();
-        // this.equipment = equipment;
-        /*this.equipment = new LinkedList<>();
-        speed = eq.addSpeed();
-        jumpHeight = eq.addJump();
-        strength = eq.addStrength();
-        defense = eq.addDefense();
-        this.equipment.add(eq);
-        eq.getDescription();
-
-       /* for (int i = 0; i < this.equipment.size(); i++) {
-            Equipment e = equipment.get(i);
-            speed = e.addSpeed();
-            jumpHeight = e.addJump();
-            strength = e.addStrength();
-            defense = e.addDefense();
-            e.getDescription();
-        }
-*/
+    public void setEquipments(Equipment equipment) {
+        currentEquipment = equipment;
         speed = currentEquipment.addSpeed();
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
         defense = currentEquipment.addDefense();
+        equipment.getDescription();
 
         if (currentEquipment instanceof Weapon) {
             currentWeapon = Arrays.asList(WEAPON_NAMES).indexOf(currentEquipment.toString());
@@ -186,6 +173,33 @@ public class Player extends MovableGameEntity {
 
     }
 
+    public Equipment getEquipment() {
+        return currentEquipment;
+    }
+    public int getHealth() {
+        return health;
+    }
+
+    public int getStrength() {
+        if (currentEquipment == null) {
+            return 0;
+        }
+        return strength;
+    }
+
+    public int getDefense() {
+        if (currentEquipment == null) {
+            return 0;
+        }
+        return currentEquipment.addDefense();
+    }
+
+    public int getAttack() {
+        if (currentEquipment == null) {
+            return 0;
+        }
+        return currentEquipment.addAttack();
+    }
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
@@ -322,17 +336,6 @@ public class Player extends MovableGameEntity {
         return paused;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public int getStrength() {
-        return strength;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
 
     public void pause() {
         currentState = State.IDLE;

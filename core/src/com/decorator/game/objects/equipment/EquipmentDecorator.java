@@ -1,39 +1,59 @@
 package com.decorator.game.objects.equipment;
 
-public class EquipmentDecorator implements Equipment {
-    private final Equipment equipment;
+import com.badlogic.gdx.physics.box2d.Body;
 
-    public EquipmentDecorator(Equipment equipment) {
-        this.equipment = equipment;
+public abstract class EquipmentDecorator implements Equipment {
+    private Equipment decoratedEquipment;
+
+    public EquipmentDecorator(Equipment decoratedEquipment) {
+        this.decoratedEquipment = decoratedEquipment;
     }
 
     @Override
     public String getDescription() {
-        return equipment.getDescription();
+        return decoratedEquipment.getDescription();
     }
 
     @Override
     public int addStrength() {
-        return equipment.addStrength();
+        return decoratedEquipment.addStrength();
     }
 
     @Override
     public float addSpeed() {
-        return equipment.addSpeed();
+        return decoratedEquipment.addSpeed();
     }
 
     @Override
     public float addJump() {
-        return equipment.addJump();
+        return decoratedEquipment.addJump();
     }
 
     @Override
     public int addDefense() {
-        return equipment.addDefense();
+        return decoratedEquipment.addDefense();
     }
 
     @Override
+    public int addAttack() {
+        return decoratedEquipment.addAttack();
+    }
+    @Override
+    public Equipment removeDecorator(Class<? extends Equipment> decoratorClass) {
+        if(decoratorClass.isInstance(decoratedEquipment)) {
+            return decoratedEquipment;
+        } else {
+             decoratedEquipment.removeDecorator(decoratorClass);
+             return this;
+        }
+    }
+    public Equipment getDecoratedEquipment() {
+        return decoratedEquipment;
+    }
+
+
+    @Override
     public String toString() {
-        return equipment.toString();
+        return decoratedEquipment.toString();
     }
 }

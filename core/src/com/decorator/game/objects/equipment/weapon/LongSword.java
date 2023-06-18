@@ -1,6 +1,7 @@
 package com.decorator.game.objects.equipment.weapon;
 
 import com.decorator.game.objects.equipment.Equipment;
+import com.decorator.game.objects.equipment.PlayerEquipment;
 
 import static com.decorator.game.utils.Constants.LONG_SWORD_DAMAGE;
 
@@ -19,8 +20,10 @@ public class LongSword extends Weapon {
         return super.addStrength() + LONG_SWORD_DAMAGE;
     }
 
+
     @Override
     public String toString() {
         return "LSword";
     }
+
 }
