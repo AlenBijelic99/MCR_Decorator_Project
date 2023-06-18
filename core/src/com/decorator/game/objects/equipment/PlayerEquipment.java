@@ -33,7 +33,7 @@ public class PlayerEquipment implements Equipment {
 
     @Override
     public int addStrength() {
-        int totalStrength = 0;
+        int totalStrength = 10;
         for (Equipment equipment : equipmentList) {
             totalStrength += equipment.addStrength();
         }

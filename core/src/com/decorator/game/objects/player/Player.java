@@ -108,31 +108,6 @@ public class Player extends MovableGameEntity {
         initAnimations();
 
     }
-/*
-    public void displayEquipment() {
-        System.out.println(currentEquipment.getDescription());
-    }
-
-    public int getTotalStrength() {
-        return currentEquipment.addStrength();
-    }
-
-    public float getTotalSpeed() {
-        return currentEquipment.addSpeed();
-    }
-
-    public float getTotalJump() {
-        return currentEquipment.addJump();
-    }
-
-    public int getTotalDefense() {
-        return currentEquipment.addDefense();
-    }
-
-    public int getTotalAttack() {
-        return currentEquipment.addAttack();
-    }
-*/
 
     @Override
     public void update() {
