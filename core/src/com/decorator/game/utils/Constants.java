@@ -11,6 +11,6 @@ public class Constants {
     public static final int LONG_SWORD_DAMAGE = 100;
     public static final int BRONZE_ARMOR_DEFENSE = 30;
     public static final int SILVER_ARMOR_DEFENSE = 50;
-    public static final int GOLD_ARMOR_DEFENSE = 50;
+    public static final int GOLD_ARMOR_DEFENSE = 100;
     public static final String[] MAPS = {"maps/level1map.tmx"};
 }
