@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.decorator.game.objects.Hole;
 import com.decorator.game.objects.door.DoorLocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.player.*;
@@ -54,10 +55,18 @@ public class TileMapHelper {
         return new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAPS[0]));
     }
 
-    private void parseHoles(MapObjects holes) {
-        for (MapObject hole : holes) {
-            if ((hole instanceof RectangleMapObject)) return;
-            createStaticBody((PolygonMapObject)  hole);
+    private void parseHoles(MapObjects mapObjects) {
+        for (MapObject mapObject : mapObjects) {
+            if (!(mapObject instanceof RectangleMapObject)) return;
+            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+            String rectangleName = mapObject.getName();
+            Body body = BodyHelperService.createSensorBody((int) rectangle.getX(), (int) rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight(), gameScreen.getWorld());
+            if (rectangleName.equals("hole")) {
+                gameScreen.setHole(new Hole(rectangle.getX(), rectangle.getY(),
+                        rectangle.getWidth(), rectangle.getHeight(), body));
+            }
+
         }
     }
 
@@ -102,8 +111,8 @@ public class TileMapHelper {
             if (!(mapObject instanceof RectangleMapObject)) return;
             Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
             String rectangleName = mapObject.getName();
-            Body body = BodyHelperService.createSensorBody((int)rectangle.getX(), (int)rectangle.getY(),
-                    rectangle.getWidth(), rectangle.getHeight(),gameScreen.getWorld());
+            Body body = BodyHelperService.createSensorBody((int) rectangle.getX(), (int) rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight(), gameScreen.getWorld());
             if (rectangleName.contains("speedPotion")) {
                 gameScreen.setSpeedPotions(new SpeedPotionEntity(rectangle.getX(), rectangle.getY(),
                         rectangle.getWidth(), rectangle.getHeight(), body));

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="60" height="38" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="125">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="60" height="38" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="134">
  <tileset firstgid="1" source="Images.tsx"/>
  <tileset firstgid="5" source="sand.tsx"/>
  <tileset firstgid="261" source="jungle.tsx"/>
@@ -103,24 +103,12 @@
 </data>
  </layer>
  <objectgroup id="17" name="holes">
-  <object id="119" x="260.707" y="1187.08">
-   <polygon points="0,0 153.857,-0.917949 154.46,28.9154 -1.20672,27.9974"/>
-  </object>
-  <object id="120" x="642.969" y="1184.91">
-   <polygon points="0,0 123.547,-0.907692 124.031,28.5923 -0.968992,27.6846"/>
-  </object>
-  <object id="121" x="865" y="1184">
-   <polygon points="0,0 127.5,-1 128,31.5 -1,30.5"/>
-  </object>
-  <object id="122" x="1089.98" y="1185.91">
-   <polygon points="0,0 125.523,-0.907692 126.016,28.5923 -0.984496,27.6846"/>
-  </object>
-  <object id="123" x="1377.73" y="1186.91">
-   <polygon points="0,0 92.907,-0.907692 93.2713,28.5923 -0.728682,27.6846"/>
-  </object>
-  <object id="124" x="1634.71" y="1187.91">
-   <polygon points="0,0 90.9302,-0.907692 91.2868,28.5923 -0.713178,27.6846"/>
-  </object>
+  <object id="125" name="hole" x="640" y="1182.67" width="128" height="33.3333"/>
+  <object id="126" name="hole" x="866.667" y="1185.33" width="126.667" height="32"/>
+  <object id="127" name="hole" x="1090.67" y="1184" width="124" height="29.3333"/>
+  <object id="131" name="hole" x="1412" y="1026" width="58.6667" height="30.6666"/>
+  <object id="132" name="hole" x="1667.33" y="1024.67" width="60" height="30.6666"/>
+  <object id="133" name="hole" x="258" y="1177.33" width="158" height="35.3333"/>
  </objectgroup>
  <objectgroup id="5" name="objects">
   <object id="37" x="5.01258" y="964.111">
