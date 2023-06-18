@@ -10,7 +10,7 @@ public class Potion extends EquipmentDecorator {
 
     @Override
     public String getDescription() {
-        return super.getDescription() + this.getClass().getSimpleName();
+        return super.getDescription() + ", " + this.getClass().getSimpleName();
     }
 
     @Override
