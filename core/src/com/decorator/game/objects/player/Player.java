@@ -10,15 +10,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.decorator.game.objects.equipment.Equipment;
-import com.decorator.game.objects.equipment.EquipmentDecorator;
 import com.decorator.game.objects.equipment.PlayerEquipment;
 import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.weapon.Weapon;
 import com.decorator.game.utils.Constants;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+
 
 public class Player extends MovableGameEntity {
 
@@ -41,7 +39,7 @@ public class Player extends MovableGameEntity {
     private float jumpHeight;
     private int strength;
     private boolean paused;
-    private int health;
+    private final int health;
     private int defense;
     private boolean isRunning;
     private boolean isAttacking;
@@ -53,12 +51,14 @@ public class Player extends MovableGameEntity {
         for (int i = 0; i < WEAPON_NAMES.length; ++i) {
             for (int j = 0; j < ARMOR_NAMES.length; ++j) {
                 Array<TextureRegion> frames = new Array<>();
+
                 // Idle
                 for (int f = 0; f < 1; ++f) {
                     frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[0] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
                 }
                 animations[i][j][0] = new Animation<>(0.3f, frames);
                 frames.clear();
+
                 // Run
                 for (int f = 0; f < 9; ++f) {
                     frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[1] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
@@ -66,7 +66,7 @@ public class Player extends MovableGameEntity {
                 animations[i][j][1] = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
                 frames.clear();
 
-                // Jump
+               // Jump
                 for (int f = 0; f < 1; ++f) {
                     frames.add(new TextureRegion(new Texture("player/" + ACTIONS_NAMES[2] + "/Player_" + WEAPON_NAMES[i] + "_" + ARMOR_NAMES[j] + "_" + f + ".png")));
                 }
@@ -92,8 +92,6 @@ public class Player extends MovableGameEntity {
 
     public Player(float width, float height, Body body) {
         super(width, height, body);
-        //setEquipments(new PlayerEquipment());
-
         health = 100;
         paused = false;
         jumpCount = 0;
@@ -118,23 +116,19 @@ public class Player extends MovableGameEntity {
     }
 
     public Equipment getCurrentEquipment() {
-        /*
-        for (Equipment e : this.equipments) {
-            if (e.getClass().equals(c)) {
-                return e;
-            }
-        }*/
+
         return currentEquipment;
 
-        //return null;
     }
 
     public void removeEquipment(Class<? extends Equipment> c) {
         currentEquipment.removeEquipment((Class<Equipment>) c);
     }
+
     public void setDead(boolean dead) {
         isDead = dead;
     }
+
     public boolean isDead() {
         return isDead;
     }
@@ -142,24 +136,7 @@ public class Player extends MovableGameEntity {
     public void setEquipments(Equipment eq) {
         currentEquipment = eq;
         currentEquipment.getDescription();
-        // this.equipment = equipment;
-        /*this.equipment = new LinkedList<>();
-        speed = eq.addSpeed();
-        jumpHeight = eq.addJump();
-        strength = eq.addStrength();
-        defense = eq.addDefense();
-        this.equipment.add(eq);
-        eq.getDescription();
 
-       /* for (int i = 0; i < this.equipment.size(); i++) {
-            Equipment e = equipment.get(i);
-            speed = e.addSpeed();
-            jumpHeight = e.addJump();
-            strength = e.addStrength();
-            defense = e.addDefense();
-            e.getDescription();
-        }
-*/
         speed = currentEquipment.addSpeed();
         jumpHeight = currentEquipment.addJump();
         strength = currentEquipment.addStrength();
@@ -222,6 +199,7 @@ public class Player extends MovableGameEntity {
                 isDeadAnimationFinished = false;
             } else if (isDeadAnimationFinished) {
                 // Restart the game or perform any other action
+
             }
         }
 
@@ -297,7 +275,7 @@ public class Player extends MovableGameEntity {
         }
 
         //if the current state is the same as the previous state increase the state timer.
-        //otherwise the state has changed and we need to reset timer.
+        //otherwise the state has changed, and we need to reset timer.
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         //update previous state
         previousState = currentState;
