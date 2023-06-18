@@ -151,21 +151,20 @@ public class GameScreen extends ScreenAdapter {
                 // Collision with one of the short swords
                 for (DaggerEntity sword : shortSwords) {
                     if (contact.getFixtureA().getBody() == sword.getBody()) {
-                        boolean hasLongSword = false;
                         Equipment equipment = player.getEquipment();
                         // if the player already has a long sword, then don't take this dagger
                         boolean hasWeapon = false;
 
                         while (equipment instanceof EquipmentDecorator) {
-                            if (equipment instanceof LongSword) {
-                                hasLongSword = true;
+                            if (equipment instanceof LongSword || equipment instanceof Dagger) {
+                                hasWeapon = true;
                                 break;
                             }
 
                             equipment = ((EquipmentDecorator) equipment).getDecoratedEquipment();
                         }
 
-                        if (hasLongSword) {
+                        if (hasWeapon) {
                             break;
                         }
 
