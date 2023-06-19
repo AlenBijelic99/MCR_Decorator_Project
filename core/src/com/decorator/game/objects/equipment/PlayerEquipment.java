@@ -2,10 +2,6 @@ package com.decorator.game.objects.equipment;
 
 import com.decorator.game.utils.Constants;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import static com.decorator.game.utils.Constants.STRENGTH_INCREASE;
 
 /**
  * Represents the Player's equipment
@@ -14,93 +10,74 @@ import static com.decorator.game.utils.Constants.STRENGTH_INCREASE;
  * @version : 11.0.12
  * @since : 17.05.2023
  */
-
 public class PlayerEquipment implements Equipment {
-    private List<Equipment> equipmentList;
-
-    public PlayerEquipment() {
-        equipmentList = new LinkedList<>();
-    }
+    /**
+     * Returns the description of the player's equipment.
+     *
+     * @return String represent the description of the equipment
+     */
 
     @Override
     public String getDescription() {
-        StringBuilder description = new StringBuilder("Player's equipment: ");
-        for (Equipment equipment : equipmentList) {
-            description.append(equipment.getDescription()).append(", ");
-        }
-        // Remove the trailing comma and space
-        if (equipmentList.size() > 0) {
-            description.setLength(description.length() - 2);
-        }
-        return description.toString();
+        return "Player equipment";
     }
 
-
+    /**
+     * Returns the strength of the basic player's equipment.
+     *
+     * @return int represent the strength of the equipment
+     */
     @Override
     public int addStrength() {
-        int totalStrength = STRENGTH_INCREASE;
-        for (Equipment equipment : equipmentList) {
-            totalStrength += equipment.addStrength();
-        }
-        return totalStrength;
+        return Constants.STRENGTH_INCREASE;
     }
 
-
+    /**
+     * Returns the speed of the player's equipment.
+     *
+     * @return float represent the speed of the equipment
+     */
     @Override
     public float addSpeed() {
-        float totalSpeed = Constants.PLAYER_SPEED;
-        for (Equipment equipment : equipmentList) {
-            totalSpeed += equipment.addSpeed();
-        }
-        return totalSpeed;
+        return Constants.PLAYER_SPEED;
     }
 
-
+    /**
+     * Returns the jumping capacity of the player's equipment.
+     *
+     * @return float represent the jumping capacity of the equipment
+     */
     @Override
     public float addJump() {
-        float totalJump = Constants.MAX_JUMPING_HEIGHT;
-        for (Equipment equipment : equipmentList) {
-            totalJump += equipment.addJump();
-        }
-        return totalJump;
+        return Constants.MAX_JUMPING_HEIGHT;
     }
 
+    /**
+     * Returns the defense of the player's equipment.
+     *
+     * @return int represent the defense of the equipment
+     */
     @Override
     public int addDefense() {
-        int totalDefense = 0;
-        for (Equipment equipment : equipmentList) {
-            totalDefense += equipment.addDefense();
-        }
-        return totalDefense;
+        return 0;
     }
 
     @Override
     public int addAttack() {
-        int totalAttack = 0;
-        for (Equipment equipment : equipmentList) {
-            totalAttack += equipment.addAttack();
-        }
-        return totalAttack;
+        return 0;
     }
 
     @Override
     public Equipment removeDecorator(Class<? extends Equipment> decoratorClass) {
-        List<Equipment> updatedEquipmentList = new LinkedList<>();
-        Equipment removedDecorator = null;
-
-        for (Equipment equipment : equipmentList) {
-            if (decoratorClass.isInstance(equipment)) {
-                removedDecorator = equipment;
-            } else {
-                updatedEquipmentList.add(equipment);
-            }
-        }
-
-        equipmentList = updatedEquipmentList;
-        return removedDecorator;
+        return null;
     }
 
 
+    /**
+     * Returns the name of the player's equipment.
+     *
+     * @return String represent the name of the equipment
+     */
     @Override
     public String toString() {
         return "Player equipment";
