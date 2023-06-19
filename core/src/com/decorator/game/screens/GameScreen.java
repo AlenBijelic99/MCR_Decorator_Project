@@ -20,8 +20,6 @@ import com.decorator.game.objects.door.DoorUnlocked;
 import com.decorator.game.objects.door.Key;
 import com.decorator.game.objects.equipment.Equipment;
 import com.decorator.game.objects.equipment.EquipmentDecorator;
-import com.decorator.game.objects.equipment.PlayerEquipment;
-import com.decorator.game.objects.equipment.armor.Armor;
 import com.decorator.game.objects.equipment.armor.BronzeArmor;
 import com.decorator.game.objects.equipment.armor.GoldArmor;
 import com.decorator.game.objects.equipment.armor.SilverArmor;

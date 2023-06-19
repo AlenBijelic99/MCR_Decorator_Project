@@ -29,6 +29,12 @@ import com.decorator.game.screens.GameScreen;
 
 import static com.decorator.game.utils.Constants.MAPS;
 
+/**
+ * Represents a Tile Map Helper
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 public class TileMapHelper {
     private final GameScreen gameScreen;
 

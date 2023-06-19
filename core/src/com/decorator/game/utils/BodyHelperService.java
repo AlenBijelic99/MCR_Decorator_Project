@@ -2,6 +2,12 @@ package com.decorator.game.utils;
 
 import com.badlogic.gdx.physics.box2d.*;
 
+/**
+ * Represents a body helper service.
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
 public class BodyHelperService {
   public static Body createBody(int x, int y, float width, float height, boolean isStatic, World world) {
     BodyDef bodyDef = new BodyDef();

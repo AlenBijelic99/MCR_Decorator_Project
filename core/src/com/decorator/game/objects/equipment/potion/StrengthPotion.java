@@ -2,6 +2,9 @@ package com.decorator.game.objects.equipment.potion;
 
 import com.decorator.game.objects.equipment.Equipment;
 
+import static com.decorator.game.utils.Constants.STRENGTH_INCREASE;
+
+
 /**
  * Represents a Strength Potion Decorator
  *
@@ -11,13 +14,10 @@ import com.decorator.game.objects.equipment.Equipment;
  */
 public class StrengthPotion extends Potion {
 
-    /**
-     * How much strength the potion will increase
-     */
-    private static final int STRENGTH_INCREASE = 10;
 
     /**
      * Constructor of the Strength Potion
+     *
      * @param equipment The equipment to decorate it with a Strength Potion
      */
     public StrengthPotion(Equipment equipment) {
@@ -28,7 +28,6 @@ public class StrengthPotion extends Potion {
     public String getDescription() {
         return super.getDescription() + ", Strength Potion";
     }
-
 
 
     @Override

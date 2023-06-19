@@ -1,22 +1,27 @@
 package com.decorator.game.objects.equipment;
-import com.badlogic.gdx.physics.box2d.Body;
+
 import com.decorator.game.utils.Constants;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.decorator.game.utils.Constants.STRENGTH_INCREASE;
+
+/**
+ * Represents the Player's equipment
+ *
+ * @author : Bijelic Alen, Bogale Tegest , Gillioz Dorian
+ * @version : 11.0.12
+ * @since : 17.05.2023
+ */
+
 public class PlayerEquipment implements Equipment {
     private List<Equipment> equipmentList;
 
     public PlayerEquipment() {
         equipmentList = new LinkedList<>();
     }
-    public void addEquipment(Equipment equipment){
-        equipmentList.add(equipment);
-    }
 
-    public void removeEquipment(Equipment equipment) {
-        equipmentList.remove(equipment);
-    }
     @Override
     public String getDescription() {
         StringBuilder description = new StringBuilder("Player's equipment: ");
@@ -33,7 +38,7 @@ public class PlayerEquipment implements Equipment {
 
     @Override
     public int addStrength() {
-        int totalStrength = 10;
+        int totalStrength = STRENGTH_INCREASE;
         for (Equipment equipment : equipmentList) {
             totalStrength += equipment.addStrength();
         }
@@ -49,7 +54,6 @@ public class PlayerEquipment implements Equipment {
         }
         return totalSpeed;
     }
-
 
 
     @Override
@@ -69,6 +73,7 @@ public class PlayerEquipment implements Equipment {
         }
         return totalDefense;
     }
+
     @Override
     public int addAttack() {
         int totalAttack = 0;
